@@ -1,14 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import axios from "axios";
 
 const LoginComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLoginUser=(e)=>{
+    e.preventDefault()
+    axios.post('http://localhost:8000/api/v1/user/login',{
+      email,
+      password
+    }).then(function (res){
+      console.log(res)
+    }).catch(function(err){
+      console.log(err);
+    })
+  }
+
   return (
     <div className="flex items-center justify-center w-screen min-h-screen bg-red-400">
       <div className="bg-white w-full max-w-sm rounded-lg p-8 shadow-lg">
-        <p className="text-2xl font-semibold ">Login</p>
-        <form className="mt-6">
+        <label className="text-2xl font-semibold ">Login</label>
+        <form className="mt-6" onSubmit={handleLoginUser}>
           <div>
             <label className="block text-gray-600">Email</label>
             <input

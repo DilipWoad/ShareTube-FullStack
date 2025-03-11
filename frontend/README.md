@@ -9,6 +9,8 @@
 - In Route "/" created a nested Route of "/login"
 - In Body Component used "Outlet" to make the children Route to attached dynamically
 - Login and Signup page CSS with their route
+- install axios
+- Implement post method on Login and Signup
 
 
 # Routes
