@@ -43,6 +43,7 @@ import likeRouter from './routes/like.route.js';
 import playlistRouter from './routes/playlist.route.js';
 import dashboardRouter from './routes/dashboard.route.js';
 import healthcheckRouter from './routes/healthcare.route.js';
+import authenticationRouter from './routes/isAuthenticted.route.js';
 //add as a middleware
 app.use('/api/v1/user',userRouter);
 app.use('/api/v1/video',videoRouter);
@@ -53,3 +54,4 @@ app.use('/api/v1/like',likeRouter);
 app.use('/api/v1/playlist',playlistRouter);
 app.use('/api/v1/dashboard',dashboardRouter);
 app.use('/api/v1/health',healthcheckRouter);
+app.use('/api/v1/status',authenticationRouter);

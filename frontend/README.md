@@ -1,9 +1,9 @@
-
 # ShareTube - Frontend
+
 - Create a Vite + React application
-- Removed unecessary code 
+- Removed unecessary code
 - Installed Tailwind CSS
-- Installed React Router 
+- Installed React Router
 - Created BrowserRouter -> Routes ->Route
 - Created a Route with path "/" with element as Body component
 - In Route "/" created a nested Route of "/login"
@@ -12,16 +12,25 @@
 - install axios
 - Implement post method on Login and Signup
 - CORS -solving cors issue in frontend by using cors in backend with config->orign and credentials as true
-- To store cookies in bowser as it need to be https but our localhost is http so  config->orign and credentials as true on the backend
+- To store cookies in bowser as it need to be https but our localhost is http so config->orign and credentials as true on the backend
 - while making api call with axios do add {withCrendtial:true}
 - Install React-Redux and Toolkit
 - created store ->configureStore and slice->userSlice->CreateSlice
 - Login and try if user data comes in
 - With User data made the header dynamic change avatar image and added user full name
-- created constant in utils and stored BASE_URL 
+- created constant in utils and stored BASE_URL
+- fetched User info data from Body component
+- update from user info with this userinfo call
+- now as user data is stored in store on refresh the value are present
+- Also redirect the user is info is not fetched
+- Added Logout button
+- While POST on Logout call make sure u have give {withCredential:true,headers: {Accept: "application/json",
+"Content-Type": "application/json",}}
+- Fetched All Video at '/'->Feed component and store in a new slice ->videoSlice
 
 # Routes
+
 Body
-    Route="/" -> "Feed" -> Get All Videos
-    Route="/login" -> Login
-    Route="/signup" -> Signup
+Route="/" -> "Feed" -> Get All Videos
+Route="/login" -> Login
+Route="/signup" -> Signup

@@ -47,7 +47,7 @@ const SignupComponent = () => {
     data.append("username", formData.username);
 
     axios
-      .post(BASE_URL+"api/v1/user/register", data, {
+      .post(BASE_URL+"/user/register", data, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials:true
       },)

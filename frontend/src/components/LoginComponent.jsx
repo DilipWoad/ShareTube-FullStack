@@ -13,7 +13,7 @@ const LoginComponent = () => {
 
   const handleLoginUser=(e)=>{
     e.preventDefault()
-    axios.post(BASE_URL+'api/v1/user/login',{
+    axios.post(BASE_URL+'/user/login',{
       email,
       password
     },{withCredentials:true}).then(function (res){
@@ -23,7 +23,6 @@ const LoginComponent = () => {
     }).catch(function(err){
       console.log(err);
     })
-    
   }
 
   return (
