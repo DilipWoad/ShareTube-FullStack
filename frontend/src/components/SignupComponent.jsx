@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { useNavigate,Link } from "react-router";
 import axios from "axios";
+import { BASE_URL } from "../utils/constant";
 
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -45,15 +47,18 @@ const SignupComponent = () => {
     data.append("username", formData.username);
 
     axios
-      .post("http://localhost:8000/api/v1/user/register", data, {
+      .post(BASE_URL+"api/v1/user/register", data, {
         headers: { "Content-Type": "multipart/form-data" },
-      })
+        withCredentials:true
+      },)
       .then(function (res) {
         console.log(res);
       })
       .catch(function (err) {
         console.log(err);
       });
+
+      navigate('/login')
   };
 
   return (

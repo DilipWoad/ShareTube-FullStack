@@ -1,13 +1,13 @@
 import { Outlet } from "react-router";
 import Header from "./Header";
 
-const Body =()=>{
-    return(
-        <div>
-       
-            <Outlet/>
-        </div>
-    )
-}
+const Body = () => {
+  return (
+    <div>
+    <Header/>
+      <Outlet />
+    </div>
+  );
+};
 
 export default Body;
