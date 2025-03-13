@@ -27,7 +27,7 @@
 - While POST on Logout call make sure u have give {withCredential:true,headers: {Accept: "application/json",
 "Content-Type": "application/json",}}
 - Fetched All Video at '/'->Feed component and store in a new slice ->videoSlice
-
+- displayed video Thumbnails on the feed page
 # Routes
 
 Body

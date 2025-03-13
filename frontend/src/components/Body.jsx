@@ -31,6 +31,17 @@ const Body = () => {
     <div>
       <Header />
       <Outlet />
+      {/* <div>
+      <iframe
+        src="https://res.cloudinary.com/dvb5edx52/video/upload/q37xojpkomn2urjyvtik.mp4"
+        width="640"
+        height="360"
+        
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+      </div> */}
+      
     </div>
   );
 };

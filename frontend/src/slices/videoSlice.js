@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const videoSlice = createSlice({
     name:"video",
-    initialState:null,
+    initialState:[],
     reducers:{
         addVideo:(state,action)=>{
-            return action.payload
+            return [...action.payload]
         }
     }
 })

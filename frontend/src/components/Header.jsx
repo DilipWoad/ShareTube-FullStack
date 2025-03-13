@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL, MENU_IMG, YT_LOGO } from "../utils/constant";
 import { removeUser } from "../slices/userSlice";
 
 const Header = () => {
@@ -29,12 +29,15 @@ const Header = () => {
     }
   };
   return (
-    <div className="h-16 bg-gray-500 flex items-center justify-between px-10">
-      <div>
+    <div className="h-16 bg-gray-500 flex items-center justify-between pl-5 pr-10">
+      <div className="flex items-center gap-x-8 p-2">
+        <div className="hover:cursor-pointer">
+          <img className="w-10" src={MENU_IMG}/>
+        </div>
         <Link to={"/"}>
           <img
             className="w-20"
-            src="https://cdn-icons-png.flaticon.com/512/1383/1383260.png"
+            src={YT_LOGO}
           />
         </Link>
       </div>
