@@ -143,7 +143,6 @@ const getVideoById = asyncHandler(async (req, res) => {
   if(!addToWatchHistory){
     throw new ApiError("Something went wrong while adding video to watch history",501)
   }
-  console.log(addToWatchHistory);
   return res
     .status(200)
     .json(new ApiResponse(201, video, "Video Fetched Successfully!!!"));

@@ -16,7 +16,7 @@ function App() {
               <Route path="/" element={<VideoFeed/>}/>
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/signup" element={<SignupComponent />} />
-              <Route path="/video" element={<SingleVideo/>}/>
+              <Route path="/watch" element={<SingleVideo/>}/>
             </Route>
           </Routes>
         </BrowserRouter>

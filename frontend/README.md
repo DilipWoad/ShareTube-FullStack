@@ -28,9 +28,12 @@
 "Content-Type": "application/json",}}
 - Fetched All Video at '/'->Feed component and store in a new slice ->videoSlice
 - displayed video Thumbnails on the feed page
+- Linked the videos from feed to /watch?v=1234 page
+- Displayed Video on the /watch page
 # Routes
 
 Body
 Route="/" -> "Feed" -> Get All Videos
 Route="/login" -> Login
 Route="/signup" -> Signup
+Route="/watch?v=videoId ->Watch Video
