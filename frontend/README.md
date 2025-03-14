@@ -29,7 +29,9 @@
 - Fetched All Video at '/'->Feed component and store in a new slice ->videoSlice
 - displayed video Thumbnails on the feed page
 - Linked the videos from feed to /watch?v=1234 page
-- Displayed Video on the /watch page
+- Displayed Video on the /watch page4
+- Made Video Deatils(Channel avatar,video title+description,like,subscribed+count) on the present page
+- Added Descripiton Div 
 # Routes
 
 Body

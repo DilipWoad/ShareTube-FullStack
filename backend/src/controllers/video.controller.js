@@ -117,6 +117,109 @@ const getVideoById = asyncHandler(async (req, res) => {
   if (!video) {
     throw new ApiError("Video does not exist!!", 404);
   }
+
+  const getVideoInfo = await Video.aggregate([
+    {
+      $match:{
+        _id:new mongoose.Types.ObjectId(videoId)
+      }
+    },
+    {
+      $lookup:{
+        from:"users",
+        let:{ownerId:"$owner"},
+        pipeline:[
+          {
+            $match:{
+              $expr:{
+                $eq:["$_id","$$ownerId"]
+              }
+            }
+          },
+          //again a lookup in subscription model
+          {
+            $lookup:{
+              from:"subscriptions",
+              let:{channelId:"$_id"},
+              pipeline:[
+                {
+                  $match:{
+                    $expr:{
+                      $eq:["$channel","$$channelId"]
+                    }
+                  }
+                },
+                {
+                  $group: {
+                    _id: null,
+                    subscriberCount: { $sum: 1 }
+                  }
+                }
+              ],
+              as:"channelSubscribers"
+            }
+          },
+          {
+            $addFields: {
+              subscribers: { $ifNull: [{$first:"$channelSubscribers.subscriberCount"}, 0] }
+            }
+          },
+          {
+            $project:{
+              avatar:1,
+              username:1,
+              fullName:1,
+              subscribers:1
+            }
+          }
+        ],
+        as:"channelDetails"
+      }
+    },
+    {  //lookup the like schema
+      $lookup:{
+        from:"likes",
+        let:{videoLikesId:"$_id"},
+        pipeline:[
+          {
+            $match:{
+              $expr:{
+                $eq:["$video","$$videoLikesId"]
+              }
+            }
+          },//get the counts
+          {
+            $group: {
+              _id: null,
+              videoLikes: { $sum: 1 }
+            }
+          }
+          //or do project if not working
+        ],
+        as:"likesDetails"
+      }
+    },
+    {
+      $addFields: {
+        likeCount: { $ifNull: [{$first:"$likesDetails.videoLikes"}, 0] }
+      }
+    },
+    {
+      $project:{
+        likesDetails:1,
+        channelDetails:1,
+        videoFile:1,
+        thumbnail:1,
+        title:1,
+        description:1,
+        duration:1,
+        views:1,
+        createdAt:1,
+
+      }
+    }
+
+  ])
   const addToWatchHistory = await User.updateOne(
     {_id:req.user._id},
     [
@@ -145,7 +248,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(201, video, "Video Fetched Successfully!!!"));
+    .json(new ApiResponse(201, getVideoInfo[0], "Video Fetched Successfully!!!"));
 });
 
 const updateVideoDetails = asyncHandler(async (req, res) => {

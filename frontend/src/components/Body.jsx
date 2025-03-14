@@ -13,9 +13,7 @@ const Body = () => {
 
   const userInfo = async () => {
     try {
-      const response = await axios.get(BASE_URL+"/user/userinfo", {
-        withCredentials: true,
-      });
+      const response = await axios.get(BASE_URL+"/user/userinfo",{withCredentials:true});
       console.log(response);
       dispatch(addUser(response.data.data))
     } catch (error) {
