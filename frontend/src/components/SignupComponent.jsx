@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useNavigate,Link } from "react-router";
-import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import { useNavigate, Link } from "react-router";
+import { useUserSignUp } from "../hooks/useUserSignUp";
 
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);
@@ -35,30 +34,10 @@ const SignupComponent = () => {
     });
   };
 
-  const handleSignupUser = (e) => {
+  const handleSignupUser = async (e) => {
     e.preventDefault();
-
-    const data = new FormData();
-    data.append("avatar", avatar);
-    data.append("coverImage", coverImage);
-    data.append("fullName", formData.fullName);
-    data.append("email", formData.email);
-    data.append("password", formData.password);
-    data.append("username", formData.username);
-
-    axios
-      .post(BASE_URL+"/user/register", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials:true
-      },)
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-      navigate('/login')
+    await useUserSignUp(avatar,coverImage,formData);
+    navigate("/login");
   };
 
   return (

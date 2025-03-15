@@ -1,44 +1,33 @@
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
-import { BASE_URL, MENU_IMG, YT_LOGO } from "../utils/constant";
+import { MENU_IMG, YT_LOGO } from "../utils/constant";
+import { useHandleLogout } from "../hooks/useHandleLogout";
 import { removeUser } from "../slices/userSlice";
+import { removeVideoFeed } from "../slices/videoSlice";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const handleLogout = async () => {
-    try {
-      await axios.post(
-        BASE_URL + "/user/logout",
-        {},
-        { withCredentials:true,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      dispatch(removeUser());
-      navigate('/login')
-    } catch (error) {
-      console.log(error);
-    }
+    await useHandleLogout();
+    dispatch(removeUser());
+    dispatch(removeVideoFeed());
+    navigate("/login");
   };
+
   return (
     <div className="h-16 bg-gray-500 flex items-center justify-between pl-5 pr-10">
       <div className="flex items-center gap-x-8 p-2">
         <div className="hover:cursor-pointer">
-          <img className="w-10" src={MENU_IMG}/>
+          <img className="w-10" src={MENU_IMG} />
         </div>
+        {/* TODO:This need to be protect when at login page clicked on logo it goes to /feed page */}
         <Link to={"/"}>
-          <img
-            className="w-20"
-            src={YT_LOGO}
-          />
+          <img className="w-20" src={YT_LOGO} />
         </Link>
       </div>
       {userDetails ? (

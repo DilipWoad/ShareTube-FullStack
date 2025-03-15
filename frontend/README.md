@@ -36,6 +36,9 @@
 - Also fix the issue in getting user liked videos from the backend ->which was returning only the 1 video(due to  backend returning video[0] object)
 - Implement Subscriber count,like count and they are dynamic with number shown on the frontent
 - Subscriber and like count changes in the backend
+- Clean up the code by creating Custom Hook for all the components (Body,Header,Login,signup,VideoFeed)
+
+
 
 # Routes
 

@@ -1,28 +1,13 @@
-import axios from "axios";
-import { BASE_URL } from "../utils/constant";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addVideo } from "../slices/videoSlice";
-import { Link,} from "react-router";
+import { useSelector } from "react-redux";
+
+import { Link } from "react-router";
+import { useGetAllVideos } from "../hooks/useGetAllVideos";
 
 const VideoFeed = () => {
-  const dispatch = useDispatch();
   const videos = useSelector((store) => store.video);
   console.log(videos);
-  const getAllVideo = async () => {
-    const res = await axios.get(BASE_URL + "/video", {
-      withCredentials: true,
-    });
-    console.log(res.data);
-    dispatch(addVideo(res.data.data));
-  };
-
-  useEffect(() => {
-    getAllVideo();
-  }, []);
-
-  if (videos.length === 0) return <div>Loading...</div>;
-
+  useGetAllVideos();
+  if (videos?.length === 0) return <div>Loading...</div>;
   return (
     <div className="flex">
       <div className="bg-sky-300 h-fit">
