@@ -145,83 +145,135 @@ const togglePostLike = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, {}, "Liked the Post Successfully"));
 });
 
-const getLikedVideos = asyncHandler(async(req,res)=>{
-    const userId = req.user._id;
+const getLikedVideos = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
 
-    const video = await Like.aggregate([
-        {
-            $match:{
-                likeBy:new mongoose.Types.ObjectId(userId)
-            }
-        },
-        {
-            $lookup:{
-                from:"videos",
-                let:{videoId:"$video"},
-                pipeline:[
-                    {
-                        $match:{
-                            $expr:{
-                                $eq:["$_id","$$videoId"]
-                            }
-                        }
+  const video = await Like.aggregate([
+    {
+      $match: {
+        likeBy: new mongoose.Types.ObjectId(userId),
+      },
+    },
+    {
+      $lookup: {
+        from: "videos",
+        let: { videoId: "$video" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$_id", "$$videoId" ],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              let: { ownerId: "$owner" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: ["$_id", "$$ownerId"],
                     },
-                    {
-                        $lookup:{
-                            from:"users",
-                            let:{ownerId:"$owner"},
-                            pipeline:[
-                                {
-                                    $match:{
-                                        $expr:{
-                                            $eq:["$_id","$$ownerId"]
-                                        }
-                                    }
-                                },
-                                {
-                                    $project:{
-                                        username:1,
-                                        avatar:1,
-                                        fullName:1
-                                    }
-                                }
-                            ],
-                            as:"videoOwner"
-                        }
-                    },
-                    {
-                        $project:{
-                            videoFile:1,
-                            thumbnail:1,
-                            title:1,
-                            description:1,
-                            videoOwner:1,
-                            views:1,
-                            createdAt:1
-                        }
-                    }
-                ],
-                as:"videoDetail"
-            }
-        },
-        {
-            $project:{
-                videoDetail:1,
-            }
-        }
-    ])
+                  },
+                },
+                {
+                  $project: {
+                    username: 1,
+                    avatar: 1,
+                    fullName: 1,
+                  },
+                },
+              ],
+              as: "videoOwner",
+            },
+          },
+          {
+            $unwind: {
+              path: "$videoOwner",
+            },
+          },
+          {
+            $project: {
+              videoFile: 1,
+              thumbnail: 1,
+              title: 1,
+              description: 1,
+              videoOwner: 1,
+              views: 1,
+              createdAt: 1,
+            },
+          },
+        ],
+        as: "videoDetail",
+      },
+    },
+    {
+      $unwind: {
+        path: "$videoDetail",
+      },
+    },
+    {
+      $project: {
+        videoDetail: 1,
+      },
+    },
+  ]);
 
-    if(!video){
-        throw new ApiError("Something went wrong while fetching Liked Videos",501)
-    }
+  if (!video) {
+    throw new ApiError("Something went wrong while fetching Liked Videos", 501);
+  }
 
-    return res.status(200).json(
-        new ApiResponse(
-            201,
-            video[0], //video or video[0]
-            "User's Liked Video Fetched Successfully!!"
-        )
+  return res.status(200).json(
+    new ApiResponse(
+      201,
+      video, //video or video[0]-> this is wrong it will only give the one video(i.e is arr[0]postion i was so stuck on  this one bruh)
+      "User's Liked Video Fetched Successfully!!"
     )
-})
+  );
+});
 
-export { toggleVideoLike, toggleCommentLike,togglePostLike,getLikedVideos };
+const isLikedAlready = asyncHandler(async (req, res) => {
+  //verify authentication
+  //get userId from req.user
+  // we will get videoId from the frontent params
+  // get videoId
+  // verify videoID
+  // check if video Exist
+  // just do a findOne in Like model with video->videoId and likedBy->userId
+
+  const currentUserId = req.user._id;
+
+  const { videoId } = req.params;
+  if (!mongoose.isValidObjectId(videoId)) {
+    throw new ApiError("Invalid Video Id", 401);
+  }
+
+  const isVideExists = await Video.findById(videoId);
+  if (!isVideExists) {
+    throw new ApiError("Video does not Exists", 404);
+  }
+
+  //now find in like schema
+  const isVideoLikedAlreadyByUser = await Like.findOne({
+    video: new mongoose.Types.ObjectId(videoId),
+    likeBy: new mongoose.Types.ObjectId(currentUserId),
+  });
+  if (isVideoLikedAlreadyByUser === null) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, false, "User has not liked the video"));
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, true, "User has already Liked the video"));
+});
+
+export {
+  toggleVideoLike,
+  toggleCommentLike,
+  togglePostLike,
+  getLikedVideos,
+  isLikedAlready,
+};

@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Subscription } from "../models/subscription.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Video } from "../models/video.model.js";
 
 const toggleSubscription = asyncHandler(async (req, res) => {
   //1)verify authentication
@@ -174,8 +175,68 @@ const getUsersSubscribedToChannels = asyncHandler(async (req, res) => {
     );
 });
 
+//create a function to check if current user is Subscribed to current visted channel or video 
+//if /watch page that means we have videoId
+const isUserSubscibed = asyncHandler(async(req,res)=>{
+  //verify authentication using jwt(auth middleware)
+  //we will have videoId only
+  //this is a getVideoById function -> where a user click on video in /feed page and it opens /watch with the videoId
+  
+  // wait we have current User info in req.user
+  // get userId from req.use
+  const currentUserId = req.user._id;
+   // check is videoId is valid or not
+  // check if videoExist
+  const {videoId} = req.params;
+
+  if(!mongoose.isValidObjectId(videoId)){
+    throw new ApiError("Invalid video Id",401);
+  }
+
+  const video = await Video.findOne({
+    _id:videoId
+  })
+
+  if(!video){
+    throw new ApiError("Video does not exists",404);
+  }
+
+  //now video is present that means we can get (owner)id from it
+  const videoOwnerId = video.owner;
+  //we have owner='68942...' id value 
+
+  //now we have both owner(channel)Id and currentLoggedInUser Id
+  //check in Subscribtion schema and find the document that contain both the feild values
+  const isASubscriber = await Subscription.findOne({
+    subscriber:new mongoose.Types.ObjectId(currentUserId),
+    channel: new mongoose.Types.ObjectId(videoOwnerId)
+  })
+
+  if(isASubscriber === null){
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        false,
+        "User is Not a Subscriber of the channel"
+      )
+    )
+  }
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      true,
+      "User is Already a subscriber of the channel"
+    )
+  )
+
+})
+//if a /channel page is open that means we have a channelId given
+
+
 export {
   toggleSubscription,
   getUsersChannelSubscribers,
   getUsersSubscribedToChannels,
+  isUserSubscibed
 };

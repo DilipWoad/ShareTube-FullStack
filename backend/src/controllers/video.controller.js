@@ -160,8 +160,13 @@ const getVideoById = asyncHandler(async (req, res) => {
             }
           },
           {
+            $unwind:{
+              path:"$channelSubscribers"
+            }
+          },
+          {
             $addFields: {
-              subscribers: { $ifNull: [{$first:"$channelSubscribers.subscriberCount"}, 0] }
+              subscribers: { $ifNull: ["$channelSubscribers.subscriberCount", 0] }
             }
           },
           {
@@ -174,6 +179,11 @@ const getVideoById = asyncHandler(async (req, res) => {
           }
         ],
         as:"channelDetails"
+      }
+    },
+    {
+      $unwind:{
+        path:"$channelDetails"
       }
     },
     {  //lookup the like schema
@@ -200,8 +210,13 @@ const getVideoById = asyncHandler(async (req, res) => {
       }
     },
     {
+      $unwind:{
+        path:"$likesDetails"
+      }
+    },
+    {
       $addFields: {
-        likeCount: { $ifNull: [{$first:"$likesDetails.videoLikes"}, 0] }
+        likeCount: { $ifNull: ["$likesDetails.videoLikes", 0] }
       }
     },
     {

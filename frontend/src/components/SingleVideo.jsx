@@ -36,7 +36,7 @@ const SingleVideo = () => {
 
   const handleSubscription = async () => {
     const res = await axios.post(
-      BASE_URL + `/subscription/c/${videoDetail.channelDetails[0]._id}`,
+      BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
       {},
       { withCredentials: true }
     );
@@ -85,16 +85,16 @@ const SingleVideo = () => {
             <div className="bg-pink-300 hover:cursor-pointer">
               <img
                 className="w-10 h-10 rounded-full"
-                src={videoDetail.channelDetails[0].avatar}
+                src={videoDetail.channelDetails.avatar}
                 alt="channel-image"
               />
             </div>
             <div className="bg-sky-300 px-2">
               <p className="font-semibold">
-                {videoDetail.channelDetails[0].fullName}{" "}
+                {videoDetail.channelDetails.fullName}{" "}
               </p>
               <p className="text-sm font-light">
-                {videoDetail.channelDetails[0].subscribers} subscribers
+                {videoDetail.channelDetails.subscribers} subscribers
               </p>
             </div>
           </div>
@@ -108,8 +108,8 @@ const SingleVideo = () => {
             className="flex items-center gap-x-2 px-2 py-1"
           >
             <img className="w-5 h-5" src={LIKE_ICON} alt="like-icon" />{" "}
-            {videoDetail.likesDetails[0]
-              ? videoDetail.likesDetails[0].videoLikes
+            {videoDetail.likesDetails
+              ? videoDetail.likesDetails.videoLikes
               : 0}
           </button>
         </div>
