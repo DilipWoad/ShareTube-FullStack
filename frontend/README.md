@@ -34,6 +34,9 @@
 - Added Descripiton Div 
 - updated backend to get is Current user is subscribed to the channel and also is user has liked the video already
 - Also fix the issue in getting user liked videos from the backend ->which was returning only the 1 video(due to  backend returning video[0] object)
+- Implement Subscriber count,like count and they are dynamic with number shown on the frontent
+- Subscriber and like count changes in the backend
+
 # Routes
 
 Body

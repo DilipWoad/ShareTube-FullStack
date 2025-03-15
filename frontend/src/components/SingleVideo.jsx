@@ -7,59 +7,79 @@ const SingleVideo = () => {
   //that means u have video id on the url
   //get the query value from url
   const [searchParams, setSearchParams] = useSearchParams();
-  const [videoDetail, setVideoDetail] = useState(null);
   const videoId = searchParams.get("v");
+
+  const [videoDetail, setVideoDetail] = useState(null);
+
   const [isSubscribed, setIsSubscribed] = useState(null);
+  const [subscriberCount, setSubscriberCount] = useState(0);
+
+  const [isLiked, setIsLiked] = useState(null);
+  const [likeCount, setLikeCount] = useState(0);
+
   //i guess use REDUX TOOLKIT
-  
- 
- //in axios do a get call to /video/:videoId
+
+  //in axios do a get call to /video/:videoId
   const getAVideo = async () => {
     //add the query value to the videoId place
     const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
       withCredentials: true,
     });
-    console.log(res.data.data);
-    setVideoDetail(res.data.data);
-    //need to pipeline and get videoOwner Details then with
-    // user-> go to subscription schema get subscriber count ->with video id get likes
+    const video = res.data.data;
+    console.log(video);
+    setVideoDetail(video);
+    setLikeCount(video.likesDetails.videoLikes);
+    setSubscriberCount(video.channelDetails.subscribers);
   };
 
-  const handleLikes = async () => {
-    const res = await axios.post(
-      BASE_URL + `/like/v/${videoId}`,
-      {},
-      { withCredentials: true }
-    );
-    console.log(res.data);
+  const isUserSubscribed = async () => {
+    const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
+      withCredentials: true,
+    });
+    //create a function which will check is current user(current logged in user is subscribed to the current opened video)
+    setIsSubscribed(res.data.data);
   };
-
   const handleSubscription = async () => {
-    const res = await axios.post(
+    await axios.post(
       BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
       {},
       { withCredentials: true }
     );
-    // if(res.data.message.includes('Subscribe')){
-    //   setIsSubscribed(true);
-    // }else{
-    //   setIsSubscribed(false);
-    // }
-    console.log(res.data)
-  };
-
-  const isUserSubscribed = async () => {
-    await axios.get("/");
-    //create a function which will check is current user(current logged in user is subscribed to the current opened video)
+    //toggle the subscribed state
+    if (!isSubscribed) {
+      setSubscriberCount(subscriberCount + 1);
+    } else {
+      setSubscriberCount(subscriberCount - 1);
+    }
+    setIsSubscribed(!isSubscribed);
   };
 
   const isUserLikedTheVideo = async () => {
-    await axios.get();
+    const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
+      withCredentials: true,
+    });
     //create a function which will check is current user(current logged in user has liked the current opened video)
+    console.log(res.data.data);
+    setIsLiked(res.data.data);
+  };
+  const handleLikes = async () => {
+    await axios.post(
+      BASE_URL + `/like/v/${videoId}`,
+      {},
+      { withCredentials: true }
+    );
+    if (!isLiked) {
+      setLikeCount(likeCount + 1);
+    } else {
+      setLikeCount(likeCount - 1);
+    }
+    setIsLiked(!isLiked);
   };
 
   useEffect(() => {
     !videoDetail && getAVideo();
+    isUserSubscribed();
+    isUserLikedTheVideo();
   }, [videoId]);
 
   //And get the video
@@ -78,39 +98,49 @@ const SingleVideo = () => {
           allowFullScreen
         ></iframe>
       </div>
-      <div className="text-xl font-bold">{videoDetail?.title}</div>
-      <div className="flex justify-between py-2 items-center">
-        <div className="flex bg-red-200 space-x-7 items-center ">
-          <div className="bg-lime-300 flex space-x-3 items-center">
-            <div className="bg-pink-300 hover:cursor-pointer">
+      <div className="text-xl px-1 font-bold">{videoDetail?.title}</div>
+      <div className="flex justify-between px-1 py-2 items-center">
+        <div className="flex space-x-7 items-center ">
+          <div className=" flex space-x-3 items-center">
+            <div className=" hover:cursor-pointer">
               <img
                 className="w-10 h-10 rounded-full"
                 src={videoDetail.channelDetails.avatar}
                 alt="channel-image"
               />
             </div>
-            <div className="bg-sky-300 px-2">
+            <div className=" px-2">
               <p className="font-semibold">
                 {videoDetail.channelDetails.fullName}{" "}
               </p>
               <p className="text-sm font-light">
-                {videoDetail.channelDetails.subscribers} subscribers
+                {subscriberCount} subscribers
               </p>
             </div>
           </div>
-          <div className="bg-orange-300 px-4 py-1 rounded-l-full rounded-r-full">
-            <button onClick={handleSubscription}>{isSubscribed ? "🔔 Subscribed" :"Subscribe" }</button>
+          <div
+            className={`px-4 py-1 rounded-l-full rounded-r-full ${
+              isSubscribed ? "bg-gray-300" : "bg-white text-gray-600"
+            }`}
+          >
+            <button onClick={handleSubscription}>
+              {isSubscribed ? "🔔 Subscribed" : "Subscribe"}
+            </button>
           </div>
         </div>
-        <div className="bg-slate-300 mr-4 rounded-l-full rounded-r-full">
+        <div className="bg-slate-300 mr-4 rounded-l-full rounded-r-full hover:bg-slate-200">
           <button
             onClick={handleLikes}
-            className="flex items-center gap-x-2 px-2 py-1"
+            className="flex items-center gap-x-2 px-2 py-1 min-w-16 justify-between"
           >
-            <img className="w-5 h-5" src={LIKE_ICON} alt="like-icon" />{" "}
-            {videoDetail.likesDetails
-              ? videoDetail.likesDetails.videoLikes
-              : 0}
+            <img
+              className={`w-5 h-5 ${
+                isLiked ? "bg-white " : ""
+              } overflow-hidden`}
+              src={LIKE_ICON}
+              alt="like-icon"
+            />
+            {videoDetail.likesDetails ? likeCount : 0}
           </button>
         </div>
       </div>
