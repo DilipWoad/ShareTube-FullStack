@@ -32,6 +32,8 @@
 - Displayed Video on the /watch page4
 - Made Video Deatils(Channel avatar,video title+description,like,subscribed+count) on the present page
 - Added Descripiton Div 
+- updated backend to get is Current user is subscribed to the channel and also is user has liked the video already
+- Also fix the issue in getting user liked videos from the backend ->which was returning only the 1 video(due to  backend returning video[0] object)
 # Routes
 
 Body
