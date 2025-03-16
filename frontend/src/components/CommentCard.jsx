@@ -1,5 +1,6 @@
 const CommentCard = ({comment}) => {
     const{commentOwner,content} = comment;
+    if(!comment) return <div>Loading... wait</div>
   return (
     <div className="p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg">
       <div className="">

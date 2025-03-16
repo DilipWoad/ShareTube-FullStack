@@ -2,10 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import CommentCard from "./CommentCard";
+import {useDispatch, useSelector} from "react-redux";
+import { addNewComment, addVideoComments } from "../slices/commentSlice";
 
 const VideoComment = ({ videoId, avatar }) => {
-  const [videoComments, setVideoComments] = useState(null);
+  // const [videoComments, setVideoComments] = useState(null);
   const [userComment, setUserComment] = useState("");
+  const videoComments = useSelector((store)=>store.comment);
+  const user = useSelector((store)=>store.user);
+
+  console.log(videoComments);
+  const dispatch = useDispatch();
 
   const addUserComment = async()=>{
     try {
@@ -13,6 +20,16 @@ const VideoComment = ({ videoId, avatar }) => {
             content:userComment
         },{withCredentials:true})
         console.log(res.data);
+        // dispatch(addNewComment(userComment));
+        const value = await res.data.data
+        const commentOwner={
+          avatar: user.avatar,
+          fullName:user.fullName,
+          username:user.username,
+          _id:user._id
+        }
+        const mergeValue = Object.assign({}, value, commentOwner);
+        dispatch(addNewComment(mergeValue)) //TODO: Make change in Contoller to return res with commentOwner detailds
     } catch (error) {
         console.log(error);
     }
@@ -25,11 +42,13 @@ const VideoComment = ({ videoId, avatar }) => {
       withCredentials: true,
     });
     console.log(res.data);
-    setVideoComments(res.data.data);
+    const array = res.data.data
+    // setVideoComments(array.reverse());
+    dispatch(addVideoComments(array));
   };
   useEffect(() => {
     getVideoComments();
-  }, [videoId]);
+  }, [videoId,dispatch]);
   if(!videoComments) return <div>Loading...</div>
   return (
     <div>
