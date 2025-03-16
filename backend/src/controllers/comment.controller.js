@@ -200,11 +200,26 @@ const getVideoComments = asyncHandler(async (req, res) => {
       },
     },
     {
+      $unwind:{
+        path:"$commentOwner"
+      }
+    },
+    //as we have all the documents with the videoId so just group and sum to get the count of document
+    {
+      $setWindowFields:{
+        partitionBy:"$video",
+        output:{
+          commentCount:{$count:{}}
+        }
+      }
+    },
+    {
       $project: {
         content: 1,
         video: 1,
         commentOwner: 1,
         createdAt: 1,
+        commentCount:1
       },
     },
   ]);

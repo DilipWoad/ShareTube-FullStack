@@ -2,6 +2,8 @@ import axios from "axios";
 import { useSearchParams } from "react-router";
 import { BASE_URL, LIKE_ICON } from "../utils/constant";
 import { useEffect, useState } from "react";
+import VideoDescription from "./VideoDescription";
+import VideoComment from "./VideoComment";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
@@ -87,10 +89,10 @@ const SingleVideo = () => {
   //ensure that video is coming and it is in the video div position
   if (!videoDetail) return <div>Loading....</div>;
   return (
-    <div className=" mx-8 bg-purple-400 w-fit">
+    <div className=" mx-8 bg-purple-400 w-fit pb-1">
       <div className="mt-5 mb-3">
         <iframe
-          className="rounded-lg overflow-hidden"
+          className="rounded-lg overflow-hidden max-w-[850px]"
           src={videoDetail?.videoFile}
           width="850"
           height="460"
@@ -144,10 +146,8 @@ const SingleVideo = () => {
           </button>
         </div>
       </div>
-      <div className="bg-yellow-300 rounded-lg p-2">
-        <p className="font-semibold"> {videoDetail?.views} views</p>
-        <p>{videoDetail?.description}</p>
-      </div>
+      <VideoDescription videoDetail={videoDetail}/>
+      <VideoComment videoId={videoId} avatar={videoDetail.channelDetails.avatar}/>
     </div>
   );
 };

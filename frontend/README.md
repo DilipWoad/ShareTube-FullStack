@@ -37,8 +37,9 @@
 - Implement Subscriber count,like count and they are dynamic with number shown on the frontent
 - Subscriber and like count changes in the backend
 - Clean up the code by creating Custom Hook for all the components (Body,Header,Login,signup,VideoFeed)
-
-
+- Seperate components for videoCard and videoDescription
+- Create a VideoComment component use CommentCard 
+- Implement getting the video comments and user can add comments to the video
 
 # Routes
 
