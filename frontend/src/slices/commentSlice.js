@@ -17,9 +17,16 @@ const commentSlice = createSlice({
     removeVideoComments: (state, action) => {
       return null;
     },
+    removeUserComment: (state, action) => {
+      return action.payload;
+    },
   },
 });
 
 export default commentSlice.reducer;
-export const { addNewComment, addVideoComments, removeVideoComments } =
-  commentSlice.actions;
+export const {
+  addNewComment,
+  addVideoComments,
+  removeVideoComments,
+  removeUserComment,
+} = commentSlice.actions;

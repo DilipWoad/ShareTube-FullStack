@@ -41,6 +41,8 @@
 - Create a VideoComment component use CommentCard 
 - Implement getting the video comments and user can add comments to the video
 - Inegerated Sidebar to each of the route
+- Completed comment part -> created comment,display comment,delete and edit by the current user with dynamic render
+
 
 # Routes
 

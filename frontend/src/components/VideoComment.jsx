@@ -76,7 +76,7 @@ const VideoComment = ({ videoId}) => {
         <div>
           {videoComments &&
             videoComments.map((comment) => (
-              <CommentCard key={comment._id} comment={comment} usersComment={user} />
+              <CommentCard key={comment._id} comment={comment} usersComment={user} videoComments={videoComments} />
             ))}
         </div>
       </div>
