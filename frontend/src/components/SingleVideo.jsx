@@ -147,7 +147,7 @@ const SingleVideo = () => {
         </div>
       </div>
       <VideoDescription videoDetail={videoDetail}/>
-      <VideoComment videoId={videoId} avatar={videoDetail.channelDetails.avatar}/>
+      <VideoComment videoId={videoId}/>
     </div>
   );
 };

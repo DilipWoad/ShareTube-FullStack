@@ -5,13 +5,11 @@ import CommentCard from "./CommentCard";
 import {useDispatch, useSelector} from "react-redux";
 import { addNewComment, addVideoComments } from "../slices/commentSlice";
 
-const VideoComment = ({ videoId, avatar }) => {
+const VideoComment = ({ videoId}) => {
   // const [videoComments, setVideoComments] = useState(null);
   const [userComment, setUserComment] = useState("");
   const videoComments = useSelector((store)=>store.comment);
   const user = useSelector((store)=>store.user);
-
-  console.log(videoComments);
   const dispatch = useDispatch();
 
   const addUserComment = async()=>{
@@ -22,14 +20,7 @@ const VideoComment = ({ videoId, avatar }) => {
         console.log(res.data);
         // dispatch(addNewComment(userComment));
         const value = await res.data.data
-        const commentOwner={
-          avatar: user.avatar,
-          fullName:user.fullName,
-          username:user.username,
-          _id:user._id
-        }
-        const mergeValue = Object.assign({}, value, commentOwner);
-        dispatch(addNewComment(mergeValue)) //TODO: Make change in Contoller to return res with commentOwner detailds
+        dispatch(addNewComment(value)) //TODO: Make change in Contoller to return res with commentOwner detailds
     } catch (error) {
         console.log(error);
     }
@@ -43,12 +34,13 @@ const VideoComment = ({ videoId, avatar }) => {
     });
     console.log(res.data);
     const array = res.data.data
-    // setVideoComments(array.reverse());
     dispatch(addVideoComments(array));
   };
+
   useEffect(() => {
     getVideoComments();
   }, [videoId,dispatch]);
+  
   if(!videoComments) return <div>Loading...</div>
   return (
     <div>
@@ -58,7 +50,7 @@ const VideoComment = ({ videoId, avatar }) => {
           <div>
             <img
               className="w-10 h-10 rounded-full"
-              src={avatar}
+              src={user.avatar}
               alt="user-icon"
             />
           </div>
@@ -84,7 +76,7 @@ const VideoComment = ({ videoId, avatar }) => {
         <div>
           {videoComments &&
             videoComments.map((comment) => (
-              <CommentCard key={comment._id} comment={comment} />
+              <CommentCard key={comment._id} comment={comment} usersComment={user} />
             ))}
         </div>
       </div>

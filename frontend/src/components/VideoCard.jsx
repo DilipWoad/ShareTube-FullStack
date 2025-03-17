@@ -1,11 +1,11 @@
 import { Link } from "react-router";
 
-const VideoCard = ({video}) => {
+const VideoCard = ({video,menuClicked}) => {
     const {_id,thumbnail,videoOwner,title,description,views} = video;
   return (
     <>
       <Link to={{ pathname: "/watch", search: `?v=${_id}` }}>
-        <div className="bg-purple-400 w-96 rounded-lg overflow-hidden m-4">
+        <div className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${menuClicked?"w-[330px]":""}`}>
           <div className="">
             <img className="w-full h-48" src={thumbnail} />
           </div>

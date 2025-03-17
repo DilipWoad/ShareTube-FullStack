@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { MENU_IMG, YT_LOGO } from "../utils/constant";
 import { useHandleLogout } from "../hooks/useHandleLogout";
 import { removeUser } from "../slices/userSlice";
-import { removeVideoFeed } from "../slices/videoSlice";
+import { removeVideoFeed, toggleMenuClick } from "../slices/videoSlice";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);
@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className="h-16 bg-gray-500 flex items-center justify-between pl-5 pr-10">
       <div className="flex items-center gap-x-8 p-2">
-        <div className="hover:cursor-pointer">
+        <div onClick={()=>dispatch(toggleMenuClick())} className="hover:cursor-pointer">
           <img className="w-10" src={MENU_IMG} />
         </div>
         {/* TODO:This need to be protect when at login page clicked on logo it goes to /feed page */}
