@@ -40,6 +40,7 @@
 - Seperate components for videoCard and videoDescription
 - Create a VideoComment component use CommentCard 
 - Implement getting the video comments and user can add comments to the video
+- Inegerated Sidebar to each of the route
 
 # Routes
 
