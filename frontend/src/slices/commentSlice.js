@@ -2,23 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const commentSlice = createSlice({
   name: "comment",
-  initialState: null,
+  initialState: [],
   reducers: {
     addVideoComments: (state, action) => {
       //first make them reverse
-      const reverseArray = action.payload;
-      console.log(reverseArray);
-      return reverseArray.reverse();
+      return [...action.payload].reverse();
     },
     addNewComment: (state, action) => {
-      const userComment = action.payload;
-      state.unshift(userComment);
+      state.unshift(action.payload);
     },
     removeVideoComments: (state, action) => {
       return null;
     },
     removeUserComment: (state, action) => {
-      return action.payload;
+      return state.filter(
+        (comment) => comment._id !== action.payload //here will be id
+      );
+    },
+    updateUserComment: (state, action) => {
+      return state.map((comment) =>
+        comment._id === action.payload._id ? action.payload : comment
+      );
     },
   },
 });
@@ -29,4 +33,5 @@ export const {
   addVideoComments,
   removeVideoComments,
   removeUserComment,
+  updateUserComment,
 } = commentSlice.actions;

@@ -2,49 +2,70 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import CommentCard from "./CommentCard";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewComment, addVideoComments } from "../slices/commentSlice";
 
-const VideoComment = ({ videoId}) => {
+const VideoComment = ({ videoId }) => {
   // const [videoComments, setVideoComments] = useState(null);
   const [userComment, setUserComment] = useState("");
-  const videoComments = useSelector((store)=>store.comment);
-  const user = useSelector((store)=>store.user);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const videoComments = useSelector((store) => store.comment);
+  const user = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
 
-  const addUserComment = async()=>{
+  const addUserComment = async () => {
+    if (!userComment.trim()) return;
     try {
-        const res = await axios.post(BASE_URL+`/comment/${videoId}`,{
-            content:userComment
-        },{withCredentials:true})
-        console.log(res.data);
-        // dispatch(addNewComment(userComment));
-        const value = await res.data.data
-        dispatch(addNewComment(value)) //TODO: Make change in Contoller to return res with commentOwner detailds
+      setLoading(true);
+      const res = await axios.post(
+        BASE_URL + `/comment/${videoId}`,
+        {
+          content: userComment,
+        },
+        { withCredentials: true }
+      );
+      const newComment = res.data.data;
+      dispatch(addNewComment(newComment));
+      setUserComment("");
     } catch (error) {
-        console.log(error);
+      console.error("Failed to post comment:", error);
+      setError("Failed to post comment. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setUserComment("")
-    //use Slice to update the count and add values to the state
-  }
+  };
 
   const getVideoComments = async () => {
-    const res = await axios.get(BASE_URL + `/comment/${videoId}`, {
-      withCredentials: true,
-    });
-    console.log(res.data);
-    const array = res.data.data
-    dispatch(addVideoComments(array));
+    try {
+      setLoading(true);
+      const res = await axios.get(BASE_URL + `/comment/${videoId}`, {
+        withCredentials: true,
+      });
+      const array = res.data.data;
+      dispatch(addVideoComments(array));
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setError("Failed to load comments.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getVideoComments();
-  }, [videoId,dispatch]);
-  
-  if(!videoComments) return <div>Loading...</div>
+  }, [videoId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
   return (
     <div>
-      <div ><p className="text-xl mt-5 px-2 font-bold">{videoComments?.length} Comments</p> </div>
+      <p className="text-xl mt-5 px-2 font-bold">
+        {videoComments?.length || 0} Comments
+      </p>
+
       <div className="flex space-x-2 p-2">
         <div className="flex items-center bg-yellow-300 w-full mr-8 p-2 rounded-lg">
           <div>
@@ -64,21 +85,37 @@ const VideoComment = ({ videoId}) => {
             />
             <div className="flex flex-2 ml-2 space-x-2">
               {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
-              <button onClick={()=>setUserComment("")} className="bg-white px-2 py-1 rounded-l-full rounded-r-full">Cancel</button>
-              <button onClick={addUserComment} className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full">
-                Comment
+              <button
+                onClick={() => setUserComment("")}
+                className="bg-white px-2 py-1 rounded-full"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={addUserComment}
+                disabled={!userComment.trim() && true}
+                className={`px-2 py-1 rounded-full ${
+                  userComment.trim()
+                    ? "bg-blue-500"
+                    : "bg-gray-300 cursor-not-allowed"
+                }`}
+              >
+                {loading ? "Posting..." : "Comment"}
               </button>
             </div>
           </div>
         </div>
       </div>
+      {/* Display comment */}
       <div>
-        <div>
-          {videoComments &&
-            videoComments.map((comment) => (
-              <CommentCard key={comment._id} comment={comment} usersComment={user} videoComments={videoComments} />
-            ))}
-        </div>
+        {videoComments &&
+          videoComments.map((comment) => (
+            <CommentCard
+              key={comment._id}
+              comment={comment}
+              usersComment={user}
+            />
+          ))}
       </div>
     </div>
   );
