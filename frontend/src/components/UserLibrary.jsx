@@ -5,17 +5,53 @@ import { BASE_URL } from "../utils/constant"
 import { useEffect, useState } from "react";
 
 const UserLibrary = () => {
+    const user = useSelector((store) => store.user);
     const [history,setHistory] = useState(null);
-    const getHistory = async()=>{
-        const res= await axios.get(BASE_URL+`/user/history`,{withCredentials:true})
-        console.log(res.data.data.watchHistory)
-        const userHistoryVideos = await res.data.data.watchHistory
-        setHistory(userHistoryVideos);
-    }
-  const user = useSelector((store) => store.user);
+    const [like,setLike] = useState(null);
+    const [playlist,setPlaylist] = useState(null);
 
+    const getHistory = async()=>{
+        try {
+            const res= await axios.get(BASE_URL+`/user/history`,{withCredentials:true})
+            console.log(res.data.data.watchHistory)
+            const userHistoryVideos = await res.data.data.watchHistory
+            setHistory(userHistoryVideos);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+  
+  
+  const likeVideos=async()=>{
+    try {
+        let likeArray = [];
+        const res = await axios.get(BASE_URL+`/like/videos`,{withCredentials:true})
+        console.log(res.data.data)
+        const userLike = await res.data.data;
+        console.log(userLike)
+        for(let i=0;i<userLike.length;i++){
+            likeArray.push(userLike[i].videoDetail);
+        }
+        setLike(likeArray.reverse());
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  const getPlaylist=async(userId)=>{
+    try {
+        const res = await axios.get(BASE_URL+`/playlist/user/${userId.trim()}`,{withCredentials:true})
+        console.log(res.data.data);
+        setPlaylist(res.data.data);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+  
   useEffect(()=>{
     getHistory();
+    likeVideos();
+    getPlaylist(user?._id);
   },[])
   if(!history) return <div>Loading...</div>
   return (
@@ -31,7 +67,13 @@ const UserLibrary = () => {
           </div>
         </div>
         <div>
-           { history && <LibraryCardComponent history={history}/>}
+           { history && <LibraryCardComponent history={history} label={"History"}/>}
+        </div>
+        <div>
+           { like && <LibraryCardComponent history={like} label={"Like Videos"}/>}
+        </div>
+        <div>
+           { playlist && <LibraryCardComponent history={playlist} label={"Playlists"}/>}
         </div>
       </div>
     </div>

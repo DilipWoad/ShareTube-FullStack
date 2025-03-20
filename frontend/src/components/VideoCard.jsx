@@ -18,10 +18,10 @@ const VideoCard = ({video,menuClicked,css,thumbnailcss}) => {
               />
             </div>
             <div className="mt-2">
-              <p>{title}</p>
-              <p>{videoOwner?.fullName}</p>
+              <p className="text-md font-semibold text-wrap">{title}</p>
+              <p className="text-sm mt-2">{videoOwner?.fullName}</p>
               <div>
-                <p>{views} views</p>
+                <p className="text-sm">{views} views</p>
               </div>
             </div>
           </div>
