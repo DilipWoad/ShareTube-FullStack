@@ -8,7 +8,7 @@ const Body = () => {
   const videoStore = useSelector((store)=>store.video);
   useGetUserInfo();
   return (
-    <div>
+    <div className="bg-gray-800">
       <Header />
       <div className="flex">
       <SideBar menuClicked={videoStore?.isMenuClicked}/>

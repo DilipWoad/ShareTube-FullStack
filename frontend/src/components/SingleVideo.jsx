@@ -19,6 +19,7 @@ const SingleVideo = () => {
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
 
+  //toggle sidebar
   //i guess use REDUX TOOLKIT
 
   //in axios do a get call to /video/:videoId
@@ -89,7 +90,7 @@ const SingleVideo = () => {
   //ensure that video is coming and it is in the video div position
   if (!videoDetail) return <div>Loading....</div>;
   return (
-    <div className=" mx-8 bg-purple-400 w-fit pb-1">
+    <div className="mx-20  w-fit pb-1">
       <div className="mt-5 mb-3">
         <iframe
           className="rounded-lg overflow-hidden max-w-[850px]"
@@ -146,8 +147,8 @@ const SingleVideo = () => {
           </button>
         </div>
       </div>
-      <VideoDescription videoDetail={videoDetail}/>
-      <VideoComment videoId={videoId}/>
+      <VideoDescription videoDetail={videoDetail} />
+      <VideoComment videoId={videoId} />
     </div>
   );
 };

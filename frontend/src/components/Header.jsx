@@ -20,10 +20,10 @@ const Header = () => {
   };
 
   return (
-    <div className="h-16 bg-gray-500 flex items-center justify-between pl-5 pr-10">
+    <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 pr-10">
       <div className="flex items-center gap-x-8 p-2">
-        <div onClick={()=>dispatch(toggleMenuClick())} className="hover:cursor-pointer">
-          <img className="w-10" src={MENU_IMG} />
+        <div onClick={()=>dispatch(toggleMenuClick())} className="hover:cursor-pointer relative hover:bg-slate-300 p-2 rounded-full transition">
+          <img className="w-9" src={MENU_IMG} />
         </div>
         {/* TODO:This need to be protect when at login page clicked on logo it goes to /feed page */}
         <Link to={"/"}>

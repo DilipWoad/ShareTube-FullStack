@@ -43,7 +43,8 @@
 - Inegerated Sidebar to each of the route
 - created Comment Slice to store comment with adding new comment,get all comments ,removing all the comments and delete a particular comment
 - Completed comment part -> created comment,display comment,delete and edit by the current user with dynamic render
-
+- created You page conatins user Library (history,liked videos,playlist)
+- Implemented History part (used the VideoCard Component) for showing watched videos
 
 # Routes
 

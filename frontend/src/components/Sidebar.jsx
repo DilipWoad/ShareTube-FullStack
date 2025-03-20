@@ -1,10 +1,12 @@
+import { useLocation } from "react-router";
 import MenuOptionCard from "./MenuOptionCard";
 
 const SideBar = ({ menuClicked }) => {
+  const location = useLocation();
   return (
-    <div className={`bg-sky-300 h-fit ${menuClicked ? "w-64" : ""}`}>
+    <div className={`bg-gray-500  h-fit ${location.pathname=='/watch'?"absolute":""} ${menuClicked ? "w-64" : ""}`}>
       <ul
-        className={`bg-red-300 flex flex-col items-center ${
+        className={` flex flex-col items-center ${
           menuClicked ? "my-2 gap-y-2" : "gap-y-8 mt-5"
         }  text-[12px] font-semibold min-w-22 mx-1`}
       >
@@ -12,6 +14,7 @@ const SideBar = ({ menuClicked }) => {
           Icon={"🏠︎"}
           Label={"Home"}
           menuClicked={menuClicked}
+          currentPath ={location.pathname}
           path={"/"}
         />
         <MenuOptionCard

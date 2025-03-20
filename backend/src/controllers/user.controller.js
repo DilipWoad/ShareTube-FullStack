@@ -645,10 +645,16 @@ const getUserWatchHistory = asyncHandler(async (req, res) => {
                     _id: 0,
                     username: 1,
                     fullName: 1,
+                    avatar: 1,
                   },
                 },
               ],
               as: "videoOwner",
+            },
+          },
+          {
+            $unwind: {
+              path: "$videoOwner",
             },
           },
           {
@@ -671,13 +677,10 @@ const getUserWatchHistory = asyncHandler(async (req, res) => {
       },
     },
   ]);
-
-  console.log(user);
-
   return res
     .status(200)
     .json(
-      new ApiResponse(201, user, "User WatchHistory Fetched Successfully!!")
+      new ApiResponse(201, user[0], "User WatchHistory Fetched Successfully!!")
     );
 });
 

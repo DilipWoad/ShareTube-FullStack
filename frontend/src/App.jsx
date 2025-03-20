@@ -6,7 +6,7 @@ import VideoFeed from "./components/VideoFeed";
 import {Provider} from "react-redux";
 import appStore from "./utils/appStore";
 import SingleVideo from "./components/SingleVideo";
-import UserAllOther from "./components/UserAllOther";
+import UserLibrary from "./components/UserLibrary";
 function App() {
   return (
     <>
@@ -18,7 +18,7 @@ function App() {
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/signup" element={<SignupComponent />} />
               <Route path="/watch" element={<SingleVideo/>}/>
-              <Route path="/you" element={<UserAllOther/>}/>
+              <Route path="/you" element={<UserLibrary/>}/>
             </Route>
           </Routes>
         </BrowserRouter>

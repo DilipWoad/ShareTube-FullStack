@@ -14,7 +14,8 @@ const videoSlice = createSlice({
             return null;
         },
         toggleMenuClick:(state,action)=>{
-        state.isMenuClicked= !state.isMenuClicked
+            state.isMenuClicked = !state.isMenuClicked;
+            
         }
     }
 })

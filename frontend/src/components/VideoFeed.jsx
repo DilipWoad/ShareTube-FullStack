@@ -20,7 +20,7 @@ const VideoFeed = () => {
   return (
     <div className="flex">
 
-      <div className="flex flex-wrap my-10   bg-lime-400">
+      <div className="flex flex-wrap my-10">
         {videos &&
           videos.map((video) => (
             <VideoCard key={video._id} video={video} menuClicked={videoStore?.isMenuClicked}/>
