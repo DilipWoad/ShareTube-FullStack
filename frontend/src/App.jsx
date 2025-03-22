@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import appStore from "./utils/appStore";
 import SingleVideo from "./components/SingleVideo";
 import UserLibrary from "./components/UserLibrary";
+import Playlist from "./components/Playlist";
 function App() {
   return (
     <>
@@ -19,6 +20,7 @@ function App() {
               <Route path="/signup" element={<SignupComponent />} />
               <Route path="/watch" element={<SingleVideo/>}/>
               <Route path="/you" element={<UserLibrary/>}/>
+              <Route path="/playlist" element={<Playlist/>}/>
             </Route>
           </Routes>
         </BrowserRouter>

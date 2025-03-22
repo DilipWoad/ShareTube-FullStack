@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 const UserLibrary = () => {
     const user = useSelector((store) => store.user);
+    console.log(user?._id)
     const [history,setHistory] = useState(null);
     const [like,setLike] = useState(null);
     const [playlist,setPlaylist] = useState(null);
@@ -38,9 +39,10 @@ const UserLibrary = () => {
     }
   }
 
-  const getPlaylist=async(userId)=>{
+  const getPlaylist=async()=>{
     try {
-        const res = await axios.get(BASE_URL+`/playlist/user/${userId.trim()}`,{withCredentials:true})
+      if (!user) return;
+        const res = await axios.get(BASE_URL+`/playlist/user/${user?._id}`,{withCredentials:true})
         console.log(res.data.data);
         setPlaylist(res.data.data);
     } catch (error) {
@@ -51,7 +53,7 @@ const UserLibrary = () => {
   useEffect(()=>{
     getHistory();
     likeVideos();
-    getPlaylist(user?._id);
+    getPlaylist();
   },[])
   if(!history) return <div>Loading...</div>
   return (

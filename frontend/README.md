@@ -45,7 +45,9 @@
 - Completed comment part -> created comment,display comment,delete and edit by the current user with dynamic render
 - created You page conatins user Library (history,liked videos,playlist)
 - Implemented History part (used the VideoCard Component) for showing watched videos
-- Implemented Liked Video part In User Library Tab(/you)
+- Implemented Liked part
+- Implemented Playlist part in user library contains users playlist
+- Also created /playlist route(just added to route)
 
 # Routes
 
@@ -53,4 +55,6 @@ Body
 Route="/" -> "Feed" -> Get All Videos
 Route="/login" -> Login
 Route="/signup" -> Signup
-Route="/watch?v=videoId ->Watch Video
+Route="/watch?v=videoId -> Watch Video
+Route="/you" -> user library page(contains liked videos,history and playlist)
+Route="/playlist" -> 

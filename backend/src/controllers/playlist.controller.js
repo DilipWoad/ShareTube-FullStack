@@ -265,7 +265,7 @@ const getUserPlaylist = asyncHandler(async (req, res) => {
             title:1,
             description:1,
             owner:1,
-            videoDetails:1
+            playlistVideos:1
         }
     }
   ])
