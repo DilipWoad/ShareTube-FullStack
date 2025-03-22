@@ -331,12 +331,12 @@ const isPlaylistExists = await Playlist.aggregate([
                 },
                 {
                     $addFields:{
-                        owner:{$first : "$ownerDetails"}
+                        videoOwner:{$first : "$ownerDetails"}
                     }
                 },
                 {
                     $project:{
-                        owner:1,
+                      videoOwner:1,
                         videoFile:1,
                         thumbnail:1,
                         views:1,
@@ -353,7 +353,7 @@ const isPlaylistExists = await Playlist.aggregate([
         $project:{
             title:1,
             description:1,
-            owner:1,
+            videoOwner:1,
              //TODO:"Also get Owner Details"
             playlistVideos:1
         }
@@ -367,7 +367,7 @@ const isPlaylistExists = await Playlist.aggregate([
   return res
     .status(200)
     .json(
-      new ApiResponse(201, isPlaylistExists, "Playlist fetched Successfully")
+      new ApiResponse(201, isPlaylistExists[0], "Playlist fetched Successfully")
     );
 });
 

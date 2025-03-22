@@ -1,22 +1,27 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LibraryCardComponent from "./LibraryCardComponent";
 import axios from "axios"
 import { BASE_URL } from "../utils/constant"
 import { useEffect, useState } from "react";
+import { addUserHistory, addUserLikedVideos, addUserPlaylist } from "../slices/librarySlice";
 
 const UserLibrary = () => {
     const user = useSelector((store) => store.user);
-    console.log(user?._id)
-    const [history,setHistory] = useState(null);
-    const [like,setLike] = useState(null);
-    const [playlist,setPlaylist] = useState(null);
+    const library = useSelector((store)=>store.library);
+
+    const dispatch = useDispatch();
+    const userId = user?._id;
+    
+    const history = library.history;
+    const like = library.likeVideos;
+    const playlist = library.playlist
 
     const getHistory = async()=>{
         try {
             const res= await axios.get(BASE_URL+`/user/history`,{withCredentials:true})
             console.log(res.data.data.watchHistory)
             const userHistoryVideos = await res.data.data.watchHistory
-            setHistory(userHistoryVideos);
+            dispatch(addUserHistory(userHistoryVideos));
         } catch (error) {
             console.log(error)
         }
@@ -33,7 +38,7 @@ const UserLibrary = () => {
         for(let i=0;i<userLike.length;i++){
             likeArray.push(userLike[i].videoDetail);
         }
-        setLike(likeArray.reverse());
+        dispatch(addUserLikedVideos(likeArray.reverse()))
     } catch (error) {
         console.log(error);
     }
@@ -41,10 +46,9 @@ const UserLibrary = () => {
 
   const getPlaylist=async()=>{
     try {
-      if (!user) return;
-        const res = await axios.get(BASE_URL+`/playlist/user/${user?._id}`,{withCredentials:true})
+        const res = await axios.get(BASE_URL+`/playlist/user/${userId}`,{withCredentials:true})
         console.log(res.data.data);
-        setPlaylist(res.data.data);
+        dispatch(addUserPlaylist(res.data.data))
     } catch (error) {
         console.log(error);
     }
@@ -54,7 +58,7 @@ const UserLibrary = () => {
     getHistory();
     likeVideos();
     getPlaylist();
-  },[])
+  },[dispatch])
   if(!history) return <div>Loading...</div>
   return (
     <div className=" flex w-full bg-purple-400 justify-center">
@@ -69,13 +73,13 @@ const UserLibrary = () => {
           </div>
         </div>
         <div>
-           { history && <LibraryCardComponent history={history} label={"History"}/>}
+           { history && <LibraryCardComponent library={history} label={"History"}/>}
         </div>
         <div>
-           { like && <LibraryCardComponent history={like} label={"Like Videos"}/>}
+           { like && <LibraryCardComponent library={like} label={"Like Videos"}/>}
         </div>
         <div>
-           { playlist && <LibraryCardComponent history={playlist} label={"Playlists"}/>}
+           { playlist && <LibraryCardComponent library={playlist} label={"Playlists"}/>}
         </div>
       </div>
     </div>
