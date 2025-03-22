@@ -48,6 +48,7 @@
 - Implemented Liked part
 - Implemented Playlist part in user library contains users playlist
 - Also created /playlist route(just added to route)
+- Implemented Playlist page which fetch the playlist and shows all the video present(edit,delete and adding options remaing)
 
 # Routes
 
