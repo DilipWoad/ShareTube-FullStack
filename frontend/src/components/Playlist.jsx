@@ -1,30 +1,34 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
 import { useSearchParams } from "react-router";
-import { useEffect, useState } from "react";
-import VideoCard from "./VideoCard";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPlaylist } from "../slices/playlistSlice";
+import PlaylistVideoCard from "./PlaylistVideoCard";
 
 const Playlist = () => {
-  const [playlist, setPlaylist] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const menuClicked = useSelector((store) => store.video.isMenuClicked);
+  const dispatch = useDispatch();
+  const playlist = useSelector((store)=>store.playlist);
+  console.log(playlist)
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const playlistId = searchParams.get("list");
+  
   const getPlaylist = async () => {
     try {
       const res = await axios.get(BASE_URL + `/playlist/${playlistId}`, {
         withCredentials: true,
       });
       console.log(res.data.data);
-      setPlaylist(res.data.data);
+      dispatch(addPlaylist(res.data.data))
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getPlaylist();
-  }, []);
+  }, [dispatch,playlistId]);
+  console.log("Current playlist state:", playlist);
 
   if (!playlist) return <div>Loading...</div>;
   return (
@@ -33,7 +37,7 @@ const Playlist = () => {
         <div className="bg-orange-300 rounded-lg overflow-hidden mb-6">
           <img
             className="max-h-44 w-full"
-            src={playlist.playlistVideos[0]?.thumbnail}
+            src={playlist?.playlistVideos[0]?.thumbnail}
             alt="thumbnail"
           />
         </div>
@@ -48,18 +52,11 @@ const Playlist = () => {
           <p className="text-[12px] font-semibold ">{playlist.description}</p>
         </div>
       </div>
-      <div className="bg-yellow-300 flex-1 mx-1">
+      <div className="bg-yellow-300 flex-1 mx-2 p-2 rounded-lg">
         <div className="">
           {playlist.playlistVideos.map((video) => (
-            <div className="flex  justify-between items-center">
-              <VideoCard
-                key={video._id}
-                video={video}
-                css={`
-                  ${menuClicked ? "w-[713px]" : "w-[850px]"} z-10
-                `}
-                thumbnailcss={"w-[200px] h-[120px]"}
-              />
+            <div key={video._id} className="flex  justify-between items-center">
+              <PlaylistVideoCard video={video} playlistId={playlistId}/>
             </div>
           ))}
         </div>
