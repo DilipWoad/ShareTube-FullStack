@@ -3,10 +3,13 @@ import { BASE_URL } from "../utils/constant";
 import { useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
 import VideoCard from "./VideoCard";
+import { useSelector } from "react-redux";
 
 const Playlist = () => {
   const [playlist, setPlaylist] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const menuClicked = useSelector((store) => store.video.isMenuClicked);
+
   const playlistId = searchParams.get("list");
   const getPlaylist = async () => {
     try {
@@ -48,13 +51,15 @@ const Playlist = () => {
       <div className="bg-yellow-300 flex-1 mx-1">
         <div className="">
           {playlist.playlistVideos.map((video) => (
-            <div key={video._id} className="">
+            <div className="flex  justify-between items-center">
               <VideoCard
+                key={video._id}
                 video={video}
-                css={"flex w-11/12"}
-                thumbnailcss={"w-56 h-[120px]"}
+                css={`
+                  ${menuClicked ? "w-[713px]" : "w-[850px]"} z-10
+                `}
+                thumbnailcss={"w-[200px] h-[120px]"}
               />
-              <div>dot</div>
             </div>
           ))}
         </div>
