@@ -50,7 +50,7 @@
 - Also created /playlist route(just added to route)
 - Implemented Playlist page which fetch the playlist and shows all the video present(edit,delete and adding options remaing)
 - Implement adding video to playlist option to each video card,user can add video to its created playlist
-
+- Implement delete and edit playlist option
 # Routes
 
 Body

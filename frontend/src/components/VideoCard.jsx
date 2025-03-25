@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef, useEffect } from "react";
 import { Link } from "react-router";
 import AllPlaylistOptions from "./AllPlaylistOptions";
 
@@ -6,7 +6,20 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
   const { _id, thumbnail, videoOwner, title, views } = video;
   const [options, setOptions] = useState(false);
   const [playlistOption,setPlaylistOption] = useState(false);
+  const menuRef = useRef(null);
 
+  useEffect(()=>{
+    if(!setOptions) return;
+    const handleClickOutside=(e)=>{
+      if(menuRef?.current && !menuRef.current.contains(e.target)){
+        setOptions(false)
+      }
+    }
+    document.addEventListener("mousedown",handleClickOutside);
+    return ()=>{
+      document.removeEventListener("mousedown",handleClickOutside)
+    }
+  },[])
   return (
     <>
       <div
@@ -33,7 +46,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
               <p className="text-sm">{views} views</p>
             </div>
           </Link>
-          <div className="relative">
+          <div ref={menuRef} className="relative">
             <button
               onClick={() => setOptions(!options)}
               className="text-xl w-8 h-8 hover:bg-orange-700 font-semibold rounded-full "

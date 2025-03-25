@@ -77,9 +77,9 @@ const CommentCard = ({ comment, usersComment }) => {
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.addEventListener("mousedown", handleClickOutside);
-    };
+    return () => (
+      document.removeEventListener("mousedown", handleClickOutside)
+    );
   }, []);
 
   return (
