@@ -10,7 +10,6 @@ const UserLibrary = () => {
     const library = useSelector((store)=>store.library);
 
     const dispatch = useDispatch();
-    const userId = user?._id;
     
     const history = library.history;
     const like = library.likeVideos;
@@ -43,21 +42,10 @@ const UserLibrary = () => {
         console.log(error);
     }
   }
-
-  const getPlaylist=async()=>{
-    try {
-        const res = await axios.get(BASE_URL+`/playlist/user/${userId}`,{withCredentials:true})
-        console.log(res.data.data);
-        dispatch(addUserPlaylist(res.data.data))
-    } catch (error) {
-        console.log(error);
-    }
-  }
-  
+ 
   useEffect(()=>{
     getHistory();
     likeVideos();
-    getPlaylist();
   },[dispatch])
   if(!history) return <div>Loading...</div>
   return (

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import AllPlaylistOptions from "./AllPlaylistOptions";
 
 const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
   const { _id, thumbnail, videoOwner, title, views } = video;
   const [options, setOptions] = useState(false);
+  const [playlistOption,setPlaylistOption] = useState(false);
+
   return (
     <>
       <div
@@ -39,12 +42,13 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
             </button>
             {options && (
               <div className="absolute bg-cyan-300 w-32  right-1 p-1 z-10">
-                <button>add to playlist</button>
+                <button onClick={()=>setPlaylistOption(!playlistOption)}>add to playlist</button>
               </div>
             )}
           </div>
         </div>
       </div>
+      {playlistOption && <AllPlaylistOptions setPlaylistOption={setPlaylistOption} videoId={_id}/>}
     </>
   );
 };
