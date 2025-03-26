@@ -2,9 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constant";
+import CreateNewPlaylist from "./CreateNewPlaylist";
 
 const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   const [playlistId, setPlaylistId] = useState(null);
+  const [createPlaylistOption,setCreatePlaylistOption] = useState(false)
   const playlistMenu = useSelector((store) => store.library.playlist);
   if (!playlistMenu) return <div>Loading...</div>;
 
@@ -26,17 +28,16 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   };
 
   return (
-    <div className="absolute h-screen w-screen z-40 bg-black/50 flex items-center justify-center top-0 left-0">
-      <div className="bg-slate-400 z-50 w-56 flex flex-col p-4 shadow-lg">
-        <div
-          onClick={() => setPlaylistOption(false)}
-          className=" text-end relative -top-3 bg-gray-500 left-52 w-fit px-2 hover:cursor-pointer"
-        >
-          X
-        </div>
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+      <div className="bg-slate-400 w-60 flex flex-col p-4 rounded-lg shadow-lg">
+      <div className="flex justify-between text-lg mb-4">
+          <p>Add to Playlist</p>
+          <button onClick={() => setPlaylistOption(false)} className="hover:bg-slate-300 w-8 h-8 rounded-full" >✕</button>
+        </div>  
         {playlistMenu.map((playlist) => (
           <div>
             <input
+              className="m-2"
               type="checkbox"
               defaultValue={playlistId}
               onChange={(e) =>
@@ -46,11 +47,12 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
             {playlist?.title}
           </div>
         ))}
-        <div className="mt-4 space-x-2 text-end">
-          <button onClick={()=>setPlaylistOption(false)} className="bg-gray-500 px-2 rounded-lg ">Cancel</button>
-          <button onClick={addVideoToPlaylist} className="bg-white px-3 rounded-lg">Add</button>
+        <div className="mt-10 flex justify-between">
+          <button  onClick={()=>setCreatePlaylistOption(!createPlaylistOption)} className="bg-gray-500 px-2 rounded-lg ">Create new Playlist</button>
+          <button onClick={addVideoToPlaylist} className="bg-white px-3 py-1 rounded-lg">Add</button>
         </div>
       </div>
+      {createPlaylistOption && <CreateNewPlaylist createOption={setCreatePlaylistOption}/>}
     </div>
   );
 };

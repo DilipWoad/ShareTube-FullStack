@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import LibraryCardComponent from "./LibraryCardComponent";
 import axios from "axios"
 import { BASE_URL } from "../utils/constant"
-import { useEffect, useState } from "react";
-import { addUserHistory, addUserLikedVideos, addUserPlaylist } from "../slices/librarySlice";
+import { useEffect } from "react";
+import { addUserHistory, addUserLikedVideos } from "../slices/librarySlice";
 
 const UserLibrary = () => {
     const user = useSelector((store) => store.user);

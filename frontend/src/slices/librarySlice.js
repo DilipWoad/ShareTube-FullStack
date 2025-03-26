@@ -17,18 +17,20 @@ const librarySlice = createSlice({
     addUserPlaylist: (state, action) => {
       state.playlist = action.payload;
     },
+    addCreatedPlaylist:(state,action)=>{
+      state.playlist.push(action.payload);
+    },
     deletePlaylist: (state, action) => {
       state.playlist = state.playlist.filter(
         (playlist) => playlist._id !== action.payload
       );
     },
-    editPlaylistInfo : (state,action)=>{
-      return state.playlist.map((playlist)=>{
-        if(playlist._id === action.payload.id){
-          playlist.title = action.payload.title
-          playlist.description = action.payload.description
-        }
-      })
+    editPlaylistInfo:(state,action)=>{
+      const editingPlaylist = state.playlist.find((playlist)=>playlist._id === action.payload.id);
+      if(editingPlaylist){
+        editingPlaylist.title = action.payload.title;
+        editingPlaylist.description = action.payload.description;
+      }
     }
   }
 });
@@ -39,5 +41,6 @@ export const {
   addUserLikedVideos,
   addUserPlaylist,
   deletePlaylist,
-  editPlaylistInfo
+  editPlaylistInfo,
+  addCreatedPlaylist
 } = librarySlice.actions;

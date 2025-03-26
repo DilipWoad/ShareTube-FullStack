@@ -9,10 +9,13 @@ import { addUserPlaylist } from "../slices/librarySlice";
 
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
-  const userStore = useSelector((store)=>store.user)
+  const userStore = useSelector((store)=>store.user);
+  const playlistStore = useSelector((store)=>store.library.playlist);
   const userId = userStore?._id
   const videos = videoStore?.feeds;
   const dispatch=useDispatch();
+
+  console.log(playlistStore);
 
   const getPlaylist=async()=>{
     try {
@@ -24,12 +27,11 @@ const VideoFeed = () => {
     }
   }
 
-  console.log(videos);
   useGetAllVideos();
   useEffect(()=>{
     getPlaylist();
     dispatch(removeVideoComments());
-  })
+  },[playlistStore?.length])
   
   if (videos?.length === 0) return <div>Loading...</div>;
   return (

@@ -23,7 +23,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
       console.log(error);
     }
   };
-
+  if(!playlist) return <div>Loading...</div>
   return (
     <>
       <div
@@ -73,7 +73,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
           </div>
         </div>
       </div>
-      {editOption && <PlaylistEditOption playlistId={_id} setEditOption={setEditOption} title={title} description={description} playlistThumbnail={playlistVideos[0].thumbnail}/>}
+      {editOption && <PlaylistEditOption playlistId={_id} setEditOption={setEditOption} title={title} description={description} playlistThumbnail={playlistVideos[0]?.thumbnail}/>}
     </>
   );
 };

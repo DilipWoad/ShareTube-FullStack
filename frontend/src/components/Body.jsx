@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const Body = () => {
   const videoStore = useSelector((store) => store.video);
-
+  
   useGetUserInfo();
 
   return (

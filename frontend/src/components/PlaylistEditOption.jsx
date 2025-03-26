@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import { useDispatch } from "react-redux";
 import { editPlaylistInfo } from "../slices/librarySlice";
+import { motion } from "framer-motion";
 
 const PlaylistEditOption = ({
   playlistId,
@@ -15,34 +16,37 @@ const PlaylistEditOption = ({
   const [editDescription, setEditDescriptiont] = useState(description);
   const dispatch = useDispatch();
 
-  let editInfo ={
-    id:playlistId,
-    title:editTitle,
-    description:editDescription
-  }
+  let editInfo = {
+    id: playlistId,
+    title: editTitle,
+    description: editDescription,
+  };
 
-  const editPlaylistDetails=async()=>{
+  const editPlaylistDetails = async () => {
     try {
-        const res = await axios.patch(BASE_URL+`/playlist/${playlistId}`,{
-            title:editTitle,
-            description:editDescription
-        },{withCredentials:true})
+      const res = await axios.patch(
+        BASE_URL + `/playlist/${playlistId}`,
+        {
+          title: editTitle,
+          description: editDescription,
+        },
+        { withCredentials: true }
+      );
 
-        console.log(res.data.data);
-        dispatch(editPlaylistInfo(editInfo))
-        setEditOption(false)
+      console.log(res.data.data);
+      dispatch(editPlaylistInfo(editInfo));
+      setEditOption(false);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-
-  }
+  };
 
   return (
-    <div className="absolute h-screen w-screen bg-black/50 flex items-center justify-center top-0 left-0">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
       <div className="bg-slate-400  w-72 flex flex-col p-3 shadow-lg rounded-lg">
         <div className="flex justify-between p-2 text-lg">
           <p>Edit Playlist...</p>
-          <button onClick={() => setEditOption(false)}>X</button>
+          <button onClick={() => setEditOption(false)}>✕</button>
         </div>
         <div className="">
           <img
@@ -69,10 +73,15 @@ const PlaylistEditOption = ({
             />
           </label>
 
-          <button onClick={editPlaylistDetails} className="bg-white w-full mt-5 py-1 rounded-full hover:bg-slate-300 hover:text-white">Save</button>
+          <button
+            onClick={editPlaylistDetails}
+            className="bg-white w-full mt-5 py-1 rounded-full hover:bg-slate-300 hover:text-white"
+          >
+            Save
+          </button>
         </div>
       </div>
-    </div>
+    </div> 
   );
 };
 

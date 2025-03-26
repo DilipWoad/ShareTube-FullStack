@@ -4,14 +4,16 @@ import LoginComponent from "./components/LoginComponent";
 import SignupComponent from "./components/SignupComponent";
 import VideoFeed from "./components/VideoFeed";
 import {Provider} from "react-redux";
-import appStore from "./utils/appStore";
+import appStore, { persistor } from "./utils/appStore";
 import SingleVideo from "./components/SingleVideo";
 import UserLibrary from "./components/UserLibrary";
 import Playlist from "./components/Playlist";
+import { PersistGate } from "redux-persist/integration/react";
 function App() {
   return (
     <>
       <Provider store={appStore}>
+        <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
@@ -24,6 +26,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        </PersistGate>
       </Provider>
     </>
   );
