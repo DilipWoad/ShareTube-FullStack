@@ -51,7 +51,8 @@
 - Implemented Playlist page which fetch the playlist and shows all the video present(edit,delete and adding options remaing)
 - Implement adding video to playlist option to each video card,user can add video to its created playlist
 - Implement delete and edit playlist option
-- Implemented Editing playlist details and Also creating new Playlist 
+- Implemented Editing playlist details, created editPlaylist reducer in library->playlist slice ,used .find() methid to find the matching playlistId and modified it details(title,description)
+- Also implemented creating new Playlist,created addCreatedPlaylist reducer in library->playlist slice which push a playlist to exisiting playlist array
 # Routes
 
 Body
