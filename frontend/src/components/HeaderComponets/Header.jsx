@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
-import { MENU_IMG, YT_LOGO } from "../../utils/constant";
+import { LOGOUT_ICON, MENU_IMG, YT_LOGO } from "../../utils/constant";
 import { useHandleLogout } from "../../hooks/useHandleLogout";
 import { removeUser } from "../../slices/userSlice";
 import { removeVideoFeed, toggleMenuClick } from "../../slices/videoSlice";
+import { removeUserHistory, removeUserLikeVideos, removeUserPlaylist } from "../../slices/librarySlice";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);
@@ -16,6 +17,9 @@ const Header = () => {
     await useHandleLogout();
     dispatch(removeUser());
     dispatch(removeVideoFeed());
+    dispatch(removeUserHistory())
+    dispatch(removeUserLikeVideos())
+    dispatch(removeUserPlaylist())
     navigate("/login");
   };
 
@@ -32,6 +36,7 @@ const Header = () => {
       </div>
       {userDetails ? (
         <div className="flex items-center gap-3">
+          <Link to={'/upload'}><button className="bg-white px-2 py-1 rounded-full hover:bg-gray-300">✚ Create</button> </Link>
           <div>
             <p>Welcome, {userDetails.fullName}</p>
           </div>
@@ -41,7 +46,7 @@ const Header = () => {
           <button onClick={handleLogout} className="">
             <img
               className="w-6 ml-3 "
-              src="https://cdn-icons-png.flaticon.com/128/1286/1286853.png"
+              src={LOGOUT_ICON}
               alt="logout"
             />
           </button>

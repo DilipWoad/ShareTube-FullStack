@@ -10,6 +10,7 @@ import { addUserPlaylist } from "../../slices/librarySlice";
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
   const userStore = useSelector((store)=>store.user);
+  const videoComment = useSelector((store)=>store.comment);
   const playlistStore = useSelector((store)=>store.library.playlist);
   const userId = userStore?._id
   const videos = videoStore?.feeds;
@@ -21,7 +22,7 @@ const VideoFeed = () => {
     try {
         const res = await axios.get(BASE_URL+`/playlist/user/${userId}`,{withCredentials:true})
         console.log(res.data.data);
-        dispatch(addUserPlaylist(res.data.data))
+        videoComment && dispatch(addUserPlaylist(res.data.data))
     } catch (error) {
         console.log(error);
     }
@@ -29,7 +30,7 @@ const VideoFeed = () => {
 
   useGetAllVideos();
   useEffect(()=>{
-    getPlaylist();
+    !playlistStore &&getPlaylist();
     dispatch(removeVideoComments());
   },[playlistStore?.length])
   

@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const videoSlice = createSlice({
     name:"video",
     initialState:{
-        feeds:[],
+        feeds:null,
         isMenuClicked:false
     },
     reducers:{
         addVideo:(state,action)=>{
-            state.feeds=[...action.payload];
+            state.feeds=action.payload;
         },
         removeVideoFeed:(state,action)=>{
-            return null;
+            state.feeds = null
         },
         toggleMenuClick:(state,action)=>{
             state.isMenuClicked = !state.isMenuClicked;

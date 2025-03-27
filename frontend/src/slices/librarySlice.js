@@ -11,11 +11,20 @@ const librarySlice = createSlice({
     addUserHistory: (state, action) => {
       state.history = action.payload;
     },
+    removeUserHistory:(state,action)=>{
+      state.history = null
+    },
     addUserLikedVideos: (state, action) => {
       state.likeVideos = action.payload;
     },
+    removeUserLikeVideos:(state,action)=>{
+      state.likeVideos = null
+    },
     addUserPlaylist: (state, action) => {
       state.playlist = action.payload;
+    },
+    removeUserPlaylist:(state,action)=>{
+      state.playlist = null
     },
     addCreatedPlaylist:(state,action)=>{
       state.playlist.push(action.payload);
@@ -42,5 +51,8 @@ export const {
   addUserPlaylist,
   deletePlaylist,
   editPlaylistInfo,
-  addCreatedPlaylist
+  addCreatedPlaylist,
+  removeUserHistory,
+  removeUserPlaylist,
+  removeUserLikeVideos
 } = librarySlice.actions;
