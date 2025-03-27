@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 import CommentCard from "./CommentCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewComment, addVideoComments } from "../slices/commentSlice";
+import { addNewComment, addVideoComments } from "../../slices/commentSlice";
 
 const VideoComment = ({ videoId }) => {
   // const [videoComments, setVideoComments] = useState(null);

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import MenuOptionCard from "./MenuOptionCard";
+import MenuOptionCard from "./HeaderComponets/MenuOptionCard";
 
 const SideBar = ({ menuClicked }) => {
   const location = useLocation();

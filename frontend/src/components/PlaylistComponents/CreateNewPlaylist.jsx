@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import { addCreatedPlaylist } from "../slices/librarySlice";
+import { addCreatedPlaylist } from "../../slices/librarySlice";
 import { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 
 const CreateNewPlaylist=({createOption})=>{
       const [title, setTitle] = useState("");

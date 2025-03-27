@@ -53,6 +53,8 @@
 - Implement delete and edit playlist option
 - Implemented Editing playlist details, created editPlaylist reducer in library->playlist slice ,used .find() methid to find the matching playlistId and modified it details(title,description)
 - Also implemented creating new Playlist,created addCreatedPlaylist reducer in library->playlist slice which push a playlist to exisiting playlist array
+- created useOutsideClick to close an option clicked outside its div (applied across the different components)
+- also made folders to add the similar components in a same folder
 # Routes
 
 Body

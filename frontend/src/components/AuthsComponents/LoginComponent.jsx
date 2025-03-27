@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate,Link } from "react-router";
 import { useDispatch } from "react-redux";
-import { addUser } from "../slices/userSlice";
-import { useUserLogin } from "../hooks/useUserLogin";
+import { addUser } from "../../slices/userSlice";
+import { useUserLogin } from "../../hooks/useUserLogin";
 
 const LoginComponent = () => {
   const [email, setEmail] = useState("dilip@g.com");

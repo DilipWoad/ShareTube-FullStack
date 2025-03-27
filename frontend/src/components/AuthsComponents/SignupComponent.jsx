@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router";
-import { useUserSignUp } from "../hooks/useUserSignUp";
+import { useUserSignUp } from "../../hooks/useUserSignUp";
 
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);

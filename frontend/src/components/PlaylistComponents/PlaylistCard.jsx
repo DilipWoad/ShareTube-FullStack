@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
-import { deletePlaylist } from "../slices/librarySlice";
+import { deletePlaylist } from "../../slices/librarySlice";
 import PlaylistEditOption from "./PlaylistEditOption";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const [options, setOptions] = useState(false);
   const [editOption, setEditOption] = useState(false);
   const { _id, description, playlistVideos, title } = playlist;
   const dispatch = useDispatch();
+  const menuRef = useOutsideClick(setOptions);
 
   const deleteAPlaylist = async () => {
     try {
@@ -18,12 +20,14 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         withCredentials: true,
       });
       console.log(res);
-      dispatch(deletePlaylist(_id))
+      dispatch(deletePlaylist(_id));
     } catch (error) {
       console.log(error);
     }
   };
-  if(!playlist) return <div>Loading...</div>
+
+  if (!playlist) return <div>Loading...</div>;
+
   return (
     <>
       <div
@@ -50,7 +54,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
               </p>
             </div>
           </Link>
-          <div className="bg-lime-300  text-center ">
+          <div ref={menuRef} className="bg-lime-300  text-center ">
             <button
               onClick={() => setOptions(!options)}
               className="text-lg  w-7 h-7 font-semibold  relative hover:bg-orange-700 rounded-full"
@@ -59,7 +63,10 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
             </button>
             {options && (
               <div className="absolute bg-cyan-300 w-24 rounded-lg p-1 z-10 space-y-2 flex flex-col items-start">
-                <button onClick={()=>setEditOption(!editOption)} className="hover:bg-lime-300 w-full text-start relative">
+                <button
+                  onClick={() => setEditOption(!editOption)}
+                  className="hover:bg-lime-300 w-full text-start relative"
+                >
                   Edit
                 </button>
                 <button
@@ -73,7 +80,15 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
           </div>
         </div>
       </div>
-      {editOption && <PlaylistEditOption playlistId={_id} setEditOption={setEditOption} title={title} description={description} playlistThumbnail={playlistVideos[0]?.thumbnail}/>}
+      {editOption && (
+        <PlaylistEditOption
+          playlistId={_id}
+          setEditOption={setEditOption}
+          title={title}
+          description={description}
+          playlistThumbnail={playlistVideos[0]?.thumbnail}
+        />
+      )}
     </>
   );
 };

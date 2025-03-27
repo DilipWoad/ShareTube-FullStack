@@ -8,7 +8,7 @@ const useOutsideClick = (stateFunction) => {
     if (!stateFunction) return;
 
     const handleClickOutside = (e) => {
-      if (ref?.current && ref.current.contains(e.target)) {
+      if (ref?.current && !ref.current.contains(e.target)) {
         stateFunction(false); //this will execute and setOption(false) is called and it triggers the parent state div
       }
     };

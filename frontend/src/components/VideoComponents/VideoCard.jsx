@@ -1,25 +1,13 @@
-import { useState,useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import AllPlaylistOptions from "./AllPlaylistOptions";
+import AllPlaylistOptions from "../PlaylistComponents/AllPlaylistOptions";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
   const { _id, thumbnail, videoOwner, title, views } = video;
   const [options, setOptions] = useState(false);
-  const [playlistOption,setPlaylistOption] = useState(false);
-  const menuRef = useRef(null);
-
-  useEffect(()=>{
-    if(!setOptions) return;
-    const handleClickOutside=(e)=>{
-      if(menuRef?.current && !menuRef.current.contains(e.target)){
-        setOptions(false)
-      }
-    }
-    document.addEventListener("mousedown",handleClickOutside);
-    return ()=>{
-      document.removeEventListener("mousedown",handleClickOutside)
-    }
-  },[])
+  const [playlistOption, setPlaylistOption] = useState(false);
+  const menuRef = useOutsideClick(setOptions);
   return (
     <>
       <div
@@ -54,14 +42,24 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
               ⫶
             </button>
             {options && (
-              <div className="absolute bg-cyan-300 w-32  right-1 p-1 z-10">
-                <button onClick={()=>setPlaylistOption(!playlistOption)}>add to playlist</button>
+              <div className="absolute bg-cyan-300 rounded-lg  right-1 p-1 z-10">
+                <button
+                  className="w-36"
+                  onClick={() => setPlaylistOption(!playlistOption)}
+                >
+                  ⛉ Add to playlist
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
-      {playlistOption && <AllPlaylistOptions setPlaylistOption={setPlaylistOption} videoId={_id}/>}
+      {playlistOption && (
+        <AllPlaylistOptions
+          setPlaylistOption={setPlaylistOption}
+          videoId={_id}
+        />
+      )}
     </>
   );
 };

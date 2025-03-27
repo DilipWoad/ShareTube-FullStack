@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
-import { removeUserComment, updateUserComment } from "../slices/commentSlice";
+import {
+  removeUserComment,
+  updateUserComment,
+} from "../../slices/commentSlice";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const CommentCard = ({ comment, usersComment }) => {
   const [moreOption, setMoreOption] = useState(false);
@@ -14,7 +18,7 @@ const CommentCard = ({ comment, usersComment }) => {
 
   const dispatch = useDispatch();
 
-  const menuRef = useRef(null);
+  const menuRef = useOutsideClick(setMoreOption);
 
   const handleCommentOption = () => {
     setMoreOption(!moreOption);
@@ -38,7 +42,9 @@ const CommentCard = ({ comment, usersComment }) => {
 
   const handleEditComment = async (commentId) => {
     try {
-      if ((commentOwner? commentOwner._id : comment.owner) === usersComment._id) {
+      if (
+        (commentOwner ? commentOwner._id : comment.owner) === usersComment._id
+      ) {
         const res = await axios.patch(
           BASE_URL + `/comment/c/${commentId}`,
           {
@@ -62,25 +68,25 @@ const CommentCard = ({ comment, usersComment }) => {
   if (!comment) return <div>Loading... wait</div>;
 
   //for outsideClicked
-  useEffect(() => {
-    if (!setMoreOption) return;
-    const handleClickOutside = (e) => {
-      if (menuRef?.current && !menuRef.current.contains(e.target)) {
-        //menuRef.current has the object of the ref component (... wala div)
-        //and this e will the place(div) we my mouse will be clicked
-        //so we are checking if the "e" attributes is present in the menuRef
-        //if present that means it is clicked on the MenuOption
-        //but we need false (this will be true if the attributes of menuRef and e.target does not match)
-        setMoreOption(false);
-      }
-    };
+  // useEffect(() => {
+  //   if (!setMoreOption) return;
+  //   const handleClickOutside = (e) => {
+  //     if (menuRef?.current && !menuRef.current.contains(e.target)) {
+  //       //menuRef.current has the object of the ref component (... wala div)
+  //       //and this e will the place(div) we my mouse will be clicked
+  //       //so we are checking if the "e" attributes is present in the menuRef
+  //       //if present that means it is clicked on the MenuOption
+  //       //but we need false (this will be true if the attributes of menuRef and e.target does not match)
+  //       setMoreOption(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
+  //   document.addEventListener("mousedown", handleClickOutside);
 
-    return () => (
-      document.removeEventListener("mousedown", handleClickOutside)
-    );
-  }, []);
+  //   return () => (
+  //     document.removeEventListener("mousedown", handleClickOutside)
+  //   );
+  // }, []);
 
   return (
     <div className="p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg z-0">
@@ -140,7 +146,10 @@ const CommentCard = ({ comment, usersComment }) => {
                   <>
                     <li
                       onClick={() =>
-                        handleDeleteComment(comment?._id, commentOwner? commentOwner._id:comment.owner)
+                        handleDeleteComment(
+                          comment?._id,
+                          commentOwner ? commentOwner._id : comment.owner
+                        )
                       }
                       className="hover:bg-slate-300 p-1 rounded-lg"
                     >

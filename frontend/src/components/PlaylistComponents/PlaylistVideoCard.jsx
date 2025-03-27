@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
-import { removeVideoFromPlaylist } from "../slices/playlistSlice";
-import { BASE_URL } from "../utils/constant";
+import { removeVideoFromPlaylist } from "../../slices/playlistSlice";
+import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
+import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const PlaylistVideoCard = ({ video, playlistId }) => {
   const { videoOwner, thumbnail, title, views, _id } = video;
   const dispatch = useDispatch();
   const [options, setOptions] = useState(false);
+  const menuRef = useOutsideClick(setOptions);
 
   const removeVideo = async () => {
     try {
@@ -24,6 +26,7 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
   };
   return (
     <div
+    ref={menuRef}
       className={
         "bg-purple-400 w-full rounded-lg overflow-hidden mb-2 border-2"
       }

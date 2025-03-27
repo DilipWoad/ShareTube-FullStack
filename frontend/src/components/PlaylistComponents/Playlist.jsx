@@ -1,9 +1,9 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 import { useSearchParams } from "react-router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPlaylist } from "../slices/playlistSlice";
+import { addPlaylist } from "../../slices/playlistSlice";
 import PlaylistVideoCard from "./PlaylistVideoCard";
 
 const Playlist = () => {

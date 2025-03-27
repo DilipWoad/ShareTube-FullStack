@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import Header from "./Header";
+import Header from "./HeaderComponets/Header";
 import { useGetUserInfo } from "../hooks/useGetUserInfo";
 import SideBar from "./Sidebar";
 import { useSelector } from "react-redux";

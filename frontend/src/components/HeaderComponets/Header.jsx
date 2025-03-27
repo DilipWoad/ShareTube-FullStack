@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
-import { MENU_IMG, YT_LOGO } from "../utils/constant";
-import { useHandleLogout } from "../hooks/useHandleLogout";
-import { removeUser } from "../slices/userSlice";
-import { removeVideoFeed, toggleMenuClick } from "../slices/videoSlice";
+import { MENU_IMG, YT_LOGO } from "../../utils/constant";
+import { useHandleLogout } from "../../hooks/useHandleLogout";
+import { removeUser } from "../../slices/userSlice";
+import { removeVideoFeed, toggleMenuClick } from "../../slices/videoSlice";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);

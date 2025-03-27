@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useSearchParams } from "react-router";
-import { BASE_URL, LIKE_ICON } from "../utils/constant";
+import { BASE_URL, LIKE_ICON } from "../../utils/constant";
 import { useEffect, useState } from "react";
 import VideoDescription from "./VideoDescription";
-import VideoComment from "./VideoComment";
+import VideoComment from "../CommentComponents/VideoComment";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
