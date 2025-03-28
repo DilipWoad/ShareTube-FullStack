@@ -25,14 +25,16 @@ const SingleVideo = () => {
   //in axios do a get call to /video/:videoId
   const getAVideo = async () => {
     //add the query value to the videoId place
+    console.log(videoId);
     const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
       withCredentials: true,
     });
+    console.log(res)
     const video = res.data.data;
     console.log(video);
     setVideoDetail(video);
-    setLikeCount(video.likesDetails.videoLikes);
-    setSubscriberCount(video.channelDetails.subscribers);
+    setLikeCount(video?.likesDetails?.videoLikes);
+    setSubscriberCount(video?.channelDetails?.subscribers);
   };
 
   const isUserSubscribed = async () => {
@@ -80,7 +82,7 @@ const SingleVideo = () => {
   };
 
   useEffect(() => {
-    !videoDetail && getAVideo();
+    getAVideo();
     isUserSubscribed();
     isUserLikedTheVideo();
   }, [videoId]);

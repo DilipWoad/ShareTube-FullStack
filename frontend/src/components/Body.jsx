@@ -11,7 +11,7 @@ const Body = () => {
   useGetUserInfo();
 
   return (
-    <div className="bg-gray-800">
+    <div className="bg-gray-800 w-screen">
       <Header />
       <div className="flex">
         <SideBar menuClicked={videoStore?.isMenuClicked} />

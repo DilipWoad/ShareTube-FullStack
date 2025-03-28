@@ -4,10 +4,16 @@ import { LOGOUT_ICON, MENU_IMG, YT_LOGO } from "../../utils/constant";
 import { useHandleLogout } from "../../hooks/useHandleLogout";
 import { removeUser } from "../../slices/userSlice";
 import { removeVideoFeed, toggleMenuClick } from "../../slices/videoSlice";
-import { removeUserHistory, removeUserLikeVideos, removeUserPlaylist } from "../../slices/librarySlice";
+import {
+  removeUserHistory,
+  removeUserLikeVideos,
+  removeUserPlaylist,
+} from "../../slices/librarySlice";
+import { useState } from "react";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);
+  const [createOption,setCreateOption] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,16 +23,19 @@ const Header = () => {
     await useHandleLogout();
     dispatch(removeUser());
     dispatch(removeVideoFeed());
-    dispatch(removeUserHistory())
-    dispatch(removeUserLikeVideos())
-    dispatch(removeUserPlaylist())
+    dispatch(removeUserHistory());
+    dispatch(removeUserLikeVideos());
+    dispatch(removeUserPlaylist());
     navigate("/login");
   };
 
   return (
     <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 pr-10">
       <div className="flex items-center gap-x-8 p-2">
-        <div onClick={()=>dispatch(toggleMenuClick())} className="hover:cursor-pointer relative hover:bg-slate-300 p-2 rounded-full transition">
+        <div
+          onClick={() => dispatch(toggleMenuClick())}
+          className="hover:cursor-pointer relative hover:bg-slate-300 p-2 rounded-full transition"
+        >
           <img className="w-9" src={MENU_IMG} />
         </div>
         {/* TODO:This need to be protect when at login page clicked on logo it goes to /feed page */}
@@ -35,8 +44,16 @@ const Header = () => {
         </Link>
       </div>
       {userDetails ? (
-        <div className="flex items-center gap-3">
-          <Link to={'/upload'}><button className="bg-white px-2 py-1 rounded-full hover:bg-gray-300">✚ Create</button> </Link>
+        <div className="flex items-center gap-3 relative">
+          <button onClick={()=>setCreateOption(!createOption)} className="bg-white px-2 py-1 rounded-full hover:bg-gray-300">
+            ✚ Create
+          </button>
+          {
+            createOption && <div className="bg-sky-400 absolute flex flex-col top-10 p-2 rounded-lg">
+              <Link to={'/upload/video'}><div onClick={()=>setCreateOption(false)} className="hover:bg-yellow-300 p-1 hover:cursor-pointer">upload video</div></Link>
+              <div className="hover:bg-yellow-300 p-1 hover:cursor-pointer">create post</div>
+            </div>
+          }
           <div>
             <p>Welcome, {userDetails.fullName}</p>
           </div>
@@ -44,11 +61,7 @@ const Header = () => {
             <img className="w-11 h-11 rounded-full" src={userDetails.avatar} />
           </div>
           <button onClick={handleLogout} className="">
-            <img
-              className="w-6 ml-3 "
-              src={LOGOUT_ICON}
-              alt="logout"
-            />
+            <img className="w-6 ml-3 " src={LOGOUT_ICON} alt="logout" />
           </button>
         </div>
       ) : (
