@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
@@ -27,7 +27,6 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   };
 
   if (!playlist) return <div>Loading...</div>;
-
   return (
     <>
       <div

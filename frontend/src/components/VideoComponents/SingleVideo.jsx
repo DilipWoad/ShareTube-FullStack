@@ -82,9 +82,10 @@ const SingleVideo = () => {
   };
 
   useEffect(() => {
-    getAVideo();
+    
     isUserSubscribed();
     isUserLikedTheVideo();
+    getAVideo();
   }, [videoId]);
 
   //And get the video
@@ -110,13 +111,13 @@ const SingleVideo = () => {
             <div className=" hover:cursor-pointer">
               <img
                 className="w-10 h-10 rounded-full"
-                src={videoDetail.channelDetails.avatar}
+                src={videoDetail?.channelDetails?.avatar}
                 alt="channel-image"
               />
             </div>
             <div className=" px-2">
               <p className="font-semibold">
-                {videoDetail.channelDetails.fullName}{" "}
+                {videoDetail?.channelDetails?.fullName}{" "}
               </p>
               <p className="text-sm font-light">
                 {subscriberCount} subscribers
@@ -145,7 +146,7 @@ const SingleVideo = () => {
               src={LIKE_ICON}
               alt="like-icon"
             />
-            {videoDetail.likesDetails ? likeCount : 0}
+            {videoDetail?.likesDetails ? likeCount : 0}
           </button>
         </div>
       </div>

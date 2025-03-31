@@ -24,15 +24,18 @@ const UploadVideo = () => {
 
   const handleUploadVideo = async (e) => {
     e.preventDefault();
-    // const data = new FormData();
-    // data.append("videoFile")
+    const data = new FormData();
+    data.append("videoFile",videoFile);
+    data.append("thumbnail",thumbnail);
+    data.append("title",title);
+    data.append("description",description)
+
     setLoading(true);
     try {
       const res = await axios.post(
         BASE_URL + `/video/upload`,
-        { title, description,videoFile,thumbnail },
+        data,
         {
-          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );

@@ -18,11 +18,11 @@ const VideoFeed = () => {
 
   console.log(playlistStore);
 
-  const getPlaylist=async()=>{
+   const getPlaylist=async()=>{
     try {
         const res = await axios.get(BASE_URL+`/playlist/user/${userId}`,{withCredentials:true})
         console.log(res.data.data);
-        videoComment && dispatch(addUserPlaylist(res.data.data))
+        dispatch(addUserPlaylist(res.data.data))
     } catch (error) {
         console.log(error);
     }
@@ -30,9 +30,9 @@ const VideoFeed = () => {
 
   useGetAllVideos();
   useEffect(()=>{
-    !playlistStore &&getPlaylist();
-    dispatch(removeVideoComments());
-  },[playlistStore?.length])
+    getPlaylist();
+    videoComment && dispatch(removeVideoComments());
+  },[playlistStore?.length,dispatch])
   
   if (videos?.length === 0) return <div>Loading...</div>;
   return (

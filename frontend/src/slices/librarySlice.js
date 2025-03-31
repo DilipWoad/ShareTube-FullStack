@@ -21,7 +21,10 @@ const librarySlice = createSlice({
       state.likeVideos = null
     },
     addUserPlaylist: (state, action) => {
-      state.playlist = action.payload;
+      state.playlist = action.payload.reverse();
+    },
+    addVideoToPlaylist :(state,action)=>{
+      state.playlist.push(action.payload)
     },
     removeUserPlaylist:(state,action)=>{
       state.playlist = null
@@ -54,5 +57,7 @@ export const {
   addCreatedPlaylist,
   removeUserHistory,
   removeUserPlaylist,
-  removeUserLikeVideos
+  removeUserLikeVideos,
+  addVideoToPlaylist
+
 } = librarySlice.actions;

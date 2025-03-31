@@ -161,7 +161,8 @@ const getVideoById = asyncHandler(async (req, res) => {
           },
           {
             $unwind:{
-              path:"$channelSubscribers"
+              path:"$channelSubscribers",
+              preserveNullAndEmptyArrays: true
             }
           },
           {
@@ -183,7 +184,8 @@ const getVideoById = asyncHandler(async (req, res) => {
     },
     {
       $unwind:{
-        path:"$channelDetails"
+        path:"$channelDetails",
+        preserveNullAndEmptyArrays: true
       }
     },
     {  //lookup the like schema
@@ -211,7 +213,8 @@ const getVideoById = asyncHandler(async (req, res) => {
     },
     {
       $unwind:{
-        path:"$likesDetails"
+        path:"$likesDetails",
+        preserveNullAndEmptyArrays: true
       }
     },
     {
@@ -263,7 +266,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(201, getVideoInfo[0], "Video Fetched Successfully!!!"));
+    .json(new ApiResponse(201, getVideoInfo[0]?getVideoInfo[0]:getVideoInfo, "Video Fetched Successfully!!!"));
 });
 
 const updateVideoDetails = asyncHandler(async (req, res) => {

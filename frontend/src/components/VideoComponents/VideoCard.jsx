@@ -37,7 +37,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
           <div ref={menuRef} className="relative">
             <button
               onClick={() => setOptions(!options)}
-              className="text-xl w-8 h-8 hover:bg-orange-700 font-semibold rounded-full "
+              className="text-xl ml-1 hover:bg-orange-700 font-semibold rounded-full "
             >
               ⫶
             </button>

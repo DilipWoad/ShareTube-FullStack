@@ -1,17 +1,27 @@
 import axios from "axios";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constant";
 import CreateNewPlaylist from "./CreateNewPlaylist";
+import { addUserPlaylist } from "../../slices/librarySlice";
 
 const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   const [playlistId, setPlaylistId] = useState(null);
   const [createPlaylistOption, setCreatePlaylistOption] = useState(false);
+  const user = useSelector((store)=>store.user)
+  const dispatch = useDispatch();
 
   const playlistMenu = useSelector((store) => store.library.playlist);
 
-  if (!playlistMenu) return <div>Loading...</div>;
-
+  const getPlaylist=async()=>{
+    try {
+        const res = await axios.get(BASE_URL+`/playlist/user/${user._id}`,{withCredentials:true})
+        console.log(res.data.data);
+        dispatch(addUserPlaylist(res.data.data))
+    } catch (error) {
+        console.log(error);
+    }
+  }
   const addVideoToPlaylist = async () => {
     try {
       const res = await axios.patch(
@@ -24,8 +34,11 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
       console.log(error);
     } finally {
       setPlaylistOption(false);
+      getPlaylist();
     }
   };
+
+  if (!playlistMenu) return <div>Loading...</div>;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
@@ -40,7 +53,7 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
           </button>
         </div>
         {playlistMenu.map((playlist) => (
-          <div>
+          <div key={playlist._id}>
             <input
               className="m-2"
               type="checkbox"

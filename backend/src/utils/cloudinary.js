@@ -50,22 +50,56 @@ const deleteFromCloudinary =async(url,resourceType='image')=>{
 }
 
 
-const uploadVideoToCloudinary = async (filePath) => {
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { resource_type: "video" },
-        (error, result) => {
-          if (error) {
-            fs.unlink(filePath, () => {}); // Delete file if upload fails
-            return reject(new ApiError("Uploading video to Cloudinary Failed!", 500));
-          }
-          resolve(result);
-        }
-      );
+// const uploadVideoToCloudinary = async (filePath) => {
+//     return new Promise((resolve, reject) => {
+//       const uploadStream = cloudinary.uploader.upload_stream(
+//         { resource_type: "video" },
+//         (error, result) => {
+//           if (error) {
+//             fs.linkSync(filePath); // Delete file if upload fails
+//             return reject(new ApiError("Uploading video to Cloudinary Failed!", 500));
+//           }
+//           resolve(result);
+//         }
+//       );
   
-      fs.createReadStream(filePath).pipe(uploadStream);
+//       fs.createReadStream(filePath).pipe(uploadStream);
+//       fs.unlinkSync(filePath);
+//     });
+//   };
+const uploadVideoToCloudinary = async (filePath) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { resource_type: "video" },
+      (error, result) => {
+        // Ensure the file is deleted from the server in both success and failure cases
+        fs.unlink(filePath, (unlinkErr) => {
+          if (unlinkErr) console.error("Failed to delete file:", unlinkErr);
+        });
+
+        if (error) {
+          return reject(new ApiError("Uploading video to Cloudinary Failed!", 500));
+        }
+
+        resolve(result);
+      }
+    );
+
+    const readStream = fs.createReadStream(filePath);
+
+    // Handle file read errors
+    readStream.on("error", (err) => {
+      // Delete file if reading fails
+      fs.unlink(filePath, (unlinkErr) => {
+        if (unlinkErr) console.error("Failed to delete file:", unlinkErr);
+      });
+
+      reject(new ApiError("File read error", 500));
     });
-  };
+
+    readStream.pipe(uploadStream);
+  });
+};
 
 
 export {uploadToCloudinary,deleteFromCloudinary,uploadVideoToCloudinary};
