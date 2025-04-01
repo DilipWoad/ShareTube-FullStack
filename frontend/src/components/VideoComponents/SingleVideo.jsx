@@ -19,73 +19,86 @@ const SingleVideo = () => {
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
 
-  //toggle sidebar
-  //i guess use REDUX TOOLKIT
-
-  //in axios do a get call to /video/:videoId
   const getAVideo = async () => {
-    //add the query value to the videoId place
     console.log(videoId);
     const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
       withCredentials: true,
     });
-    console.log(res)
     const video = res.data.data;
     console.log(video);
     setVideoDetail(video);
-    setLikeCount(video?.likesDetails?.videoLikes);
+    setLikeCount(video?.likesDetails ? video?.likesDetails?.videoLikes : 0);
     setSubscriberCount(video?.channelDetails?.subscribers);
   };
 
   const isUserSubscribed = async () => {
-    const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
-      withCredentials: true,
-    });
-    //create a function which will check is current user(current logged in user is subscribed to the current opened video)
-    setIsSubscribed(res.data.data);
+    try {
+      const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
+        withCredentials: true,
+      });
+      console.log(res.data.message);
+      setIsSubscribed(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleSubscription = async () => {
-    await axios.post(
-      BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
-      {},
-      { withCredentials: true }
-    );
-    //toggle the subscribed state
-    if (!isSubscribed) {
-      setSubscriberCount(subscriberCount + 1);
-    } else {
-      setSubscriberCount(subscriberCount - 1);
+    try {
+      const res = await axios.post(
+        BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
+        {},
+        { withCredentials: true }
+      );
+      console.log(res.data.message)
+      //toggle the subscribed state
+      setIsSubscribed(!isSubscribed);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (!isSubscribed) {
+        setSubscriberCount(subscriberCount + 1);
+      } else {
+        setSubscriberCount(subscriberCount - 1);
+      }
     }
-    setIsSubscribed(!isSubscribed);
   };
 
   const isUserLikedTheVideo = async () => {
-    const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
-      withCredentials: true,
-    });
-    //create a function which will check is current user(current logged in user has liked the current opened video)
-    console.log(res.data.data);
-    setIsLiked(res.data.data);
+    try {
+      const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
+        withCredentials: true,
+      });
+      //create a function which will check is current user(current logged in user has liked the current opened video)
+      console.log(res.data.message);
+      setIsLiked(res.data.data);
+    } catch (error) {
+      console.log(error)
+    }
   };
   const handleLikes = async () => {
-    await axios.post(
-      BASE_URL + `/like/v/${videoId}`,
-      {},
-      { withCredentials: true }
-    );
-    if (!isLiked) {
-      setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
+    try {
+      const res = await axios.post(
+        BASE_URL + `/like/v/${videoId}`,
+        {},
+        { withCredentials: true }
+      );
+      setIsLiked(!isLiked);
+      console.log(res.data.message);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (isLiked) {
+        setLikeCount(likeCount - 1);
+      } else {
+        setLikeCount(likeCount + 1);
+      }
     }
-    setIsLiked(!isLiked);
   };
 
   useEffect(() => {
-    
     isUserSubscribed();
     isUserLikedTheVideo();
-    getAVideo();
+    !videoDetail && getAVideo();
   }, [videoId]);
 
   //And get the video

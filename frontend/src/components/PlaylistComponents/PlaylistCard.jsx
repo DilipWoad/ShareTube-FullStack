@@ -30,13 +30,13 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   return (
     <>
       <div
-        className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${
+        className={`bg-purple-400 w-96 rounded-lg m-4 ${
           menuClicked ? "w-[330px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} `}
       >
         <div className="">
           <img
-            className={`w-full max-h-48 ${thumbnailcss}`}
+            className={`w-full max-h-48 rounded-t-lg ${thumbnailcss}`}
             src={playlistVideos[0]?.thumbnail}
           />{" "}
           {/*get the first video thumbnail*/}
@@ -53,15 +53,15 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
               </p>
             </div>
           </Link>
-          <div ref={menuRef} className="bg-lime-300  text-center ">
+          <div ref={menuRef} className="bg-lime-300 relative  text-center ">
             <button
               onClick={() => setOptions(!options)}
-              className="text-lg  w-7 h-7 font-semibold  relative hover:bg-orange-700 rounded-full"
+              className="text-lg  w-7 h-7 font-semibold   hover:bg-orange-700 rounded-full"
             >
               ⫶
             </button>
             {options && (
-              <div className="absolute bg-cyan-300 w-24 rounded-lg p-1 z-10 space-y-2 flex flex-col items-start">
+              <div className="absolute bg-cyan-300 w-24 rounded-lg p-1  right-0 space-y-2 flex flex-col items-start">
                 <button
                   onClick={() => setEditOption(!editOption)}
                   className="hover:bg-lime-300 w-full text-start relative"

@@ -20,6 +20,6 @@ export const useGetAllVideos = () => {
   };
 
   useEffect(() => {
-    !videoStore.feed && getAllVideo();
+    getAllVideo();
   }, [dispatch]);
 };

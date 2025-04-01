@@ -9,7 +9,7 @@ const librarySlice = createSlice({
   },
   reducers: {
     addUserHistory: (state, action) => {
-      state.history = action.payload;
+      state.history = action.payload.reverse();
     },
     removeUserHistory:(state,action)=>{
       state.history = null

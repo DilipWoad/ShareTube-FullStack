@@ -27,7 +27,6 @@ const VideoFeed = () => {
         console.log(error);
     }
   }
-
   useGetAllVideos();
   useEffect(()=>{
     getPlaylist();
