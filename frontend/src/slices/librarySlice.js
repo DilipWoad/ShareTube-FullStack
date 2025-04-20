@@ -5,7 +5,7 @@ const librarySlice = createSlice({
   initialState: {
     history: null,
     likeVideos: null,
-    playlist: null,
+    playlist: [],
   },
   reducers: {
     addUserHistory: (state, action) => {

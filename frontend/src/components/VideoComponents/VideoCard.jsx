@@ -21,13 +21,13 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
             to={{ pathname: "/watch", search: `?v=${_id}` }}
             className={`flex`}
           >
-            <div className="m-2">
+            <Link to={'/channel'} className="m-2">
               <img
                 className="w-10 h-10 rounded-full"
                 src={videoOwner?.avatar}
                 alt="avatar"
               />
-            </div>
+            </Link>
             <div className="mt-2 bg-lime-200 w-[300px]">
               <p className="text-md font-semibold text-wrap ">{title}</p>
               <p className="text-sm mt-2">{videoOwner?.fullName}</p>

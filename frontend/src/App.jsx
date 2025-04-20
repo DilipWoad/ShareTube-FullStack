@@ -25,6 +25,7 @@ function App() {
                 <Route path="/you" element={<UserLibrary />} />
                 <Route path="/playlist" element={<Playlist />} />
                 <Route path="/upload/video" element={<UploadVideo/>} />
+                {/* <Route path="/subscription" element={<UserSubscription/>}/> */}
               </Route>
             </Routes>
           </BrowserRouter>

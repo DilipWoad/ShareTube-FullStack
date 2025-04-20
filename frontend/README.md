@@ -56,6 +56,8 @@
 - created useOutsideClick to close an option clicked outside its div (applied across the different components)
 - also made folders to add the similar components in a same folder
 - Video like and subscriber count with user has already liked or subscribed issue solved.
+- Minute bug solved for liked not updated when its 0 and subscriber count is increasing when same channel user clicking the button by showing an alert to the user.
+- Also solve the problem when a user has no playlist and trying to add video to playlist.
 # Routes
 
 Body
@@ -64,4 +66,4 @@ Route="/login" -> Login
 Route="/signup" -> Signup
 Route="/watch?v=videoId -> Watch Video
 Route="/you" -> user library page(contains liked videos,history and playlist)
-Route="/playlist" -> 
+Route="/playlist?list=playlistId" -> shows user added video to the given playlist id.

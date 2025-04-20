@@ -13,6 +13,7 @@ export const useGetAllVideos = () => {
         withCredentials: true,
       });
       const videos = res.data; 
+      console.log("nbvbvjf0",videos.data)
       dispatch(addVideo(videos.data));
     } catch (error) {
       console.log(error);

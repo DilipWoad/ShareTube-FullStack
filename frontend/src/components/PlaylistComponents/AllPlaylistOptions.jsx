@@ -38,7 +38,7 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
     }
   };
 
-  if (!playlistMenu) return <div>Loading...</div>;
+  // if (!playlistMenu) return <div>Loading...</div>;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
@@ -52,7 +52,7 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
             ✕
           </button>
         </div>
-        {playlistMenu.map((playlist) => (
+        {playlistMenu && playlistMenu.map((playlist) => (
           <div key={playlist._id}>
             <input
               className="m-2"

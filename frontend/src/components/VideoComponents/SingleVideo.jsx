@@ -4,10 +4,13 @@ import { BASE_URL, LIKE_ICON } from "../../utils/constant";
 import { useEffect, useState } from "react";
 import VideoDescription from "./VideoDescription";
 import VideoComment from "../CommentComponents/VideoComment";
+import { useSelector } from "react-redux";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
   //get the query value from url
+  const userId = useSelector((store)=>store.user?._id);
+  console.log(userId);
   const [searchParams, setSearchParams] = useSearchParams();
   const videoId = searchParams.get("v");
 
@@ -18,6 +21,11 @@ const SingleVideo = () => {
 
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
+  console.log("Subscription state :",isSubscribed)
+  console.log("Subscription Count state :",subscriberCount)
+
+  console.log("Liked state :",isLiked)
+  console.log("Liked Count state :",likeCount)
 
   const getAVideo = async () => {
     console.log(videoId);
@@ -37,30 +45,36 @@ const SingleVideo = () => {
         withCredentials: true,
       });
       console.log(res.data.message);
+      console.log("Subscription",res.data.data);
       setIsSubscribed(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
   const handleSubscription = async () => {
-    try {
-      const res = await axios.post(
-        BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
-        {},
-        { withCredentials: true }
-      );
-      console.log(res.data.message)
-      //toggle the subscribed state
-      setIsSubscribed(!isSubscribed);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      if (!isSubscribed) {
-        setSubscriberCount(subscriberCount + 1);
-      } else {
-        setSubscriberCount(subscriberCount - 1);
+    if(videoDetail?.channelDetails?._id===userId){
+    alert("You can't Subscribe to your channel!!")
+      return;
+    }else{
+      try {
+        const res = await axios.post(
+          BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
+          {},
+          { withCredentials: true }
+        );
+        console.log(res.data.message)
+        //toggle the subscribed state
+        setIsSubscribed(!isSubscribed);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        if (!isSubscribed) {
+          setSubscriberCount(subscriberCount + 1);
+        } else {
+          setSubscriberCount(subscriberCount - 1);
+        }
       }
-    }
+    }  
   };
 
   const isUserLikedTheVideo = async () => {
@@ -70,6 +84,7 @@ const SingleVideo = () => {
       });
       //create a function which will check is current user(current logged in user has liked the current opened video)
       console.log(res.data.message);
+      console.log("Liked",res.data.data);
       setIsLiked(res.data.data);
     } catch (error) {
       console.log(error)
@@ -84,14 +99,15 @@ const SingleVideo = () => {
       );
       setIsLiked(!isLiked);
       console.log(res.data.message);
-    } catch (error) {
-      console.log(error);
-    } finally {
       if (isLiked) {
         setLikeCount(likeCount - 1);
       } else {
         setLikeCount(likeCount + 1);
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      
     }
   };
 
@@ -159,7 +175,7 @@ const SingleVideo = () => {
               src={LIKE_ICON}
               alt="like-icon"
             />
-            {videoDetail?.likesDetails ? likeCount : 0}
+            {videoDetail?.likesDetails ? likeCount : likeCount}
           </button>
         </div>
       </div>
