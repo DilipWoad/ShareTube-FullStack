@@ -10,6 +10,7 @@ import UserLibrary from "./components/LibraryComponents/UserLibrary";
 import Playlist from "./components/PlaylistComponents/Playlist";
 import { PersistGate } from "redux-persist/integration/react";
 import UploadVideo from "./components/VideoComponents/UploadVideo";
+import ChannelPage from "./components/ChannelPage";
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/playlist" element={<Playlist />} />
                 <Route path="/upload/video" element={<UploadVideo/>} />
                 {/* <Route path="/subscription" element={<UserSubscription/>}/> */}
+                <Route path="/channel/:id" element={<ChannelPage/>}/>
               </Route>
             </Routes>
           </BrowserRouter>

@@ -11,9 +11,16 @@ const Body = () => {
   useGetUserInfo();
 
   return (
-    <div className="bg-gray-800 w-screen">
+    // <div className="bg-gray-800 w-screen">
+    //   <Header />
+    //   <div className="flex">
+    //     <SideBar menuClicked={videoStore?.isMenuClicked} />
+    //     <Outlet />
+    //   </div>
+    // </div>
+    <div className="min-h-screen bg-gray-800 text-black flex flex-col w-screen">
       <Header />
-      <div className="flex">
+      <div className="flex flex-grow overflow-auto">
         <SideBar menuClicked={videoStore?.isMenuClicked} />
         <Outlet />
       </div>
