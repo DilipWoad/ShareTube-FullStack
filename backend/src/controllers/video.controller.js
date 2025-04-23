@@ -538,6 +538,37 @@ const getAllVideos = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, result.docs, "Videos Fetched Successfullly!!"));
 });
 
+const getChannelVideos =asyncHandler(async(req,res)=>{
+  //1) verified auth
+  //2) from url we get username 
+  //3) verify username
+  //4) aggregate all the video document where videoOwner match with userId
+  //5) in video ->match channelId with videoOwner
+  const channelId = req.params.channelId;
+  //check valid id
+  if(!mongoose.isValidObjectId(channelId)){
+    return ApiError("Invalid channel Id",401)
+  }
+
+  const channelVideos = await Video.aggregate([
+    {
+      $match:{
+        owner:new mongoose.Types.ObjectId(channelId)
+      }
+    }
+  ])
+
+  console.log(channelVideos);
+
+  if(!channelVideos){
+    return ApiError("Something went wrong while fetching channel videos",503)
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200,channelVideos,"Channel videos fetched successfully!")
+  )
+})
+
 export {
   publishedVideo,
   getVideoById,
@@ -545,4 +576,5 @@ export {
   deleteVideo,
   togglePublishStatus,
   getAllVideos,
+  getChannelVideos
 };

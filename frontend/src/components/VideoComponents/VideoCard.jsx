@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState} from "react";
 import { Link } from "react-router";
 import AllPlaylistOptions from "../PlaylistComponents/AllPlaylistOptions";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
-const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
+const VideoCard = ({ video, menuClicked, css, thumbnailcss,isChannelVideos }) => {
   const { _id, thumbnail, videoOwner, title, views } = video;
   const [options, setOptions] = useState(false);
   const [playlistOption, setPlaylistOption] = useState(false);
@@ -12,23 +12,26 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
     <>
       <div
         className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${
-          menuClicked ? "w-[330px]" : ""
+          menuClicked ? "w-[350px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css}`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}><img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} /></Link>
         <div className="flex bg-yellow-400">
-          <Link to={`/channel/@${videoOwner?.username}`} className="m-2">
+          {!isChannelVideos ?(
+            <Link to={`/channel/@${videoOwner?.username}`} className="m-2">
             <img
               className="w-10 h-10 rounded-full object-cover"
               src={videoOwner?.avatar}
               alt="avatar"
             />
           </Link>
+          ):("")}
+          
           <Link
             to={{ pathname: "/watch", search: `?v=${_id}` }}
             className={`flex`}
           >
-            <div className="mt-2 bg-lime-200 w-[300px]">
+            <div className={`mt-2 bg-lime-200 ${menuClicked? "min-w-[260px]":"w-[292px]"} ${isChannelVideos ? "w-52 px-2":""}`}>
               <p className="text-md font-semibold text-wrap ">{title}</p>
               <p className="text-sm mt-2">{videoOwner?.fullName}</p>
               <p className="text-sm">{views} views</p>
@@ -37,7 +40,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
           <div ref={menuRef} className="relative">
             <button
               onClick={() => setOptions(!options)}
-              className="text-xl ml-1 hover:bg-orange-700 font-semibold rounded-full "
+              className={`text-xl w-7 h-7  ${isChannelVideos ? "ml-0":""}   hover:bg-orange-700 font-semibold rounded-full m-1`}
             >
               ⫶
             </button>
