@@ -520,6 +520,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   if (!username.toLowerCase()?.trim()) {
     throw new ApiError("Channel Username is Missing!!", 401);
   }
+  const userId = new mongoose.Types.ObjectId(req.user._id);
 
   const isUsernameExists = await User.find({ username: username });
   //not exist then 404
@@ -568,12 +569,16 @@ const getUserProfile = asyncHandler(async (req, res) => {
           $size: "$subscribedTo",
         },
         isCurrentUserSubscribed: {
-          $cond: {
-            //second arrgument in ($in) operator shoukd be an [ARRAY]
-            if: { $in: [req.user?._id, ["$subscriber.subscriber"]] },
-            then: true,
-            else: false,
-          },
+          $in:[
+            userId,
+            {
+              $map:{
+                input:"$subscribers",
+                as:"sub",
+                in:"$$sub.subscriber"
+              }
+            }
+          ]
         },
       },
     },

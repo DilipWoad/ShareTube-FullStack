@@ -15,19 +15,19 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss }) => {
           menuClicked ? "w-[330px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css}`}
       >
-        <img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} />
+        <Link to={{ pathname: "/watch", search: `?v=${_id}` }}><img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} /></Link>
         <div className="flex bg-yellow-400">
+          <Link to={`/channel/@${videoOwner?.username}`} className="m-2">
+            <img
+              className="w-10 h-10 rounded-full object-cover"
+              src={videoOwner?.avatar}
+              alt="avatar"
+            />
+          </Link>
           <Link
             to={{ pathname: "/watch", search: `?v=${_id}` }}
             className={`flex`}
           >
-            <Link to={`/channel/@${videoOwner?.username}`} className="m-2">
-              <img
-                className="w-10 h-10 rounded-full"
-                src={videoOwner?.avatar}
-                alt="avatar"
-              />
-            </Link>
             <div className="mt-2 bg-lime-200 w-[300px]">
               <p className="text-md font-semibold text-wrap ">{title}</p>
               <p className="text-sm mt-2">{videoOwner?.fullName}</p>
