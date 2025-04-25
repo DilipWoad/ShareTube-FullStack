@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useLocation } from "react-router";
-import { BASE_URL } from "../utils/constant";
+import { Link, Outlet, useLocation } from "react-router";
+import { BASE_URL } from "../../utils/constant";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import VideoCard from "./VideoComponents/VideoCard";
+import VideoCard from "../VideoComponents/VideoCard";
+import ChannelVideos from "./ChannelVideos";
+import ChannelPosts from "./ChannelPosts";
 
 const ChannelPage = () => {
   const menuClick = useSelector((store) => store.video.isMenuClicked);
@@ -11,8 +13,12 @@ const ChannelPage = () => {
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [channelVideos, setChannelVideos] = useState(null);
+  const [videoClicked,setVideoClicked] = useState(false);
+  const [channelPosts,setChannelPosts] = useState(null);
+  const [postClicked,setPostClicked] = useState(false);
+
   const channelUsername = useLocation();
-  const na = channelUsername.pathname.replace("/channel/@", "");
+  const username = channelUsername.pathname.replace("/channel/@", "");
   const middleDot = "\u0387";
 
   const handleSubscription = async () => {
@@ -37,12 +43,39 @@ const ChannelPage = () => {
 
   const handleChannelVideos = async () => {
     try {
+      //setting other clicks as false
+      setPostClicked(false)
+
+      //data fetch
       const res = await axios.get(
         `${BASE_URL}/video/channel/${channelDetails?._id}`,
         { withCredentials: true }
       );
-      console.log(res.data.data);
       setChannelVideos(res.data.data);
+
+      //video Clicked
+      setVideoClicked(true)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChannelPosts = async () => {
+    try {
+      //setting other clicks as false
+      setVideoClicked(false)
+      
+      //data fetch
+      const res = await axios.get(`${BASE_URL}/post/user/${channelDetails?._id}`, {
+        withCredentials: true,
+      });
+      const post = res.data.data;
+      console.log(res.data.data);
+
+      setChannelPosts(post.reverse());
+      
+      // post Clicked
+      setPostClicked(true)
     } catch (error) {
       console.log(error);
     }
@@ -50,9 +83,12 @@ const ChannelPage = () => {
 
   const userChannelDetails = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/user/channel/${na.trim()}`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${BASE_URL}/user/channel/${username.trim()}`,
+        {
+          withCredentials: true,
+        }
+      );
       console.log(res.data);
       setChannelDetails(res.data.data);
       setIsSubscribed(res.data.data.isCurrentUserSubscribed);
@@ -63,6 +99,7 @@ const ChannelPage = () => {
   useEffect(() => {
     userChannelDetails();
   }, []);
+
   if (!channelDetails) return <div>Loading...</div>;
   return (
     <div
@@ -94,10 +131,10 @@ const ChannelPage = () => {
             </div>
             <button
               onClick={handleSubscription}
-              className={`bg-white px-4 py-2 rounded-3xl mt-7 ${
+              className={`px-4 py-2 rounded-3xl mt-7 ${
                 isSubscribed
-                  ? "bg-gray-400 text-white hover:bg-gray-500"
-                  : "hover:bg-gray-300"
+                  ? "bg-gray-500 text-white hover:bg-gray-400"
+                  : "hover:bg-gray-300 bg-white"
               } `}
             >{`${isSubscribed ? "Subscribed" : "Subscribe"}`}</button>
           </div>
@@ -114,20 +151,30 @@ const ChannelPage = () => {
           >
             Videos
           </button>
-          <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
+          <button
+            onClick={handleChannelPosts}
+            className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200"
+          >
             Posts
           </button>
           <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
             Playlists
           </button>
         </div>
-        <div className="flex flex-wrap bg-teal-400">
+
+        { (
+          <div className="flex flex-wrap bg-teal-400">
             {/* VideoCards/PostCards/PlaylistCard */}
-            {channelVideos && channelVideos.map((video)=>(
-                <VideoCard video={video} menuClicked={menuClick} css={"w-[235px]"} isChannelVideos={true}/>
-            ))}
-        </div>
+            {videoClicked && <ChannelVideos
+              channelVideos={channelVideos}
+              menuClick={menuClick}
+            />}
+            
+            {postClicked && <ChannelPosts channelPosts={channelPosts}/>}
+          </div>
+        )}
       </div>
+      <Outlet />
     </div>
   );
 };

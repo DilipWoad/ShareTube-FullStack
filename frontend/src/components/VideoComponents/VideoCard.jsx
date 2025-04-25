@@ -13,7 +13,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss,isChannelVideos }) =>
       <div
         className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${
           menuClicked ? "w-[350px]" : ""
-        } shadow-lg hover:shadow-gray-300 ${css}`}
+        } shadow-lg hover:shadow-gray-300 ${css} ${(isChannelVideos && menuClicked) ? "w-[227px]":""}`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}><img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} /></Link>
         <div className="flex bg-yellow-400">
@@ -31,7 +31,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss,isChannelVideos }) =>
             to={{ pathname: "/watch", search: `?v=${_id}` }}
             className={`flex`}
           >
-            <div className={`mt-2 bg-lime-200 ${menuClicked? "min-w-[260px]":"w-[292px]"} ${isChannelVideos ? "w-52 px-2":""}`}>
+            <div className={`mt-2 bg-lime-200 ${menuClicked && !isChannelVideos ? "w-[260px]":""} ${isChannelVideos && menuClicked? "w-[200px]":""} ${isChannelVideos? "w-52 px-2":"w-72"}`}>
               <p className="text-md font-semibold text-wrap ">{title}</p>
               <p className="text-sm mt-2">{videoOwner?.fullName}</p>
               <p className="text-sm">{views} views</p>

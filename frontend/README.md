@@ -58,6 +58,9 @@
 - Video like and subscriber count with user has already liked or subscribed issue solved.
 - Minute bug solved for liked not updated when its 0 and subscriber count is increasing when same channel user clicking the button by showing an alert to the user.
 - Also solve the problem when a user has no playlist and trying to add video to playlist.
+- Created Channel Page component where we can see channel Information fetched using channel username,it has videos,posts and playlists where we can se channels videos ,posts and playlists.
+- Completed Channel Information and Videos fetching part by using videoCard component.
+- Completed Channel Posts Sections making use of ChannelPost card component.
 # Routes
 
 Body
@@ -67,3 +70,4 @@ Route="/signup" -> Signup
 Route="/watch?v=videoId -> Watch Video
 Route="/you" -> user library page(contains liked videos,history and playlist)
 Route="/playlist?list=playlistId" -> shows user added video to the given playlist id.
+Route="/channel/@<:ChannelId> -> Contains channel information ,channel videos,channel posts and playlist
