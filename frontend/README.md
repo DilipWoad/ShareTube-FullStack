@@ -61,6 +61,7 @@
 - Created Channel Page component where we can see channel Information fetched using channel username,it has videos,posts and playlists where we can se channels videos ,posts and playlists.
 - Completed Channel Information and Videos fetching part by using videoCard component.
 - Completed Channel Posts Sections making use of ChannelPost card component.
+- Use Outlet to render videos and post route component inside parent /channel/:id route for better rendering
 # Routes
 
 Body
@@ -71,3 +72,5 @@ Route="/watch?v=videoId -> Watch Video
 Route="/you" -> user library page(contains liked videos,history and playlist)
 Route="/playlist?list=playlistId" -> shows user added video to the given playlist id.
 Route="/channel/@<:ChannelId> -> Contains channel information ,channel videos,channel posts and playlist
+Route="/channel/@:id/videos" ->child route '/videos inside parent /channel/:id ,for displaying channel videos,
+Route="/channel/@:id/posts" ->child route '/posts inside parent /channel/:id ,for displaying channel posts,

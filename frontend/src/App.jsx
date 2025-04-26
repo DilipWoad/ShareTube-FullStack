@@ -11,6 +11,8 @@ import Playlist from "./components/PlaylistComponents/Playlist";
 import { PersistGate } from "redux-persist/integration/react";
 import UploadVideo from "./components/VideoComponents/UploadVideo";
 import ChannelPage from "./components/ChannelComponents/ChannelPage";
+import ChannelVideos from "./components/ChannelComponents/ChannelVideos";
+import ChannelPosts from "./components/ChannelComponents/ChannelPosts";
 function App() {
   return (
     <>
@@ -19,7 +21,7 @@ function App() {
           <BrowserRouter basename="/">
             <Routes>
               <Route path="/" element={<Body />}>
-                <Route path="/" element={<VideoFeed />} />
+                <Route index element={<VideoFeed />} />
                 <Route path="/login" element={<LoginComponent />} />
                 <Route path="/signup" element={<SignupComponent />} />
                 <Route path="/watch" element={<SingleVideo />} />
@@ -27,8 +29,11 @@ function App() {
                 <Route path="/playlist" element={<Playlist />} />
                 <Route path="/upload/video" element={<UploadVideo />} />
                 {/* <Route path="/subscription" element={<UserSubscription/>}/> */}
-                <Route path="/channel/:id" element={<ChannelPage />} />
-                <Route path="/channel/:id/videos" element={<ChannelPage />} />
+                {/*Channel Pages Routes */}
+                <Route path="/channel/:id" element={<ChannelPage />}>
+                  <Route path="videos" element={<ChannelVideos />} />
+                  <Route path="posts" element={<ChannelPosts/>} />
+                </Route>
               </Route>
             </Routes>
           </BrowserRouter>
