@@ -3,11 +3,15 @@ import PostCard from "../PostComponents/PostCard";
 import { BASE_URL } from "../../utils/constant";
 import { useOutletContext } from "react-router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import CreatePost from "../PostComponents/CreatePost";
 
 const ChannelPosts = () => {
+  const { channelId } = useOutletContext();
+  const [channelPosts, setChannelPosts] = useState(null);
+  const [showCreatePostBox, setShowCreatePostBox] = useState(false);
 
-  const {channelId } = useOutletContext();
-  const [channelPosts,setChannelPosts] = useState(null);
+  const userId = useSelector((store) => store.user._id);
 
   const handleChannelPosts = async () => {
     try {
@@ -15,23 +19,29 @@ const ChannelPosts = () => {
       const res = await axios.get(`${BASE_URL}/post/user/${channelId}`, {
         withCredentials: true,
       });
-      console.log(res.data.data);
-      setChannelPosts(res.data.data);
+      const channelPost = res.data.data;
+      setChannelPosts(channelPost.reverse());
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     handleChannelPosts();
-  },[])
-  if(!channelPosts) return <div>Loading Posts ...</div>
+    if (userId == channelId) {
+      setShowCreatePostBox(true);
+    }
+  }, []);
+  if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
-    <div className="no-flex w-4/5 m-10">
-      {channelPosts.map((post) => (
-        <PostCard post={post} />
-      ))}
-    </div>
+    <>
+      {showCreatePostBox && <CreatePost />}
+      <div className="no-flex w-4/5 m-10">
+        {channelPosts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </>
   );
 };
 

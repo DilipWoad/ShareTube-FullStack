@@ -13,7 +13,7 @@ const VideoCard = ({ video, menuClicked, css, thumbnailcss,isChannelVideos }) =>
       <div
         className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${
           menuClicked ? "w-[350px]" : ""
-        } shadow-lg hover:shadow-gray-300 ${css} ${(isChannelVideos && menuClicked) ? "w-[227px]":""}`}
+        } shadow-lg hover:shadow-gray-300 ${css} ${(isChannelVideos && menuClicked) ? "w-[226px]":""}`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}><img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} /></Link>
         <div className="flex bg-yellow-400">

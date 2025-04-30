@@ -51,15 +51,15 @@ const Header = () => {
           {
             createOption && <div className="bg-sky-400 absolute flex flex-col top-10 p-2 rounded-lg">
               <Link to={'/upload/video'}><div onClick={()=>setCreateOption(false)} className="hover:bg-yellow-300 p-1 hover:cursor-pointer">upload video</div></Link>
-              <div className="hover:bg-yellow-300 p-1 hover:cursor-pointer">create post</div>
+              <Link to={`/channel/@${userDetails?.username}/posts`} className="hover:bg-yellow-300 p-1 hover:cursor-pointer">create post</Link>
             </div>
           }
           <div>
             <p>Welcome, {userDetails.fullName}</p>
           </div>
-          <div className="">
+          <Link to={`/channel/@${userDetails.username}`} className="">
             <img className="w-11 h-11 rounded-full" src={userDetails.avatar} />
-          </div>
+          </Link>
           <button onClick={handleLogout} className="">
             <img className="w-6 ml-3 " src={LOGOUT_ICON} alt="logout" />
           </button>
