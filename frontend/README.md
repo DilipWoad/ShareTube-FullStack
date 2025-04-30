@@ -62,6 +62,7 @@
 - Completed Channel Information and Videos fetching part by using videoCard component.
 - Completed Channel Posts Sections making use of ChannelPost card component.
 - Use Outlet to render videos and post route component inside parent /channel/:id route for better rendering
+- Added create post option for the current User only
 # Routes
 
 Body
