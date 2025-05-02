@@ -8,7 +8,7 @@ import {
 } from "../../slices/commentSlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
-const CommentCard = ({ comment, usersComment }) => {
+const CommentCard = ({ comment, usersComment,commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
@@ -89,7 +89,7 @@ const CommentCard = ({ comment, usersComment }) => {
   // }, []);
 
   return (
-    <div className="p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg z-0">
+    <div className={`p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg z-0 ${commentCss}`}>
       <div className="">
         <img
           className="w-10 h-10 rounded-full"
@@ -141,7 +141,7 @@ const CommentCard = ({ comment, usersComment }) => {
           {moreOption && (
             <div className="bg-lime-200 absolute p-3 z-50 rounded-lg hover cursor-pointer">
               <ul className="space-y-2">
-                {(commentOwner ? commentOwner._id : _id) ===
+                {commentOwner._id ===
                 usersComment?._id ? (
                   <>
                     <li

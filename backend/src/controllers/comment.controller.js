@@ -307,6 +307,11 @@ const getPostComments = asyncHandler(async (req, res) => {
       },
     },
     {
+      $unwind:{
+        path:"$commentOwner"
+      }
+    },
+    {
       $project: {
         content: 1,
         post: 1,

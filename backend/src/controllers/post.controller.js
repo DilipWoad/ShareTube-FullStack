@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Post } from "../models/post.model.js";
+import {Comment} from "../models/comment.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -185,6 +186,22 @@ const getPostById = asyncHandler(async(req,res)=>{
     //7)if null that means no comments
     //8)we get arrays of comments with its owner id(try aggregate so that we can get userInfomation as well as post._id)
     //9) if doing aggregate do count of document,get comment owner info,post owner info
+
+    const {postId} = req.params;
     
+    if(!mongoose.isValidObjectId(postId)){
+        throw new ApiError("Invalid PostId!!",403);
+    }
+
+    const post = await Post.findById(postId);
+
+    if(!post){
+        throw new ApiError("Post does not Exists!",404);
+    }
+    
+    return res.status(200).json(
+        new ApiResponse(200,post,"Post fetched successfully")
+    )
+
 })
-export {createPost,getUserPosts,updatePost,deletePost}
+export {createPost,getUserPosts,updatePost,deletePost,getPostById}
