@@ -65,14 +65,13 @@ const SingleVideo = () => {
         console.log(res.data.message)
         //toggle the subscribed state
         setIsSubscribed(!isSubscribed);
-      } catch (error) {
-        console.log(error);
-      } finally {
         if (!isSubscribed) {
           setSubscriberCount(subscriberCount + 1);
         } else {
           setSubscriberCount(subscriberCount - 1);
         }
+      } catch (error) {
+        console.log(error);
       }
     }  
   };
@@ -106,8 +105,6 @@ const SingleVideo = () => {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      
     }
   };
 

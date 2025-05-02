@@ -31,7 +31,6 @@ const createPost = asyncHandler(async (req,res)=>{
     )
 })
 
-
 const getUserPosts = asyncHandler(async(req,res)=>{
     //1) verify Authentication
     //2) get useId from param
@@ -176,4 +175,16 @@ const deletePost = asyncHandler(async(req,res)=>{
     )
 })
 
+const getPostById = asyncHandler(async(req,res)=>{
+    //1)verify auth
+    //2)verify postId
+    //3)check if post exists
+    //4)Find in Comment 
+    //5)Find all the documents in comment that has post._id = postId
+    //6)it will have all the documents that has post._id as postId
+    //7)if null that means no comments
+    //8)we get arrays of comments with its owner id(try aggregate so that we can get userInfomation as well as post._id)
+    //9) if doing aggregate do count of document,get comment owner info,post owner info
+    
+})
 export {createPost,getUserPosts,updatePost,deletePost}

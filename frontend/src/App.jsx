@@ -13,6 +13,7 @@ import UploadVideo from "./components/VideoComponents/UploadVideo";
 import ChannelPage from "./components/ChannelComponents/ChannelPage";
 import ChannelVideos from "./components/ChannelComponents/ChannelVideos";
 import ChannelPosts from "./components/ChannelComponents/ChannelPosts";
+import PostComments from "./components/PostComponents/PostComments";
 function App() {
   return (
     <>
@@ -22,18 +23,19 @@ function App() {
             <Routes>
               <Route path="/" element={<Body />}>
                 <Route index element={<VideoFeed />} />
-                <Route path="/login" element={<LoginComponent />} />
-                <Route path="/signup" element={<SignupComponent />} />
-                <Route path="/watch" element={<SingleVideo />} />
-                <Route path="/you" element={<UserLibrary />} />
-                <Route path="/playlist" element={<Playlist />} />
-                <Route path="/upload/video" element={<UploadVideo />} />
+                <Route path="login" element={<LoginComponent />} />
+                <Route path="signup" element={<SignupComponent />} />
+                <Route path="watch" element={<SingleVideo />} />
+                <Route path="you" element={<UserLibrary />} />
+                <Route path="playlist" element={<Playlist />} />
+                <Route path="upload/video" element={<UploadVideo />} />
                 {/* <Route path="/subscription" element={<UserSubscription/>}/> */}
                 {/*Channel Pages Routes */}
-                <Route path="/channel/:id" element={<ChannelPage />}>
+                <Route path="channel/:id" element={<ChannelPage />}>
                   <Route path="videos" element={<ChannelVideos />} />
                   <Route path="posts" element={<ChannelPosts/>} />
                 </Route>
+                <Route path="/channel/:id/post" element={<PostComments/>}/>
               </Route>
             </Routes>
           </BrowserRouter>

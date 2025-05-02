@@ -3,11 +3,14 @@ import { NavLink, Outlet, useParams } from "react-router";
 
 import { BASE_URL } from "../../utils/constant";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addChannelInfo } from "../../slices/channelSlice";
 
 const ChannelPage = () => {
+  const dispatch = useDispatch();
   const menuClick = useSelector((store) => store.video.isMenuClicked);
   const userId = useSelector((store) => store.user._id);
+
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
 
@@ -48,6 +51,7 @@ const ChannelPage = () => {
       console.log(res.data);
       setChannelDetails(res.data.data);
       setIsSubscribed(res.data.data.isCurrentUserSubscribed);
+      dispatch(addChannelInfo(res.data.data))
     } catch (error) {
       console.log(error);
     }
