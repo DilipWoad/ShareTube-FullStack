@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { Link, useNavigate } from "react-router";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, postCss ,hideComment}) => {
   const [isPostLiked, setIsPostLiked] = useState(false);
   const { content, createdAt, postOwner, _id } = post;
   const navigate = useNavigate();
+
   const handlePostLike = async () => {
     //when clicked change the given state
     try {
@@ -35,15 +36,15 @@ const PostCard = ({ post }) => {
     }
   };
 
-  const handlePostCommentClick=(postId)=>{
-    navigate(`/channel/${postOwner._id}/post?id=${postId}`)
-  }
+  const handlePostCommentClick = (postId) => {
+    navigate(`/channel/${postOwner._id}/post?id=${postId}`);
+  };
 
   useEffect(() => {
     isUserLikedThePost();
   }, []);
   return (
-    <div key={_id} className=" p-3 flex mb-7 rounded-xl border-2">
+    <div key={_id} className={` p-3 flex mb-7 rounded-xl border-2 ${postCss}`}>
       <div className=" mr-2">
         <img
           className="w-10 h-10 rounded-full object-cover"
@@ -72,7 +73,12 @@ const PostCard = ({ post }) => {
               ♡
             </span>
           </button>
-          <button onClick={()=>handlePostCommentClick(_id)}>💬</button>
+          {!hideComment && <button
+            className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
+            onClick={() => handlePostCommentClick(_id)}
+          >
+            💬
+          </button>}
         </div>
       </div>
     </div>

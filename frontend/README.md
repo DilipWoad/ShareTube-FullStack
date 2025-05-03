@@ -62,7 +62,8 @@
 - Completed Channel Information and Videos fetching part by using videoCard component.
 - Completed Channel Posts Sections making use of ChannelPost card component.
 - Use Outlet to render videos and post route component inside parent /channel/:id route for better rendering
-- Added create post option for the current User only
+- Added create post option for the current User only.
+- Create a seperate page to see a comments of a given post.Re-Used commentCard Component and User comment Box that used in the video Comment component.Current User can comment,edit and Delete comment on the post
 # Routes
 
 Body
@@ -75,3 +76,4 @@ Route="/playlist?list=playlistId" -> shows user added video to the given playlis
 Route="/channel/@<:ChannelId> -> Contains channel information ,channel videos,channel posts and playlist
 Route="/channel/@:id/videos" ->child route '/videos inside parent /channel/:id ,for displaying channel videos,
 Route="/channel/@:id/posts" ->child route '/posts inside parent /channel/:id ,for displaying channel posts,
+Route="/channel/:channelId/post?id" ->absolute route,for displaying particular post with all its comments present

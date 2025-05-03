@@ -92,7 +92,7 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
     <div className={`p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg z-0 ${commentCss}`}>
       <div className="">
         <img
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full object-cover"
           src={commentOwner ? commentOwner.avatar : avatar}
           alt="avatar"
         />
