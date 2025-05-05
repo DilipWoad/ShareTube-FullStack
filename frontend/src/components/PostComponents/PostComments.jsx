@@ -11,6 +11,9 @@ const PostComments = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [postComment, setPostComment] = useState(null);
   const [aPost, setAPost] = useState(null);
+
+  const [currentComment, setCurrentComment] = useState([]);
+
   const user = useSelector((store) => store.user);
 
   const postId = searchParams.get("id");
@@ -44,11 +47,27 @@ const PostComments = () => {
     postComments();
   }, []);
   if (!aPost) return <div>Loading Post...!!</div>;
+
   return (
     <div className="m-2 flex items-center justify-center bg-purple-800 w-full">
       <div className=" bg-lime-400 pl-6 py-6 my-5 rounded-2xl">
-        <PostCard post={aPost} postCss={"w-[800px] m-2 bg-gray-600"} hideComment={true} />
-        <UserCommentBox postId={postId} userCommentCss={"mx-2 min-w-[800px]"} />
+        <PostCard
+          post={aPost}
+          postCss={"w-[800px] m-2 bg-gray-600"}
+          hideComment={true}
+        />
+        <UserCommentBox
+          postId={postId}
+          userCommentCss={"mx-2 min-w-[800px]"}
+          setNewPostComment={setCurrentComment}
+          newPostComment={currentComment}
+        />
+
+        {currentComment &&
+          currentComment.map((comment) => (
+            <CommentCard comment={comment} usersComment={user} />
+          ))}
+
         {postComment &&
           postComment.map((comment) => (
             <CommentCard

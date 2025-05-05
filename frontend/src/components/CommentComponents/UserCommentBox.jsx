@@ -3,13 +3,18 @@ import { useState } from "react"
 import { BASE_URL } from "../../utils/constant";
 import { useSelector } from "react-redux";
 
-const UserCommentBox=({postId ,userCommentCss})=>{
+const UserCommentBox=({postId ,userCommentCss,setNewPostComment,newPostComment})=>{
     // const postId = '67c5a41d8b43dd5470327f1a';
     const [userComment,setUserComment] = useState("");
     const [loading,setLoading] = useState(false);
     const user = useSelector((store)=>store.user);
 
-
+    const owner = {
+      avatar:user.avatar,
+      fullName:user.fullName,
+      _id:user._id,
+      username:user.username
+    }
     const addUserComment=async()=>{
         try {
             setLoading(true);
@@ -18,6 +23,13 @@ const UserCommentBox=({postId ,userCommentCss})=>{
             },{withCredentials:true})
 
             console.log("comment",res.data.data)
+            const postComment = res.data.data;
+            const postCommentWithAllFields={
+              ...postComment,
+              commentOwner:owner
+            }
+            console.log(postCommentWithAllFields)
+            setNewPostComment([postCommentWithAllFields,...newPostComment]);
             setUserComment("")
             setLoading(false);
         } catch (error) {

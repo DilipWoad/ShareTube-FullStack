@@ -11,7 +11,9 @@ const ChannelPosts = () => {
   const [channelPosts, setChannelPosts] = useState(null);
   const [showCreatePostBox, setShowCreatePostBox] = useState(false);
 
-  const userId = useSelector((store) => store.user._id);
+  const [newPostDisplay ,setNewPostDisplay] = useState([]);
+
+  const user = useSelector((store) => store.user);
 
   const handleChannelPosts = async () => {
     try {
@@ -20,6 +22,7 @@ const ChannelPosts = () => {
         withCredentials: true,
       });
       const channelPost = res.data.data;
+      console.log(channelPost)
       setChannelPosts(channelPost.reverse());
     } catch (error) {
       console.log(error);
@@ -28,17 +31,20 @@ const ChannelPosts = () => {
 
   useEffect(() => {
     handleChannelPosts();
-    if (userId == channelId) {
+    if (user._id == channelId) {
       setShowCreatePostBox(true);
     }
   }, []);
   if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
     <>
-      {showCreatePostBox && <CreatePost />}
+      {showCreatePostBox && <CreatePost setNewPost={setNewPostDisplay} newPost={newPostDisplay}/>}
       <div className="no-flex w-4/5 m-10">
+        {newPostDisplay && newPostDisplay.map((post)=>(
+          <PostCard post={post} userInfo={user}/>
+        ))}
         {channelPosts.map((post) => (
-          <PostCard post={post} />
+          <PostCard post={post} userInfo={user} />
         ))}
       </div>
     </>

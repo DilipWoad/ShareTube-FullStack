@@ -58,7 +58,7 @@ const Header = () => {
             <p>Welcome, {userDetails.fullName}</p>
           </div>
           <Link to={`/channel/@${userDetails.username}`} className="">
-            <img className="w-11 h-11 rounded-full" src={userDetails.avatar} />
+            <img className="w-11 h-11 rounded-full object-cover" src={userDetails.avatar} />
           </Link>
           <button onClick={handleLogout} className="">
             <img className="w-6 ml-3 " src={LOGOUT_ICON} alt="logout" />

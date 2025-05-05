@@ -3,9 +3,15 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constant";
 
-const CreatePost = () => {
+const CreatePost = ({newPost,setNewPost}) => {
   const user = useSelector((store) => store.user);
   const [userPostContent, setUserPostContent] = useState("");
+
+  const owner = {
+    avatar:user?.avatar,
+    fullName:user?.fullName,
+    _id:user?._id
+  }
 
   const handleCreatePost = async () => {
     try {
@@ -17,6 +23,15 @@ const CreatePost = () => {
         { withCredentials: true }
       );
       console.log(res.data.data);
+      const currentPost = res.data.data;
+      //doing this because the create post only returns "content" and ownerId ,
+      //  so i just add the postOwner property to this received obj from the server
+      const postWithPostOwnerields = {
+        ...currentPost,
+        postOwner:owner
+      }
+      setNewPost([postWithPostOwnerields,...newPost]);
+      
       setUserPostContent("");
     } catch (error) {
       console.log(error);

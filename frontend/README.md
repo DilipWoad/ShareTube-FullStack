@@ -67,13 +67,13 @@
 # Routes
 
 Body
-Route="/" -> "Feed" -> Get All Videos
-Route="/login" -> Login
-Route="/signup" -> Signup
-Route="/watch?v=videoId -> Watch Video
-Route="/you" -> user library page(contains liked videos,history and playlist)
-Route="/playlist?list=playlistId" -> shows user added video to the given playlist id.
-Route="/channel/@<:ChannelId> -> Contains channel information ,channel videos,channel posts and playlist
-Route="/channel/@:id/videos" ->child route '/videos inside parent /channel/:id ,for displaying channel videos,
-Route="/channel/@:id/posts" ->child route '/posts inside parent /channel/:id ,for displaying channel posts,
-Route="/channel/:channelId/post?id" ->absolute route,for displaying particular post with all its comments present
+- Route="/" -> "Feed" -> Get All Videos
+- Route="/login" -> Login
+- Route="/signup" -> Signup
+- Route="/watch?v=videoId -> Watch Video
+- Route="/you" -> user library page(contains liked videos,history and playlist)
+- Route="/playlist?list=playlistId" -> shows user added video to the given playlist id.
+- Route="/channel/@<:ChannelId> -> Contains channel information ,channel videos,channel posts and playlist
+- Route="/channel/@:id/videos" ->child route '/videos inside parent /channel/:id ,for displaying channel videos,
+- Route="/channel/@:id/posts" ->child route '/posts inside parent /channel/:id ,for displaying channel posts,
+- Route="/channel/:channelId/post?id" ->absolute route,for displaying particular post with all its comments present
