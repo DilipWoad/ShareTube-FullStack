@@ -49,7 +49,7 @@ const PostCommentPractice = ({ post, userInfo, postCss, hideComment }) => {
 
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
-  const [editedComment, setEditedComment] = useState(post.content);
+  const [editedComment, setEditedComment] = useState(post?.content);
 
   //post
   const {postOwner} = post;

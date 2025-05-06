@@ -121,34 +121,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
             <p className="font-bold ">{postOwner?.fullName}</p>
             <p>{createdAt}</p>
           </div>
-          {editComment ? (
-            <div className="w-full mx-4 flex">
-              <input
-                type="text"
-                value={editedComment}
-                onChange={(e) => setEditedComment(e.target.value)}
-                className="flex-1 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <div className="flex flex-2 ml-2 space-x-2">
-                {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
-                <button
-                  onClick={handleEditCancel}
-                  className="bg-white px-2 py-1 rounded-l-full rounded-r-full"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleEditPost(post._id)}
-                  className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          ) : (
-            // <div>{editedComment}</div>
-            <div>{}</div>
-          )}
+          
           <div className="bg-yellow-300" ref={menuRef}>
             <p
               onClick={handleCommentOption}
@@ -186,7 +159,35 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
             )}
           </div>
         </div>
-        <div className="mt-1 text-lg">{content}</div>
+        {editComment ? (
+            <div className="w-full mt-1 flex">
+              <input
+                type="text"
+                value={editedComment}
+                onChange={(e) => setEditedComment(e.target.value)}
+                className="flex-1 px-1 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <div className="flex flex-2 ml-2 space-x-2">
+                {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
+                <button
+                  onClick={handleEditCancel}
+                  className="bg-white px-2 py-1 rounded-l-full rounded-r-full"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleEditPost(post._id)}
+                  className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          ) : (
+            // <div>{editedComment}</div>
+            <div className="mt-1 text-lg">{content}</div>
+          )}
+        
           <div className="flex space-x-5 mt-5 text-[15px] font-semibold">
             <button
               onClick={handlePostLike}
