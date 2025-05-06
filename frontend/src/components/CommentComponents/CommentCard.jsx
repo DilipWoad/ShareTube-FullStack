@@ -141,7 +141,7 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
           {moreOption && (
             <div className="bg-lime-200 absolute p-3 z-50 rounded-lg hover cursor-pointer">
               <ul className="space-y-2">
-                {commentOwner._id ===
+                {(commentOwner ? commentOwner._id : _id) ===
                 usersComment?._id ? (
                   <>
                     <li

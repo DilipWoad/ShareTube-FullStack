@@ -44,6 +44,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
 
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
+  
   const [editedComment, setEditedComment] = useState(post.content);
 
   //post
