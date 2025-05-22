@@ -82,6 +82,9 @@ const getUserPosts = asyncHandler(async (req, res) => {
         postOwner: 1,
       },
     },
+    {
+      $sort:{createdAt:-1}
+    }
   ]);
 
   // console.log(posts)

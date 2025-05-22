@@ -218,8 +218,12 @@ const getLikedVideos = asyncHandler(async (req, res) => {
       $project: {
         _id:0,
         videoDetail:1,
+        updatedAt:1
       },
     },
+    {
+      $sort:{updatedAt:-1}
+    }
   ]);
 
   if (!video) {

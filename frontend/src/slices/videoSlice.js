@@ -8,7 +8,7 @@ const videoSlice = createSlice({
     },
     reducers:{
         addVideo:(state,action)=>{
-            state.feeds=action.payload.reverse();
+            state.feeds=action.payload;
         },
         removeVideoFeed:(state,action)=>{
             state.feeds = null

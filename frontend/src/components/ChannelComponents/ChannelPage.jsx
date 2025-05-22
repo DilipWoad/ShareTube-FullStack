@@ -132,7 +132,7 @@ const ChannelPage = () => {
           </button>
         </div>
 
-        <div className="flex flex-wrap bg-teal-400">
+        <div className="flex flex-wrap bg-teal-400 justify-start">
           <Outlet context={{ channelId, menuClick }} />
         </div>
       </div>

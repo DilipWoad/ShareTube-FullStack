@@ -219,9 +219,13 @@ const getVideoComments = asyncHandler(async (req, res) => {
         video: 1,
         commentOwner: 1,
         createdAt: 1,
-        commentCount:1
+        commentCount:1,
+        updatedAt:1
       },
     },
+    {
+      $sort:{createdAt:-1}
+    }
   ]);
 
   if (!commentAggregate) {
@@ -317,8 +321,12 @@ const getPostComments = asyncHandler(async (req, res) => {
         post: 1,
         commentOwner: 1,
         createdAt: 1,
+        updatedAt:1
       },
     },
+    {
+      $sort:{createdAt:-1}
+    }
   ]);
 
   if (!commentAggregate) {

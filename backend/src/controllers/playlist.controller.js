@@ -265,8 +265,13 @@ const getUserPlaylist = asyncHandler(async (req, res) => {
             title:1,
             description:1,
             owner:1,
-            playlistVideos:1
+            playlistVideos:1,
+            updatedAt:1,
+            createdAt:1
         }
+    },
+    {
+      $sort:{updatedAt:-1}
     }
   ])
 

@@ -21,7 +21,7 @@ const librarySlice = createSlice({
       state.likeVideos = null
     },
     addUserPlaylist: (state, action) => {
-      state.playlist = action.payload.reverse();
+      state.playlist = action.payload;
     },
     addVideoToPlaylist :(state,action)=>{
       state.playlist.push(action.payload)

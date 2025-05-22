@@ -40,7 +40,7 @@ const UserLibrary = () => {
       for (let i = 0; i < userLike.length; i++) {
         likeArray.push(userLike[i].videoDetail);
       }
-      dispatch(addUserLikedVideos(likeArray.reverse()));
+      dispatch(addUserLikedVideos(likeArray));
     } catch (error) {
       console.log(error);
     }

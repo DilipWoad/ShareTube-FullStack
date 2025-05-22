@@ -25,7 +25,7 @@ const PostComments = () => {
       });
       const comment = res.data;
       console.log(comment.data);
-      setPostComment(comment.data.reverse());
+      setPostComment(comment.data);
     } catch (error) {
       console.log(error);
     }

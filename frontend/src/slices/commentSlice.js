@@ -6,7 +6,7 @@ const commentSlice = createSlice({
   reducers: {
     addVideoComments: (state, action) => {
       //first make them reverse
-      return [...action.payload].reverse();
+      return [...action.payload];
     },
     addNewComment: (state, action) => {
       state.unshift(action.payload);

@@ -23,7 +23,7 @@ const ChannelPosts = () => {
       });
       const channelPost = res.data.data;
       console.log(channelPost)
-      setChannelPosts(channelPost.reverse());
+      setChannelPosts(channelPost);
     } catch (error) {
       console.log(error);
     }

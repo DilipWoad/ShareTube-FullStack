@@ -481,13 +481,17 @@ const getAllVideos = asyncHandler(async (req, res) => {
         views: 1,
         createdAt: 1,
         videoOwner: 1,
+        updatedAt:1
       },
     },
+    // {
+    //   $sort: {
+    //     [sortBy]: sortType === "desc" ? -1 : 1,
+    //   },
+    // },
     {
-      $sort: {
-        [sortBy]: sortType === "desc" ? -1 : 1,
-      },
-    },
+      $sort:{createdAt:-1}
+    }
   ]);
   ///#######################################################
 
@@ -555,6 +559,9 @@ const getChannelVideos =asyncHandler(async(req,res)=>{
       $match:{
         owner:new mongoose.Types.ObjectId(channelId)
       }
+    },
+    {
+      $sort:{createdAt:-1}
     }
   ])
 

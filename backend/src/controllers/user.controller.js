@@ -681,6 +681,7 @@ const getUserWatchHistory = asyncHandler(async (req, res) => {
         watchHistory: 1,
       },
     },
+    
   ]);
   return res
     .status(200)

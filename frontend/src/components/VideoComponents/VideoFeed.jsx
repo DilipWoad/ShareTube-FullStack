@@ -9,38 +9,44 @@ import { addUserPlaylist } from "../../slices/librarySlice";
 
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
-  const userStore = useSelector((store)=>store.user);
-  const videoComment = useSelector((store)=>store.comment);
-  const playlistStore = useSelector((store)=>store.library.playlist);
-  const userId = userStore?._id
+  const userStore = useSelector((store) => store.user);
+  const videoComment = useSelector((store) => store.comment);
+  const playlistStore = useSelector((store) => store.library.playlist);
+  const userId = userStore?._id;
   const videos = videoStore?.feeds;
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   console.log(playlistStore);
 
-   const getPlaylist=async()=>{
+  const getPlaylist = async () => {
     try {
-        const res = await axios.get(BASE_URL+`/playlist/user/${userId}`,{withCredentials:true})
-        console.log(res.data.data);
-        dispatch(addUserPlaylist(res.data.data))
+      const res = await axios.get(BASE_URL + `/playlist/user/${userId}`, {
+        withCredentials: true,
+      });
+      console.log(res.data.data);
+      dispatch(addUserPlaylist(res.data.data));
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-  }
+  };
   useGetAllVideos();
-  useEffect(()=>{
+  useEffect(() => {
     getPlaylist();
     videoComment && dispatch(removeVideoComments());
-  },[playlistStore?.length,dispatch])
-  
+  }, [playlistStore?.length, dispatch]);
+
   if (videos?.length === 0) return <div>Loading...</div>;
   return (
     <div className="flex">
-
       <div className="flex flex-wrap my-10">
         {videos &&
           videos.map((video) => (
-            <VideoCard key={video._id} video={video} menuClicked={videoStore?.isMenuClicked} isChannelVideos={false}/>
+            <VideoCard
+              key={video._id}
+              video={video}
+              menuClicked={videoStore?.isMenuClicked}
+              isChannelVideos={false}
+            />
           ))}
       </div>
     </div>
