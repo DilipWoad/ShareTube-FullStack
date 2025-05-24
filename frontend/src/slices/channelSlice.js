@@ -5,7 +5,6 @@ const channelSlice = createSlice({
   initialState: {
     info: null,
     videos: null,
-    posts: null,
   },
   reducers: {
     addChannelInfo: (state, action) => {
@@ -14,12 +13,11 @@ const channelSlice = createSlice({
     addChannelVideos: (state, action) => {
       state.videos = action.payload;
     },
-    addChannelPosts: (state, action) => {
-      state.posts = action.payload;
-    },
   },
 });
 
 export default channelSlice.reducer;
-export const { addChannelInfo, addChannelPosts, addChannelVideos } =
-  channelSlice.actions;
+export const {
+  addChannelInfo,
+  addChannelVideos,
+} = channelSlice.actions;

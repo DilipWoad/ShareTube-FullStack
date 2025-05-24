@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetAllVideos } from "../../hooks/useGetAllVideos";
 import VideoCard from "./VideoCard";
 import { useEffect } from "react";
-import { removeVideoComments } from "../../slices/commentSlice";
+import { removeComment } from "../../slices/commentSlice";
 import { BASE_URL } from "../../utils/constant";
 import axios from "axios";
 import { addUserPlaylist } from "../../slices/librarySlice";
@@ -32,7 +32,7 @@ const VideoFeed = () => {
   useGetAllVideos();
   useEffect(() => {
     getPlaylist();
-    videoComment && dispatch(removeVideoComments());
+    videoComment && dispatch(removeComment());
   }, [playlistStore?.length, dispatch]);
 
   if (videos?.length === 0) return <div>Loading...</div>;

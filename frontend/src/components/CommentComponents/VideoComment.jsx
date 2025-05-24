@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import CommentCard from "./CommentCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewComment, addVideoComments } from "../../slices/commentSlice";
+import { addNewComment, addComments } from "../../slices/commentSlice";
 
 const VideoComment = ({ videoId }) => {
   // const [videoComments, setVideoComments] = useState(null);
@@ -45,7 +45,7 @@ const VideoComment = ({ videoId }) => {
         withCredentials: true,
       });
       const array = res.data.data;
-      dispatch(addVideoComments(array));
+      dispatch(addComments(array));
     } catch (error) {
       console.error("Error fetching comments:", error);
       setError("Failed to load comments.");

@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useState } from "react"
 import { BASE_URL } from "../../utils/constant";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewComment } from "../../slices/commentSlice";
 
-const UserCommentBox=({postId ,userCommentCss,setNewPostComment,newPostComment})=>{
+const UserCommentBox=({postId ,userCommentCss})=>{
     // const postId = '67c5a41d8b43dd5470327f1a';
     const [userComment,setUserComment] = useState("");
     const [loading,setLoading] = useState(false);
     const user = useSelector((store)=>store.user);
+    const dispatch = useDispatch();
 
     const owner = {
       avatar:user.avatar,
@@ -29,7 +31,8 @@ const UserCommentBox=({postId ,userCommentCss,setNewPostComment,newPostComment})
               commentOwner:owner
             }
             console.log(postCommentWithAllFields)
-            setNewPostComment([postCommentWithAllFields,...newPostComment]);
+            // setNewPostComment([postCommentWithAllFields,...newPostComment]);
+            dispatch(addNewComment(postCommentWithAllFields));
             setUserComment("")
             setLoading(false);
         } catch (error) {

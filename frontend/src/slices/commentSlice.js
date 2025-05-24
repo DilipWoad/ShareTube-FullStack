@@ -4,14 +4,14 @@ const commentSlice = createSlice({
   name: "comment",
   initialState: [],
   reducers: {
-    addVideoComments: (state, action) => {
+    addComments: (state, action) => {
       //first make them reverse
       return [...action.payload];
     },
     addNewComment: (state, action) => {
       state.unshift(action.payload);
     },
-    removeVideoComments: (state, action) => {
+    removeComment: (state, action) => {
       return null;
     },
     removeUserComment: (state, action) => {
@@ -30,8 +30,8 @@ const commentSlice = createSlice({
 export default commentSlice.reducer;
 export const {
   addNewComment,
-  addVideoComments,
-  removeVideoComments,
+  addComments,
+  removeComment,
   removeUserComment,
   updateUserComment,
 } = commentSlice.actions;

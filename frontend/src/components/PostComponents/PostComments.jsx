@@ -2,17 +2,20 @@ import { useSearchParams } from "react-router";
 import PostCard from "./PostCard";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import CommentCard from "../CommentComponents/CommentCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserCommentBox from "../CommentComponents/UserCommentBox";
+import { addComments } from "../../slices/commentSlice";
 
 const PostComments = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [postComment, setPostComment] = useState(null);
+  // const [postComment, setPostComment] = useState(null);
   const [aPost, setAPost] = useState(null);
+  const dispatch = useDispatch();
+  const postComment = useSelector((store)=>store.comment);
 
-  const [currentComment, setCurrentComment] = useState([]);
+  // const [currentComment, setCurrentComment] = useState([]);
 
   const user = useSelector((store) => store.user);
 
@@ -25,7 +28,8 @@ const PostComments = () => {
       });
       const comment = res.data;
       console.log(comment.data);
-      setPostComment(comment.data);
+      dispatch(addComments(comment.data))
+      // setPostComment(comment.data);
     } catch (error) {
       console.log(error);
     }
@@ -59,14 +63,12 @@ const PostComments = () => {
         <UserCommentBox
           postId={postId}
           userCommentCss={"mx-2 min-w-[800px]"}
-          setNewPostComment={setCurrentComment}
-          newPostComment={currentComment}
         />
 
-        {currentComment &&
+        {/* {currentComment &&
           currentComment.map((comment) => (
             <CommentCard comment={comment} usersComment={user} />
-          ))}
+          ))} */}
 
         {postComment &&
           postComment.map((comment) => (

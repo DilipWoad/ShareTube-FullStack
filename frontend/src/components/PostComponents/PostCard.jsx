@@ -4,6 +4,8 @@ import { BASE_URL } from "../../utils/constant";
 
 import { Link, useNavigate } from "react-router";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import { useDispatch } from "react-redux";
+import { removeUserPost, updateUserPost } from "../../slices/postSlice";
 
 const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   const [isPostLiked, setIsPostLiked] = useState(false);
@@ -43,15 +45,16 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   };
 
   const [moreOption, setMoreOption] = useState(false);
-  const [editComment, setEditComment] = useState(false);
-  
-  const [editedComment, setEditedComment] = useState(post.content);
+  const [editPost, setEditPost] = useState(false);
+
+  const [editedPost, setEditedPost] = useState(post.content);
 
   //post
   // const {postOwner} = post;
   //   const { avatar, username, _id } = userInfo;
 
   //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const menuRef = useOutsideClick(setMoreOption);
 
@@ -66,6 +69,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           withCredentials: true,
         });
         // dispatch(removeUserComment(commentId));
+        dispatch(removeUserPost(postId));
       }
     } catch (error) {
       console.log(
@@ -81,21 +85,23 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
         const res = await axios.patch(
           BASE_URL + `/post/${postId}`,
           {
-            content: editedComment,
+            content: editedPost,
           },
           { withCredentials: true }
         );
         const updatedComment = res.data.data;
         // dispatch(updateUserComment(updatedComment));
+        dispatch(updateUserPost({...updatedComment,postOwner}));
+        setEditPost(false)
       }
     } catch (error) {
       console.log(error);
     }
-    setEditComment(false);
+    setEditPost(false);
   };
   const handleEditCancel = () => {
-    setEditedComment(post.content);
-    setEditComment(false);
+    setEditedPost(post.content);
+    setEditPost(false);
   };
   useEffect(() => {
     isUserLikedThePost();
@@ -121,7 +127,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
             <p className="font-bold ">{postOwner?.fullName}</p>
             <p>{createdAt}</p>
           </div>
-          
+
           <div className="bg-yellow-300" ref={menuRef}>
             <p
               onClick={handleCommentOption}
@@ -143,7 +149,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
                         🗑️ Delete
                       </li>
                       <li
-                        onClick={() => setEditComment(true)}
+                        onClick={() => setEditPost(true)}
                         className="hover:bg-slate-300 p-1 rounded-lg"
                       >
                         🖊 Edit
@@ -159,59 +165,59 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
             )}
           </div>
         </div>
-        {editComment ? (
-            <div className="w-full mt-1 flex">
-              <input
-                type="text"
-                value={editedComment}
-                onChange={(e) => setEditedComment(e.target.value)}
-                className="flex-1 px-1 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <div className="flex flex-2 ml-2 space-x-2">
-                {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
-                <button
-                  onClick={handleEditCancel}
-                  className="bg-white px-2 py-1 rounded-l-full rounded-r-full"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleEditPost(post._id)}
-                  className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          ) : (
-            // <div>{editedComment}</div>
-            <div className="mt-1 text-lg">{content}</div>
-          )}
-        
-          <div className="flex space-x-5 mt-5 text-[15px] font-semibold">
-            <button
-              onClick={handlePostLike}
-              className={`hover:bg-gray-300 rounded-full text-3xl ${
-                isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
-              } h-7 w-7 flex items-center justify-center overflow-clip`}
-            >
-              <span
-                className={`${
-                  isPostLiked ? " text-white hover:text-black " : ""
-                }`}
-              >
-                ♡
-              </span>
-            </button>
-            {!hideComment && (
+        {editPost ? (
+          <div className="w-full mt-1 flex">
+            <input
+              type="text"
+              value={editedPost}
+              onChange={(e) => setEditedPost(e.target.value)}
+              className="flex-1 px-1 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <div className="flex flex-2 ml-2 space-x-2">
+              {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
               <button
-                className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
-                onClick={() => handlePostCommentClick(_id)}
+                onClick={handleEditCancel}
+                className="bg-white px-2 py-1 rounded-l-full rounded-r-full"
               >
-                💬
+                Cancel
               </button>
-            )}
+              <button
+                onClick={() => handleEditPost(post._id)}
+                className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
+              >
+                Save
+              </button>
+            </div>
           </div>
+        ) : (
+          // <div>{editedPost}</div>
+          <div className="mt-1 text-lg">{content}</div>
+        )}
+
+        <div className="flex space-x-5 mt-5 text-[15px] font-semibold">
+          <button
+            onClick={handlePostLike}
+            className={`hover:bg-gray-300 rounded-full text-3xl ${
+              isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
+            } h-7 w-7 flex items-center justify-center overflow-clip`}
+          >
+            <span
+              className={`${
+                isPostLiked ? " text-white hover:text-black " : ""
+              }`}
+            >
+              ♡
+            </span>
+          </button>
+          {!hideComment && (
+            <button
+              className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
+              onClick={() => handlePostCommentClick(_id)}
+            >
+              💬
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

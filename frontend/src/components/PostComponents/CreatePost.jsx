@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constant";
+import { addNewPost } from "../../slices/postSlice";
 
-const CreatePost = ({newPost,setNewPost}) => {
-  const user = useSelector((store) => store.user);
+
+const CreatePost = () => {
   const [userPostContent, setUserPostContent] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector((store)=>store.user)
 
   const owner = {
     avatar:user?.avatar,
@@ -30,7 +33,8 @@ const CreatePost = ({newPost,setNewPost}) => {
         ...currentPost,
         postOwner:owner
       }
-      setNewPost([postWithPostOwnerields,...newPost]);
+      dispatch(addNewPost(postWithPostOwnerields));
+      // setNewPost([postWithPostOwnerields,...newPost]);
       
       setUserPostContent("");
     } catch (error) {

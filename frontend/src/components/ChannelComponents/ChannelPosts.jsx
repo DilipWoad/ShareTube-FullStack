@@ -3,15 +3,20 @@ import PostCard from "../PostComponents/PostCard";
 import { BASE_URL } from "../../utils/constant";
 import { useOutletContext } from "react-router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CreatePost from "../PostComponents/CreatePost";
+import { addPost } from "../../slices/postSlice";
 
 const ChannelPosts = () => {
   const { channelId } = useOutletContext();
-  const [channelPosts, setChannelPosts] = useState(null);
+  // const [channelPosts, setChannelPosts] = useState(null);
   const [showCreatePostBox, setShowCreatePostBox] = useState(false);
 
-  const [newPostDisplay ,setNewPostDisplay] = useState([]);
+  const channelPosts = useSelector((store)=>store.post);
+  const dispatch = useDispatch();
+
+  // const [newPostDisplay ,setNewPostDisplay] = useState([]);
+  
 
   const user = useSelector((store) => store.user);
 
@@ -23,7 +28,8 @@ const ChannelPosts = () => {
       });
       const channelPost = res.data.data;
       console.log(channelPost)
-      setChannelPosts(channelPost);
+      dispatch(addPost(channelPost));
+      // setChannelPosts(channelPost);
     } catch (error) {
       console.log(error);
     }
@@ -38,13 +44,13 @@ const ChannelPosts = () => {
   if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
     <>
-      {showCreatePostBox && <CreatePost setNewPost={setNewPostDisplay} newPost={newPostDisplay}/>}
+      {showCreatePostBox && <CreatePost />}
       <div className="no-flex w-4/5 m-10">
-        {newPostDisplay && newPostDisplay.map((post)=>(
+        {/* {newPostDisplay && newPostDisplay.map((post)=>(
           <PostCard post={post} userInfo={user}/>
-        ))}
+        ))} */}
         {channelPosts.map((post) => (
-          <PostCard post={post} userInfo={user} />
+          <PostCard key={post._id} post={post} userInfo={user} />
         ))}
       </div>
     </>

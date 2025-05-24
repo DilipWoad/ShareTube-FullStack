@@ -8,6 +8,7 @@ import commentReducer from "../slices/commentSlice";
 import libraryReducer from "../slices/librarySlice";
 import playlistReducer from "../slices/playlistSlice";
 import channelReducer from "../slices/channelSlice";
+import postReducer from "../slices/postSlice";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   library: libraryReducer,
   playlist: playlistReducer,
   channel: channelReducer,
+  post : postReducer
 });
 
 const presistedReducer = persistReducer(persistConfig,rootReducer)
