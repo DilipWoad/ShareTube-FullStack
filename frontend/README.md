@@ -64,6 +64,8 @@
 - Use Outlet to render videos and post route component inside parent /channel/:id route for better rendering
 - Added create post option for the current User only.
 - Create a seperate page to see a comments of a given post.Re-Used commentCard Component and User comment Box that used in the video Comment component.Current User can comment,edit and Delete comment on the post
+- Created redux slice of post and used commentSlice(reuse) for post comment 
+- implemented edit and delete options for both user post and post comment, and also dynamically updates the frontend.
 # Routes
 
 Body
