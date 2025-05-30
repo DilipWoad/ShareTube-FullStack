@@ -14,6 +14,7 @@ import ChannelPage from "./components/ChannelComponents/ChannelPage";
 import ChannelVideos from "./components/ChannelComponents/ChannelVideos";
 import ChannelPosts from "./components/ChannelComponents/ChannelPosts";
 import PostComments from "./components/PostComponents/PostComments";
+import ChannelStudio from "./components/ChannelStudioComponents/ChannelStudio";
 function App() {
   return (
     <>
@@ -36,6 +37,7 @@ function App() {
                   <Route path="posts" element={<ChannelPosts/>} />
                 </Route>
                 <Route path="/channel/:id/post" element={<PostComments/>}/>
+                <Route path="/studio" element={<ChannelStudio/>}/>
               </Route>
             </Routes>
           </BrowserRouter>
