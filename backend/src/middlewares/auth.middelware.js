@@ -19,7 +19,7 @@ const verifyAuthentication = asyncHandler(async (req, res, next) => {
       req.header("Authorization")?.replace("Bearer ", "");
 
     //check if token present
-    console.log(jwtPayload);
+    console.log(token);
     if (!token) {
       throw new ApiError("Invalid Authorization !!");
     }
