@@ -66,6 +66,7 @@
 - Create a seperate page to see a comments of a given post.Re-Used commentCard Component and User comment Box that used in the video Comment component.Current User can comment,edit and Delete comment on the post
 - Created redux slice of post and used commentSlice(reuse) for post comment 
 - implemented edit and delete options for both user post and post comment, and also dynamically updates the frontend.
+- Deployed Backend on Render and Frontend on Vercel
 # Routes
 
 Body
