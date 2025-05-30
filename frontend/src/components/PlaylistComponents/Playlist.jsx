@@ -16,7 +16,7 @@ const Playlist = () => {
   
   const getPlaylist = async () => {
     try {
-      const res = await axios.get(BASE_URL + `/playlist/${playlistId}`, {
+      const res = await axios.get(`${BASE_URL}/playlist/${playlistId}`, {
         withCredentials: true,
       });
       console.log(res.data.data);

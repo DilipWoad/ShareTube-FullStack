@@ -42,6 +42,7 @@ const verifyAuthentication = asyncHandler(async(req,res,next)=>{
     //if found add this user info(all the info) in the "req" object
 
     req.user = user;
+    console.log("AccessToken from cookie/header:", token);
     //once added to the req obj now work of the middelware is over call the next function
     next();
     } catch (error) {
