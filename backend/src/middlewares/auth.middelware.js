@@ -15,15 +15,11 @@ const verifyAuthentication = asyncHandler(async (req, res, next) => {
   //mobile -> "Authorization" : "Bearer accessToken"
 
   try {
-    console.log("Request Headers:", req.headers); // Log all headers
-    console.log("Request Cookies:", req.cookies);
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
 
     //check if token present
-    console.log("Extracted Token:", token);
-    console.log(token);
     if (!token) {
       throw new ApiError("Invalid Authorization !!");
     }
