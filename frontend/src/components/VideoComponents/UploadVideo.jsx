@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState,useNavigate } from "react";
+import { useState} from "react";
 import { BASE_URL } from "../../utils/constant";
+import { useNavigate } from "react-router";
 
 
 const UploadVideo = () => {
