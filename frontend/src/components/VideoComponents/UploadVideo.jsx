@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState,useNavigate } from "react";
 import { BASE_URL } from "../../utils/constant";
+
 
 const UploadVideo = () => {
   const [title, setTitle] = useState("");
@@ -8,6 +9,8 @@ const UploadVideo = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleVideoFile=(e)=>{
     if(e.target.files){
@@ -40,39 +43,23 @@ const UploadVideo = () => {
         }
       );
       console.log(res.data);
+      //once complete stop loading
+      setLoading(false);
+      //show a ui res that video is uploaded 
+      console.alert("Video Uploaded Successfully!!")
+      //and navigate to / home page/feed
+      navigate('/');
     } catch (error) {
+      //stop the loading 
       console.log(error);
+      //TODO: if fails be on the same page and try again button
+      setLoading(false);
+      console.alert("Something Went Wrong Pls try again!!");
     } finally {
       setLoading(false);
     }
   };
   return (
-    // <div className="bg-lime-600 w-full flex items-center justify-center">
-    //   <div className="w-1/2 bg-cyan-700">
-    //     <div>video file upload</div>
-    //     <div>Thumbnail</div>
-    //     <div>
-    //       <label>
-    //         Title {title}
-    //         <input
-    //           type="text"
-    //           placeholder="Video title..."
-    //           value={title}
-    //           onChange={(e) => setTitle(e.target.value)}
-    //         />
-    //       </label>
-    //       <label>
-    //         Description {description}
-    //         <input
-    //           type="text"
-    //           placeholder="Video description..."
-    //           value={description}
-    //           onChange={(e) => setDescription(e.target.value)}
-    //         />
-    //       </label>
-    //     </div>
-    //   </div>
-    // </div>
     <div className="flex items-center justify-center w-screen bg-red-400">
       <div className="bg-white w-full max-w-sm my-8 rounded-lg p-5 shadow-lg">
         <label className="text-2xl font-semibold ">Upload Video</label>
