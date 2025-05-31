@@ -47,7 +47,7 @@ const UploadVideo = () => {
       //once complete stop loading
       setLoading(false);
       //show a ui res that video is uploaded 
-      console.alert("Video Uploaded Successfully!!")
+      alert("Video Uploaded Successfully!!")
       //and navigate to / home page/feed
       navigate('/');
     } catch (error) {
@@ -55,10 +55,11 @@ const UploadVideo = () => {
       console.log(error);
       //TODO: if fails be on the same page and try again button
       setLoading(false);
-      console.alert("Something Went Wrong Pls try again!!");
-    } finally {
-      setLoading(false);
-    }
+      alert("Something Went Wrong Pls try again!!");
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
   };
   return (
     <div className="flex items-center justify-center w-screen bg-red-400">
