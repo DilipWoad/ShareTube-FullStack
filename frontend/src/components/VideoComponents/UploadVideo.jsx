@@ -4,7 +4,7 @@ import { BASE_URL } from "../../utils/constant";
 import { useNavigate } from "react-router";
 
 
-const UploadVideo = () => {
+const UploadVideo = ({uploadBgCss}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
@@ -62,7 +62,7 @@ const UploadVideo = () => {
     // }
   };
   return (
-    <div className="flex items-center justify-center w-screen bg-red-400">
+    <div className={`flex items-center justify-center w-screen ${uploadBgCss}`}>
       <div className="bg-white w-full max-w-sm my-8 rounded-lg p-5 shadow-lg">
         <label className="text-2xl font-semibold ">Upload Video</label>
         <form className="mt-6">
