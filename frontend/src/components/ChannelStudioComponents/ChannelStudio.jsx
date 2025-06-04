@@ -1,38 +1,12 @@
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { Link, NavLink, Outlet } from "react-router";
 import UploadVideo from "../VideoComponents/UploadVideo";
-import StudioVideoCard from "./StudioVideoCard";
-import { BASE_URL } from "../../utils/constant";
-import { useEffect, useState } from "react";
-import {useSelector} from "react-redux";
+import { useState } from "react";
 
 const ChannelStudio = () => {
-    const[dashboard,setDashboard] =useState(null);
-    const[channelVideos,setChannelVideos] =useState(null);
-    const user = useSelector((store)=>store.user);
-  const getChannelStats = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/dashboard`, { withCredentials: true });
-      setDashboard(res.data.data);
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getChannelVideo=async()=>{
-    try {
-        const res= await axios.get(`${BASE_URL}/dashboard/videos`,{withCredentials:true})
-        console.log(res.data.data);
-        setChannelVideos(res.data.data);
-    } catch (error) {
-        console.log(error)
-    }
-  }
-  useEffect(()=>{
-    getChannelStats();
-    getChannelVideo();
-  },[])
-  if(!dashboard) return <div>Loading....</div>
+  const user = useSelector((store) => store.user);
+    const [cancel, setCancel] = useState(false);
+  
   return (
     <div className="flex w-screen h-screen m-2">
       <div className="bg-yellow-300 w-52 text-center mr-4">
@@ -43,37 +17,35 @@ const ChannelStudio = () => {
             alt="avatar"
           />
         </div>
-        <div className="bg-green-600 text-lg">
-          <div className="p-2 bg-gray-400 border-[1px] hover:cursor-pointer hover:bg-gray-500 hover:text-white">
+        <div className="bg-green-600 text-lg flex flex-col">
+          <NavLink to={'/studio/dashboard'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
             Dashboard
-          </div>
-          <div className="p-2 bg-gray-400 border-[1px] hover:cursor-pointer hover:bg-gray-500 hover:text-white">
+          </NavLink>
+          <NavLink to={'/studio/edit-profile'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
             Edit profile
-          </div>
-          <div className="p-2 bg-gray-400 border-[1px] hover:cursor-pointer hover:bg-gray-500 hover:text-white text">
+          </NavLink>
+          <NavLink to={'/studio'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
             Videos
-          </div>
-          <div className="p-2 bg-gray-400 border-[1px] hover:cursor-pointer hover:bg-gray-500 hover:text-white">
+          </NavLink>
+          <NavLink to={'/studio/posts'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
             Posts
-          </div>
+          </NavLink>
         </div>
       </div>
-      <div className="bg-blue-300 flex-grow">
+      <div className="bg-blue-300 flex-grow h-screen overflow-y-scroll">
         <div className="bg-red-500 h-44 mb-4">
           <img
             className="h-44 rounded-xl w-full object-fill"
             src={user?.coverImage}
           />
         </div>
-        <div className="bg-orange-400 h-screen mx-2">
-          {
-            channelVideos && channelVideos.map((video)=>(
-                <StudioVideoCard channelVideos={video} />
-            ))
-          }
+        {/* here all the other options will render */}
+        <div className="text-end mr-5">
+            <button onClick={()=>setCancel(false)} className="bg-white px-2 py-1 mb-2 rounded-l-full rounded-r-full hover:bg-gray-500 hover:text-white">Upload Video</button>
         </div>
+        <Outlet/>
       </div>
-      {/* <UploadVideo uploadBgCss={"bg-black bg-opacity-20"}/> */}
+      <UploadVideo setCancel={setCancel} cancel={cancel}/>
     </div>
   );
 };

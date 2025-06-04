@@ -1,10 +1,9 @@
 import axios from "axios";
-import { useState} from "react";
+import { useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useNavigate } from "react-router";
 
-
-const UploadVideo = ({uploadBgCss}) => {
+const UploadVideo = ({setCancel,cancel}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
@@ -13,65 +12,80 @@ const UploadVideo = ({uploadBgCss}) => {
 
   const navigate = useNavigate();
 
-  const handleVideoFile=(e)=>{
-    if(e.target.files){
-        console.log(e.target.files);
-        setVideoFile(e.target.files[0])
+  const handleVideoFile = (e) => {
+    if (e.target.files) {
+      console.log(e.target.files);
+      setVideoFile(e.target.files[0]);
     }
-  }
-  const handleThumbnailFile=(e)=>{
-    if(e.target.files){
-        console.log(e.target.files);
-        setThumbnail(e.target.files[0])
+  };
+  const handleThumbnailFile = (e) => {
+    if (e.target.files) {
+      console.log(e.target.files);
+      setThumbnail(e.target.files[0]);
     }
-  }
+  };
 
   const handleUploadVideo = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("videoFile",videoFile);
-    data.append("thumbnail",thumbnail);
-    data.append("title",title);
-    data.append("description",description)
+    data.append("videoFile", videoFile);
+    data.append("thumbnail", thumbnail);
+    data.append("title", title);
+    data.append("description", description);
 
     setLoading(true);
     try {
-      const res = await axios.post(
-        BASE_URL + `/video/upload`,
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(BASE_URL + `/video/upload`, data, {
+        withCredentials: true,
+      });
       console.log(res.data);
       //once complete stop loading
       setLoading(false);
-      //show a ui res that video is uploaded 
-      alert("Video Uploaded Successfully!!")
+      //show a ui res that video is uploaded
+      alert("Video Uploaded Successfully!!");
       //and navigate to / home page/feed
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      //stop the loading 
+      //stop the loading
       console.log(error);
       //TODO: if fails be on the same page and try again button
       setLoading(false);
       alert("Something Went Wrong Pls try again!!");
-    } 
+    }
     // finally {
     //   setLoading(false);
     // }
   };
+  const handleCancelUpload=()=>{
+    setCancel(true)
+  }
   return (
-    <div className={`flex items-center justify-center w-screen ${uploadBgCss}`}>
+    !cancel && <div
+      className={`fixed inset-0 z-50 bg-black/60 flex items-center justify-center`}
+    >
       <div className="bg-white w-full max-w-sm my-8 rounded-lg p-5 shadow-lg">
-        <label className="text-2xl font-semibold ">Upload Video</label>
+        <div className="flex justify-between items-center">
+          <label className="text-2xl font-semibold ">Upload Video</label>
+          <div onClick={handleCancelUpload} className="hover:cursor-pointer hover:bg-gray-300 w-8 h-8 rounded-full 
+          justify-center items-center flex">
+            ✖
+          </div>
+        </div>
         <form className="mt-6">
           <div className="space-y-2 ">
             <label className="block text-gray-600">Video File</label>
-            <input onChange={handleVideoFile} type="file" className="w-full p-2 border rounded-md" />
+            <input
+              onChange={handleVideoFile}
+              type="file"
+              className="w-full p-2 border rounded-md"
+            />
 
             <label className="block text-gray-600">Thumbnail</label>
-            <input onChange={handleThumbnailFile} type="file" className="w-full p-2 border rounded-md" />
+            <input
+              onChange={handleThumbnailFile}
+              type="file"
+              className="w-full p-2 border rounded-md"
+            />
           </div>
           <div>
             <label className="block text-gray-600">Title</label>

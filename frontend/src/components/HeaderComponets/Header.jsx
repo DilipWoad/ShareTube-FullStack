@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const Header = () => {
   const userDetails = useSelector((store) => store.user);
-  const [createOption,setCreateOption] = useState(false);
+  const [createOption, setCreateOption] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,20 +45,39 @@ const Header = () => {
       </div>
       {userDetails ? (
         <div className="flex items-center gap-3 relative">
-          <button onClick={()=>setCreateOption(!createOption)} className="bg-white px-2 py-1 rounded-full hover:bg-gray-300">
+          <button
+            onClick={() => setCreateOption(!createOption)}
+            className="bg-white px-2 py-1 rounded-full hover:bg-gray-300"
+          >
             ✚ Create
           </button>
-          {
-            createOption && <div className="bg-sky-400 absolute flex flex-col top-10 p-2 rounded-lg">
-              <Link to={'/upload/video'}><div onClick={()=>setCreateOption(false)} className="hover:bg-yellow-300 p-1 hover:cursor-pointer">upload video</div></Link>
-              <Link to={`/channel/@${userDetails?.username}/posts`} className="hover:bg-yellow-300 p-1 hover:cursor-pointer">create post</Link>
+          {createOption && (
+            <div className="bg-sky-400 absolute flex flex-col top-10 p-2 rounded-lg">
+              <Link to={"/studio"}>
+                <div
+                  onClick={() => setCreateOption(false)}
+                  className="hover:bg-yellow-300 p-1 hover:cursor-pointer"
+                >
+                  upload video
+                </div>
+              </Link>
+              <Link
+                to={`/channel/@${userDetails?.username}/posts`}
+                className="hover:bg-yellow-300 p-1 hover:cursor-pointer"
+                onClick={() => setCreateOption(false)}
+              >
+                create post
+              </Link>
             </div>
-          }
+          )}
           <div>
             <p>Welcome, {userDetails.fullName}</p>
           </div>
           <Link to={`/channel/@${userDetails.username}`} className="">
-            <img className="w-11 h-11 rounded-full object-cover" src={userDetails.avatar} />
+            <img
+              className="w-11 h-11 rounded-full object-cover"
+              src={userDetails.avatar}
+            />
           </Link>
           <button onClick={handleLogout} className="">
             <img className="w-6 ml-3 " src={LOGOUT_ICON} alt="logout" />
