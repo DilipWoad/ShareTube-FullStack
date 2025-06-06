@@ -120,6 +120,7 @@ const StudioVideos = () => {
             title={videoInfo?.title}
             description={videoInfo?.description}
             setEditOption={setVideoEditOption}
+            isVideoEdit={true}
           />
         )}
       </div>
