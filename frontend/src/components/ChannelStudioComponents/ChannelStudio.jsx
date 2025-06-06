@@ -5,8 +5,8 @@ import { useState } from "react";
 
 const ChannelStudio = () => {
   const user = useSelector((store) => store.user);
-    const [cancel, setCancel] = useState(false);
-  
+  const [cancel, setCancel] = useState(false);
+
   return (
     <div className="flex w-screen h-screen m-2">
       <div className="bg-yellow-300 w-52 text-center mr-4">
@@ -18,16 +18,44 @@ const ChannelStudio = () => {
           />
         </div>
         <div className="bg-green-600 text-lg flex flex-col">
-          <NavLink to={'/studio/dashboard'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
+          <NavLink
+            to={"/studio/dashboard"}
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white"
+                : "bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text"
+            }
+          >
             Dashboard
           </NavLink>
-          <NavLink to={'/studio/edit-profile'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
+          <NavLink
+            to={"/studio/edit-profile"}
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white"
+                : "bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text"
+            }
+          >
             Edit profile
           </NavLink>
-          <NavLink to={'/studio'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
+          <NavLink
+            to={"/studio"}
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white"
+                : "bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text"
+            }
+          >
             Videos
           </NavLink>
-          <NavLink to={'/studio/posts'} className={({isActive})=> (isActive ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white" :"bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text")}>
+          <NavLink
+            to={"/studio/posts"}
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white"
+                : "bg-gray-400 p-2 hover:cursor-pointer hover:bg-gray-500 hover:text-white text"
+            }
+          >
             Posts
           </NavLink>
         </div>
@@ -40,12 +68,9 @@ const ChannelStudio = () => {
           />
         </div>
         {/* here all the other options will render */}
-        <div className="text-end mr-5">
-            <button onClick={()=>setCancel(false)} className="bg-white px-2 py-1 mb-2 rounded-l-full rounded-r-full hover:bg-gray-500 hover:text-white">Upload Video</button>
-        </div>
         <Outlet/>
       </div>
-      <UploadVideo setCancel={setCancel} cancel={cancel}/>
+      <UploadVideo setCancel={setCancel} cancel={cancel} />
     </div>
   );
 };

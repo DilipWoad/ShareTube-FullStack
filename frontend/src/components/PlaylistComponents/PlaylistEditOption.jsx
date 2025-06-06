@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { editPlaylistInfo } from "../../slices/librarySlice";
-import { motion } from "framer-motion";
+
 
 const PlaylistEditOption = ({
   playlistId,
