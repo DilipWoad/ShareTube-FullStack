@@ -1,7 +1,11 @@
 import { useState } from "react";
+import ToggleButton from "../../utils/ToggleButton";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 
 const StudioVideoCard = ({ channelVideos ,setSelectedId,selectedId}) => {
-  const { thumbnail, views, title, _id } = channelVideos;
+  const { thumbnail, views, title, _id ,isPublished} = channelVideos;
+    const [toggle,setToggle] = useState(isPublished);
+    const [showBox,setShowBox] = useState(false);
  
   const handleCheckbox=(id)=>{
     setSelectedId((arrayOfIds)=>{
@@ -14,33 +18,39 @@ const StudioVideoCard = ({ channelVideos ,setSelectedId,selectedId}) => {
   }
 
   return (
-    <div className="bg-gray-500 h-28 border-y-[1px] items-center flex rounded-lg">
-      <div className="bg-gray-400 h-24 w-full flex items-center px-2">
-        <input
-          className="mx-2"
-          type="checkbox"
-          checked={selectedId.includes(_id)}
-          onChange={() => handleCheckbox(_id)}
-        />
-        <div className="flex bg-lime-300 w-[700px]">
-          <div className="mr-4">
-            <img
-              className="h-20 w-32 rounded-lg"
-              src={thumbnail}
-              alt="thumbnail"
-            />
-          </div>
-          <div className="text-lg font-semibold">{title}</div>
-        </div>
-        <div className="mx-3 flex items-center justify-center w-20">
-          {views} views
-        </div>
-
-        <div className="flex items-center justify-center ">
-          <input className="" type="checkbox" />
-        </div>
+    <div className="bg-gray-100 dark:bg-gray-800 border-y border-gray-300 dark:border-gray-700 py-4 px-3 rounded-lg shadow-sm mb-2">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    {/* Left Side: Checkbox + Thumbnail + Title */}
+    <div className="flex items-center gap-4 flex-1 ">
+      <input
+        type="checkbox"
+        checked={selectedId.includes(_id)}
+        onChange={() => handleCheckbox(_id)}
+        className={`${selectedId.length==1 ? "accent-blue-500": "accent-red-500"} h-5 w-5`}
+      />
+      <img
+        src={thumbnail}
+        alt="thumbnail"
+        className="h-20 w-32 rounded-md object-cover shadow-sm ml-14"
+      />
+      <div className="text-gray-800 dark:text-gray-100 text-lg font-medium truncate max-w-[250px] sm:max-w-[400px]">
+        {title}
       </div>
     </div>
+
+    {/* Right Side: Views + Extra Checkbox */}
+    <div className="flex items-center gap-6">
+      <div className="text-gray-600 dark:text-gray-300 text-sm sm:text-base whitespace-nowrap">
+        {views} views
+      </div>
+      
+      <div>
+        <ToggleButton  toggle={toggle} setShowBox={setShowBox}/>
+      </div>
+    </div>
+    {showBox && <ConfirmationBox toggle={toggle} setShowBox={setShowBox} setToggle={setToggle} id={_id}/>}
+  </div>
+</div>
   );
 };
 

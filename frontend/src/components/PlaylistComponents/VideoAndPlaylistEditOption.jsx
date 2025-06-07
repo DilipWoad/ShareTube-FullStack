@@ -4,20 +4,22 @@ import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { editPlaylistInfo } from "../../slices/librarySlice";
 
-const PlaylistEditOption = ({
-  playlistId,
+const VideoAndPlaylistEditOption = ({
+  id,
   setEditOption,
   description,
   title,
-  playlistThumbnail,
+  thumbnail,
   isVideoEdit,
 }) => {
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescriptiont] = useState(description);
-  const dispatch = useDispatch();
-
+  //video
   const [videoThumbnail, setVideoThumbnail] = useState(null);
 
+  const dispatch = useDispatch();
+
+  //video
   const handleThumbnail = (e) => {
     if (e.target.files) {
       console.log(e.target.files);
@@ -26,14 +28,20 @@ const PlaylistEditOption = ({
   };
 
   //video edit
-  const data = new FormData();
-  data.append("thumbnail", videoThumbnail);
-  data.append("title", editTitle);
-  data.append("description", editDescription);
+  const videoData = new FormData();
+  videoData.append("thumbnail", videoThumbnail);
+  videoData.append("title", editTitle);
+  videoData.append("description", editDescription);
   ///
 
+  //playlist Edited Data
+  const playlistData = new FormData();
+  playlistData.append("title", editTitle);
+  playlistData.append("description", editDescription);
+  //
+
   let editInfo = {
-    id: playlistId,
+    id: id,
     title: editTitle,
     description: editDescription,
   };
@@ -42,15 +50,10 @@ const PlaylistEditOption = ({
     if (!isVideoEdit) {
       try {
         const res = await axios.patch(
-          BASE_URL + `/playlist/${playlistId}`,
-          {
-            title: editTitle,
-            description: editDescription,
-          },
+          BASE_URL + `/playlist/${id}`,
+          playlistData,
           { withCredentials: true }
         );
-
-        console.log(res.data.data);
         dispatch(editPlaylistInfo(editInfo));
         setEditOption(false);
       } catch (error) {
@@ -60,14 +63,14 @@ const PlaylistEditOption = ({
       // For Video Editing Details
       try {
         const res = await axios.patch(
-          `${BASE_URL}/video/update/${playlistId}`,
-          data,
+          `${BASE_URL}/video/update/${id}`,
+          videoData,
           {
             headers: { "Content-Type": "multipart/form-data" },
             withCredentials: true,
           }
         );
-        console.log(res.data);
+        console.log(res.data.data)
         // dispatch(editPlaylistInfo(editInfo));
         setEditOption(false);
       } catch (error) {
@@ -80,23 +83,33 @@ const PlaylistEditOption = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
       <div className="bg-slate-400  w-72 flex flex-col p-3 shadow-lg rounded-lg">
         <div className="flex justify-between p-2 text-lg">
-          <p>Edit Playlist...</p>
+          {!isVideoEdit ? (
+            <p>Edit Playlist Details</p>
+          ) : (
+            <p>Edit Video Details</p>
+          )}
           <button onClick={() => setEditOption(false)}>✕</button>
         </div>
         <div className="">
           <img
             className="rounded-lg w-72 h-36 my-4"
-            src={playlistThumbnail}
+            src={thumbnail}
             alt="thumbnail"
           />
+
           {/* for video edit thumbnail */}
-          <label>Cover Image</label>
-          <input
-            type="file"
-            className="text-sm  py-1 rounded-lg flex flex-wrap"
-            onChange={handleThumbnail}
-          />
+          {isVideoEdit && (
+            <label>
+              Cover Image
+              <input
+                type="file"
+                className="text-sm  py-1 rounded-lg flex flex-wrap"
+                onChange={handleThumbnail}
+              />
+            </label>
+          )}
           {/* //// */}
+
           <label className=" flex flex-col my-3">
             Title
             <input
@@ -128,4 +141,4 @@ const PlaylistEditOption = ({
   );
 };
 
-export default PlaylistEditOption;
+export default VideoAndPlaylistEditOption;

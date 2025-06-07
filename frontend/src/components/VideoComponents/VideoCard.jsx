@@ -17,7 +17,7 @@ const VideoCard = ({
   return (
     <>
       <div
-        className={`bg-purple-400 w-96 rounded-lg overflow-hidden m-4 ${
+        className={`bg-purple-400 w-96 h-fit rounded-lg overflow-hidden ml-4  ${
           menuClicked && !isChannelVideos ? "w-[350px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} ${
           isChannelVideos && menuClicked ? "w-[225px] mr-[19px]" : ""
@@ -41,7 +41,7 @@ const VideoCard = ({
 
           <Link
             to={{ pathname: "/watch", search: `?v=${_id}` }}
-            className={`flex`}
+            className={"flex"}
           >
             <div
               className={`mt-2 bg-lime-200 ${

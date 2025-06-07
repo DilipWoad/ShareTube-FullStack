@@ -7,6 +7,10 @@ const ChannelStudio = () => {
   const user = useSelector((store) => store.user);
   const [cancel, setCancel] = useState(false);
 
+  const setCancelFalse = ()=>{
+    setCancel(false)
+  }
+
   return (
     <div className="flex w-screen h-screen m-2">
       <div className="bg-yellow-300 w-52 text-center mr-4">
@@ -68,7 +72,7 @@ const ChannelStudio = () => {
           />
         </div>
         {/* here all the other options will render */}
-        <Outlet/>
+        <Outlet context={{setCancelFalse}}/>
       </div>
       <UploadVideo setCancel={setCancel} cancel={cancel} />
     </div>

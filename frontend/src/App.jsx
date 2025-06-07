@@ -17,6 +17,7 @@ import PostComments from "./components/PostComponents/PostComments";
 import ChannelStudio from "./components/ChannelStudioComponents/ChannelStudio";
 import StudioVideos from "./components/ChannelStudioComponents/StudioVideos";
 import StudioDashboard from "./components/ChannelStudioComponents/StudioDashboard";
+import UserSubscription from "./components/UserSubscription";
 function App() {
   return (
     <>
@@ -32,7 +33,7 @@ function App() {
                 <Route path="you" element={<UserLibrary />} />
                 <Route path="playlist" element={<Playlist />} />
                 <Route path="upload/video" element={<UploadVideo />} />
-                {/* <Route path="/subscription" element={<UserSubscription/>}/> */}
+                <Route path="/subscription" element={<UserSubscription/>}/>
                 {/*Channel Pages Routes */}
                 <Route path="channel/:id" element={<ChannelPage />}>
                   <Route path="videos" element={<ChannelVideos />} />

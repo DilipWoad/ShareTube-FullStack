@@ -440,11 +440,12 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
   const match = {
     //TODO : Use $search operator instead of $regex
-    ...(query ? { title: { $regex: query, $options: "i" } } : {}),
+    ...(query ? { title: { $regex: query, $options: "i" } } : {isPublished:true}),
     ...(mongoose.isValidObjectId(userId)
       ? { owner: mongoose.Schema.Types.ObjectId(userId) }
       : {}),
   };
+
 
   const aggregate = Video.aggregate([
     {

@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { deletePlaylist } from "../../slices/librarySlice";
-import PlaylistEditOption from "./PlaylistEditOption";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 
 const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const [options, setOptions] = useState(false);
@@ -80,12 +80,12 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         </div>
       </div>
       {editOption && (
-        <PlaylistEditOption
-          playlistId={_id}
+        <VideoAndPlaylistEditOption
+          id={_id}
           setEditOption={setEditOption}
           title={title}
           description={description}
-          playlistThumbnail={playlistVideos[0]?.thumbnail}
+          thumbnail={playlistVideos[0]?.thumbnail}
         />
       )}
     </>

@@ -2,13 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import StudioVideoCard from "./StudioVideoCard";
-import PlaylistEditOption from "../PlaylistComponents/PlaylistEditOption";
+import VideoAndPlaylistEditOption from "../PlaylistComponents/VideoAndPlaylistEditOption";
+import { useOutletContext } from "react-router";
 
 const StudioVideos = () => {
   const [channelVideos, setChannelVideos] = useState(null);
   const [selectedId, setSelectedId] = useState([]);
   const [videoEditOption, setVideoEditOption] = useState(false);
   const [videoInfo, setVideoInfo] = useState(null);
+
+  const {setCancelFalse} = useOutletContext();
 
   console.log(selectedId);
 
@@ -65,7 +68,7 @@ const StudioVideos = () => {
       <div className="flex justify-between m-5">
         <div className="space-x-2">
           <button
-            onClick={() =>handleEditClick(selectedId[0])}
+            onClick={() => handleEditClick(selectedId[0])}
             disabled={selectedId.length !== 1}
             className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
               ${
@@ -90,7 +93,7 @@ const StudioVideos = () => {
           </button>
         </div>
         <button
-          onClick={() => setCancel(false)}
+          onClick={() => setCancelFalse()}
           className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700"
         >
           Upload Video
@@ -114,9 +117,9 @@ const StudioVideos = () => {
           ))}
         </div>
         {videoEditOption && (
-          <PlaylistEditOption
-            playlistId={videoInfo?._id}
-            playlistThumbnail={videoInfo?.thumbnail}
+          <VideoAndPlaylistEditOption
+            id={videoInfo?._id}
+            thumbnail={videoInfo?.thumbnail}
             title={videoInfo?.title}
             description={videoInfo?.description}
             setEditOption={setVideoEditOption}
