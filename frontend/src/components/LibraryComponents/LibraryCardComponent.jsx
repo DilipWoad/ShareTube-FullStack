@@ -4,9 +4,9 @@ import VideoCard from "../VideoComponents/VideoCard";
 const LibraryCardComponent = ({ library, label }) => {
   if (!library) return <div>Loading...</div>;
   return (
-    <div className="bg-green-300 my-5 p-2">
+    <div className="bg-gray-500 rounded-xl mx-2 my-5 p-2">
       <p className="text-xl font-bold">{label}</p>
-      <div className="bg-pink-300 flex overflow-x-auto p-2">
+      <div className=" flex overflow-x-auto p-2">
         {library.length !== 0 ? (
           <div className="flex space-x-4 min-w-max ">
             {label !== "Playlists"

@@ -91,8 +91,8 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
         );
         const updatedComment = res.data.data;
         // dispatch(updateUserComment(updatedComment));
-        dispatch(updateUserPost({...updatedComment,postOwner}));
-        setEditPost(false)
+        dispatch(updateUserPost({ ...updatedComment, postOwner }));
+        setEditPost(false);
       }
     } catch (error) {
       console.log(error);
@@ -112,7 +112,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   return (
     <div
       key={post._id}
-      className={` p-3 flex mb-7 rounded-xl border-2 ${postCss} bg-orange-400 pl-7 pr-7 `}
+      className={` p-3 flex mb-7 rounded-xl border-2 ${postCss} bg-gray-400 pl-7 pr-7 `}
     >
       <div className=" mr-2 h-fit ">
         <img
@@ -122,13 +122,13 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
         />
       </div>
       <div className="w-full">
-        <div className="flex  text-sm justify-between bg-lime-300">
+        <div className="flex  text-sm justify-between ">
           <div className="flex space-x-2">
             <p className="font-bold ">{postOwner?.fullName}</p>
             <p>{createdAt}</p>
           </div>
 
-          <div className="bg-yellow-300" ref={menuRef}>
+          <div className="" ref={menuRef}>
             <p
               onClick={handleCommentOption}
               className="text-lg font-semibold hover:cursor-pointer rounded-full hover:bg-gray-200 w-7 h-7 text-center relative "
@@ -136,7 +136,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
               ⫶
             </p>
             {moreOption && (
-              <div className="bg-lime-200 absolute p-3 z-50 rounded-lg hover cursor-pointer">
+              <div className="bg-slate-200 absolute z-50 rounded-lg hover cursor-pointer">
                 <ul className="space-y-2">
                   {postOwner._id === userInfo?._id ? (
                     <>
@@ -144,13 +144,13 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
                         onClick={() =>
                           handleDeletePost(post?._id, postOwner._id)
                         }
-                        className="hover:bg-slate-300 p-1 rounded-lg"
+                        className="hover:bg-slate-400 p-2 m-1 rounded-lg"
                       >
                         🗑️ Delete
                       </li>
                       <li
                         onClick={() => setEditPost(true)}
-                        className="hover:bg-slate-300 p-1 rounded-lg"
+                        className="hover:bg-slate-400 p-2 m-1 rounded-lg"
                       >
                         🖊 Edit
                       </li>
@@ -221,56 +221,6 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
       </div>
     </div>
   );
-  // return (
-  //   <div
-  //     key={_id}
-  //     className={` p-3 flex mb-7 rounded-xl border-2 ${postCss} bg-orange-400 pl-7 pr-7 `}
-  //   >
-  //     <div className=" mr-2 h-fit ">
-  //       <img
-  //         className="w-10 h-10 rounded-full object-cover"
-  //         src={postOwner?.avatar}
-  //         alt="avatar"
-  //       />
-  //     </div>
-  //     <div className="w-full">
-  //       <div className="flex  text-sm justify-between">
-  //         <div className="flex space-x-2">
-  //           <p className="font-bold ">{postOwner?.fullName}</p>
-  //           <p>{createdAt}</p>
-  //         </div>
-  //         <p className="text-lg font-semibold hover:cursor-pointer rounded-full hover:bg-gray-200 w-7 h-7 text-center">
-  //           ⫶
-  //         </p>
-  //       </div>
-  //       <div className="mt-1 text-lg">{content}</div>
-  //       <div className="flex space-x-5 mt-5 text-[15px] font-semibold">
-  //         <button
-  //           onClick={handlePostLike}
-  //           className={`hover:bg-gray-300 rounded-full text-3xl ${
-  //             isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
-  //           } h-7 w-7 flex items-center justify-center overflow-clip`}
-  //         >
-  //           <span
-  //             className={`${
-  //               isPostLiked ? " text-white hover:text-black " : ""
-  //             }`}
-  //           >
-  //             ♡
-  //           </span>
-  //         </button>
-  //         {!hideComment && (
-  //           <button
-  //             className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
-  //             onClick={() => handlePostCommentClick(_id)}
-  //           >
-  //             💬
-  //           </button>
-  //         )}
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default PostCard;

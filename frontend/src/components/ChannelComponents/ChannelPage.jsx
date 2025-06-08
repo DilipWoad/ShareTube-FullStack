@@ -63,29 +63,29 @@ const ChannelPage = () => {
   if (!channelDetails) return <div>Loading...</div>;
   return (
     <div
-      className={` w-full ml-[98px] ${
+      className={`p-2 rounded-xl bg-gray-600 w-full ml-[98px] ${
         menuClick ? "mr-8 ml-14" : "mr-[120px]"
       } space-y-5 my-2`}
     >
       {/* Welcome to Channel Page {na} */}
-      <div className="bg-purple-400 rounded-xl overflow-hidden">
+      <div className=" rounded-xl overflow-hidden">
         <img
           className="w-full h-44 object-fill"
           src={channelDetails?.coverImage}
         />
       </div>
-      <div className="bg-lime-300 h-44">
-        <div className="flex bg-yellow-300 text-black h-full">
+      <div className=" h-44">
+        <div className="flex text-black h-full">
           <img
             className="bg-red-400 w-44 object-cover rounded-full mr-3"
             src={channelDetails?.avatar}
             alt="avatar"
           />
-          <div className="bg-sky-400">
+          <div className="">
             <p className="text-4xl font-bold">{channelDetails?.fullName}</p>
-            <div className="bg-green-500 flex my-3 space-x-1 text-[15px]">
+            <div className=" flex my-3 space-x-1 text-lg">
               <p className="font-semibold text-black">{`@${channelDetails?.username} ${middleDot}`}</p>
-              <p className="text-gray-800">
+              <p className="text-gray-400 font-medium ">
                 {channelDetails?.subscriberCount} Subscribers
               </p>
             </div>
@@ -103,7 +103,7 @@ const ChannelPage = () => {
 
       {/* Video/post/Playlist section */}
 
-      <div className="bg-orange-800">
+      <div className="bg-gray-800">
         <div className=" text-white border-b-[1px] border-gray-500 space-x-6 m-4">
           <NavLink
             to={`/channel/@${username}/videos`}
@@ -132,7 +132,7 @@ const ChannelPage = () => {
           </button>
         </div>
 
-        <div className="flex flex-wrap bg-teal-400 justify-start">
+        <div className="flex flex-wrap bg-gray-600 justify-start">
           <Outlet context={{ channelId, menuClick }} />
         </div>
       </div>

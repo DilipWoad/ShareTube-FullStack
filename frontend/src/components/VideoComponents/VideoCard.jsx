@@ -17,16 +17,16 @@ const VideoCard = ({
   return (
     <>
       <div
-        className={`bg-purple-400 w-96 h-fit rounded-lg overflow-hidden ml-4  ${
+        className={`bg-gray-600 w-96 h-fit rounded-lg overflow-hidden ml-4  ${
           menuClicked && !isChannelVideos ? "w-[350px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} ${
           isChannelVideos && menuClicked ? "w-[225px] mr-[19px]" : ""
         }`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}>
-          <img className={`w-full max-h-48 ${thumbnailcss}`} src={thumbnail} />
+          <img className={`w-full max-h-48 ${thumbnailcss} object-cover`} src={thumbnail} />
         </Link>
-        <div className="flex bg-yellow-400">
+        <div className="flex">
           {!isChannelVideos ? (
             <Link to={`/channel/@${videoOwner?.username}`} className="m-2">
               <img
@@ -44,7 +44,7 @@ const VideoCard = ({
             className={"flex"}
           >
             <div
-              className={`mt-2 bg-lime-200 ${
+              className={`mt-2 ${
                 menuClicked && !isChannelVideos ? "w-[260px]" : ""
               } ${isChannelVideos && menuClicked ? "w-[200px]" : ""} ${
                 isChannelVideos ? "w-52 px-2" : "w-72"
@@ -60,12 +60,12 @@ const VideoCard = ({
               onClick={() => setOptions(!options)}
               className={`text-xl w-7 h-7  ${
                 isChannelVideos ? "ml-0" : ""
-              }   hover:bg-orange-700 font-semibold rounded-full m-1`}
+              }   hover:bg-gray-100 font-semibold rounded-full m-1`}
             >
               ⫶
             </button>
             {options && (
-              <div className="absolute bg-cyan-300 rounded-lg  right-1 p-1 z-10">
+              <div className="absolute top-5 right-8 bg-gray-800 text-white rounded-lg  p-2 z-10">
                 <button
                   className="w-36"
                   onClick={() => setPlaylistOption(!playlistOption)}

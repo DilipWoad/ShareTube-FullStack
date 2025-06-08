@@ -99,12 +99,16 @@ const StudioVideos = () => {
           Upload Video
         </button>
       </div>
-      <div className="bg-orange-400 ">
-        <div className="flex justify-between">
-          <div>Edit/Delete</div>
-          <div>Video</div>
-          <div>Views</div>
-          <div>Published</div>
+      <div className="">
+        <div className="flex justify-between flex-1 text-white text-lg font-medium">
+          <div className="flex space-x-16 m-2">
+            <div>Edit/Delete</div>
+            <div>Video</div>
+          </div>
+          <div className="flex space-x-12 m-2">
+            <div>Views</div>
+            <div>Published</div>
+          </div>
         </div>
         <div className="h-screen mx-2 overflow-y-scroll">
           {channelVideos.map((video) => (

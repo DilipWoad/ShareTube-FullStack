@@ -13,15 +13,15 @@ const ChannelStudio = () => {
 
   return (
     <div className="flex w-screen h-screen m-2">
-      <div className="bg-yellow-300 w-52 text-center mr-4">
-        <div className="bg-lime-200 flex justify-center h-44 mb-4">
+      <div className="w-52 text-center mr-4">
+        <div className=" flex justify-center h-44 mb-4">
           <img
             className="w-44 h-44 rounded-full object-cover"
             src={user?.avatar}
             alt="avatar"
           />
         </div>
-        <div className="bg-green-600 text-lg flex flex-col">
+        <div className="rounded-xl bg-slate-300 p-2 text-lg flex flex-col">
           <NavLink
             to={"/studio/dashboard"}
             className={({ isActive }) =>
@@ -53,7 +53,7 @@ const ChannelStudio = () => {
             Videos
           </NavLink>
           <NavLink
-            to={"/studio/posts"}
+            to={`/channel/@${user?.username}/posts`}
             className={({ isActive }) =>
               isActive
                 ? "p-2 border-[1px] hover:text-black hover:cursor-pointer bg-gray-500 text-white"
@@ -64,8 +64,8 @@ const ChannelStudio = () => {
           </NavLink>
         </div>
       </div>
-      <div className="bg-blue-300 flex-grow h-screen overflow-y-scroll">
-        <div className="bg-red-500 h-44 mb-4">
+      <div className="flex-grow h-screen overflow-y-scroll">
+        <div className=" h-44 mb-4">
           <img
             className="h-44 rounded-xl w-full object-fill"
             src={user?.coverImage}

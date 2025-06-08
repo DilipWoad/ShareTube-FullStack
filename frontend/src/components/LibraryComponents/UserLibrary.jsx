@@ -52,13 +52,13 @@ const UserLibrary = () => {
   }, [dispatch]);
   if (!history) return <div>Loading...</div>;
   return (
-    <div className=" flex w-full bg-purple-400 justify-center">
-      <div className=" max-w-screen-lg bg-lime-200 ">
+    <div className=" flex w-full justify-center m-2">
+      <div className=" max-w-screen-lg bg-gray-700 rounded-xl">
         <div className="flex  p-2 space-x-3">
           <div className="w-28 h-28 rounded-full overflow-hidden">
             <img className="" src={user?.avatar} alt="user-avatar" />
           </div>
-          <div className="bg-sky-400">
+          <div className="">
             <p className="text-4xl font-bold">{user?.fullName}</p>
             <p className="text-lg my-2">@{user?.username}</p>
           </div>

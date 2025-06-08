@@ -42,7 +42,7 @@ const UserCommentBox=({postId ,userCommentCss})=>{
     }
 
     return(
-        <div className={`flex items-center bg-yellow-300 mr-8 p-2 rounded-lg ${userCommentCss}`}>
+        <div className={`flex items-center  mr-8 p-2 rounded-lg ${userCommentCss}`}>
           <div>
             <img
               className="w-10 h-10 rounded-full"

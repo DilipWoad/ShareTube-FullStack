@@ -28,7 +28,7 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
     <div
     ref={menuRef}
       className={
-        "bg-purple-400 w-full rounded-lg overflow-hidden mb-2 border-2"
+        "bg-gray-500 w-full rounded-lg overflow-hidden mb-2 border-2"
       }
     >
       <div className={"flex justify-between"}>
@@ -36,11 +36,11 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
           to={{ pathname: "/watch", search: `?v=${_id}` }}
           className={"flex"}
         >
-          <img className={`w-56 h-36`} src={thumbnail} />
+          <img className={`w-56 h-36 object-cover`} src={thumbnail} />
           <div className="flex">
             <div className="m-2">
               <img
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover"
                 src={videoOwner?.avatar}
                 alt="avatar"
               />
@@ -53,15 +53,15 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
           </div>
         </Link>
 
-        <div className="bg-lime-400 flex items-center relative">
+        <div className="bg-gray-600 flex items-center relative">
           <button
             onClick={() => setOptions(!options)}
-            className=" text-2xl h-9 w-9 rounded-full hover:bg-red-300"
+            className=" text-2xl h-9 w-9 rounded-full hover:bg-gray-800 text-white"
           >
             ⫶
           </button>
           {options && (
-            <div className="absolute right-1 top-20 w-40 bg-sky-300 rounded-lg">
+            <div className="absolute right-6 top-20 w-44 text-center bg-gray-800 text-white p-1 rounded-lg">
               <button onClick={removeVideo} className="p-1">
                 Remove from playlist
               </button>

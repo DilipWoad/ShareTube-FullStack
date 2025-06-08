@@ -67,7 +67,7 @@ const VideoComment = ({ videoId }) => {
       </p>
 
       <div className="flex space-x-2 p-2">
-        <div className="flex items-center bg-yellow-300 w-full mr-8 p-2 rounded-lg">
+        <div className="flex items-center  w-full mr-8 p-2 rounded-lg">
           <div>
             <img
               className="w-10 h-10 rounded-full"

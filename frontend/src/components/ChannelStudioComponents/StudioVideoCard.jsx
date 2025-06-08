@@ -39,8 +39,8 @@ const StudioVideoCard = ({ channelVideos ,setSelectedId,selectedId}) => {
     </div>
 
     {/* Right Side: Views + Extra Checkbox */}
-    <div className="flex items-center gap-6">
-      <div className="text-gray-600 dark:text-gray-300 text-sm sm:text-base whitespace-nowrap">
+    <div className="flex items-center ">
+      <div className="text-gray-600 dark:text-gray-300 text-sm sm:text-base whitespace-nowrap mr-16">
         {views} views
       </div>
       

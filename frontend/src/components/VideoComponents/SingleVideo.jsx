@@ -119,7 +119,7 @@ const SingleVideo = () => {
   //ensure that video is coming and it is in the video div position
   if (!videoDetail) return <div>Loading....</div>;
   return (
-    <div className="mx-20  w-fit pb-1">
+    <div className="mx-24  w-fit bg-slate-500 px-4 pb-4 mt-1 rounded-xl">
       <div className="mt-5 mb-3">
         <iframe
           className="rounded-lg overflow-hidden max-w-[850px]"

@@ -32,27 +32,27 @@ const Playlist = () => {
 
   if (!playlist) return <div>Loading...</div>;
   return (
-    <div className="bg-lime-400 flex p-4 w-full">
-      <div className="bg-sky-400 w-[360px] p-5 rounded-lg h-fit">
-        <div className="bg-orange-300 rounded-lg overflow-hidden mb-6">
+    <div className=" flex p-4 w-full">
+      <div className="bg-gray-700 w-[360px] p-5 rounded-lg h-fit">
+        <div className=" rounded-lg overflow-hidden mb-6 border-1 shadow-xl">
           <img
-            className="max-h-44 w-full"
+            className="max-h-44 w-full object-cover"
             src={playlist?.playlistVideos[0]?.thumbnail}
             alt="thumbnail"
           />
         </div>
-        <div className="bg-red-300 mb-2">
+        <div className="bg-gray-300 rounded-lg p-2 mb-2">
           <p className="text-xl font-bold">{playlist.title}</p>
           <p className="text-sm">creator name</p>
           <p className="text-[12px] font-semibold">
             Playlist · {playlist?.playlistVideos?.length} videos
           </p>
         </div>
-        <div className="bg-pink-500">
+        <div className="bg-gray-500 p-2 rounded-lg">
           <p className="text-[12px] font-semibold ">{playlist.description}</p>
         </div>
       </div>
-      <div className="bg-yellow-300 flex-1 mx-2 p-2 rounded-lg">
+      <div className="bg-gray-700 flex-1 mx-2 p-2 rounded-lg">
         <div className="">
           {playlist.playlistVideos.map((video) => (
             <div key={video._id} className="flex  justify-between items-center">

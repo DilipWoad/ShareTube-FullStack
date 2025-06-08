@@ -30,38 +30,38 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   return (
     <>
       <div
-        className={`bg-purple-400 w-96 rounded-lg m-4 ${
+        className={` w-96 h-fit  rounded-lg m-4 ${
           menuClicked ? "w-[330px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} `}
       >
         <div className="">
           <img
-            className={`w-full max-h-48 rounded-t-lg ${thumbnailcss}`}
+            className={`w-full max-h-48 rounded-t-lg ${thumbnailcss} object-cover`}
             src={playlistVideos[0]?.thumbnail}
           />{" "}
           {/*get the first video thumbnail*/}
         </div>
-        <div className="bg-yellow-400 flex justify-between">
+        <div className="bg-gray-700 flex justify-between rounded-b-xl">
           <Link to={{ pathname: "/playlist", search: `?list=${_id}` }}>
-            <div className="mt-1 px-2">
+            <div className="mt-1 px-2 ">
               <p className="text-md font-semibold text-wrap">{title}</p>
               <p className="text-[13px] font-semibold text-wrap">
                 Channel Name
               </p>
-              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer">
+              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer my-2">
                 View full playlist
               </p>
             </div>
           </Link>
-          <div ref={menuRef} className="bg-lime-300 relative  text-center ">
+          <div ref={menuRef} className="relative  text-center ">
             <button
               onClick={() => setOptions(!options)}
-              className="text-lg  w-7 h-7 font-semibold   hover:bg-orange-700 rounded-full"
+              className="text-lg  w-7 h-7 font-semibold   hover:bg-gray-100 rounded-full"
             >
               ⫶
             </button>
             {options && (
-              <div className="absolute bg-cyan-300 w-24 rounded-lg p-1  right-0 space-y-2 flex flex-col items-start">
+              <div className="absolute top-5 right-8 bg-gray-900 text-white w-24 rounded-lg p-1 space-y-2 flex flex-col items-start">
                 <button
                   onClick={() => setEditOption(!editOption)}
                   className="hover:bg-lime-300 w-full text-start relative"

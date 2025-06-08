@@ -8,7 +8,7 @@ import {
 } from "../../slices/commentSlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
-const CommentCard = ({ comment, usersComment,commentCss }) => {
+const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
@@ -89,7 +89,9 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
   // }, []);
 
   return (
-    <div className={`p-2 flex bg-slate-300 my-2 ml-2 mr-7 max-w-[800px] rounded-lg z-0 ${commentCss}`}>
+    <div
+      className={`p-4 flex bg-slate-400 hover:shadow-lg mt-4 ml-2 mr-7 max-w-[800px] rounded-lg z-0 ${commentCss}`}
+    >
       <div className="">
         <img
           className="w-10 h-10 rounded-full object-cover"
@@ -97,18 +99,18 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
           alt="avatar"
         />
       </div>
-      <div className="bg-slate-300 mx-2 flex items-center justify-between w-full rounded-lg">
+      <div className="bg-slate-300 mx-2 flex items-center justify-between w-full rounded-lg px-2">
         <div>
-          <div className="font-semibold">
+          <div className="font-semibold mb-2">
             @{commentOwner ? commentOwner?.username : username}
           </div>
           {editComment ? (
-            <div className="w-full mx-4 flex">
+            <div className="w-full mb-2 flex">
               <input
                 type="text"
                 value={editedComment}
                 onChange={(e) => setEditedComment(e.target.value)}
-                className="flex-1 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="flex-1 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 "
               />
               <div className="flex flex-2 ml-2 space-x-2">
                 {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
@@ -119,8 +121,14 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
                   Cancel
                 </button>
                 <button
+                  disabled={editedComment.trim() === ""}
                   onClick={() => handleEditComment(comment._id)}
-                  className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
+                  className={`bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full 
+                    ${
+                      editedComment.trim() === ""
+                        ? "hover:cursor-not-allowed bg-blue-400 text-gray-500"
+                        : "bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white"
+                    }`}
                 >
                   Save
                 </button>
@@ -130,7 +138,7 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
             <div>{editedComment}</div>
           )}
         </div>
-        <div className="bg-yellow-300" ref={menuRef}>
+        <div className="font-bold" ref={menuRef}>
           <div
             onClick={handleCommentOption}
             // onBlur={handleCommentOption}
@@ -139,7 +147,7 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
             ⫶
           </div>
           {moreOption && (
-            <div className="bg-lime-200 absolute p-3 z-50 rounded-lg hover cursor-pointer">
+            <div className="bg-slate-100 absolute p-3 z-50 rounded-lg hover cursor-pointer">
               <ul className="space-y-2">
                 {(commentOwner ? commentOwner._id : _id) ===
                 usersComment?._id ? (
@@ -151,19 +159,19 @@ const CommentCard = ({ comment, usersComment,commentCss }) => {
                           commentOwner ? commentOwner._id : comment.owner
                         )
                       }
-                      className="hover:bg-slate-300 p-1 rounded-lg"
+                      className="hover:bg-slate-300 p-1 rounded-lg text-sm font-medium"
                     >
                       🗑️ Delete
                     </li>
                     <li
                       onClick={() => setEditComment(true)}
-                      className="hover:bg-slate-300 p-1 rounded-lg"
+                      className="hover:bg-slate-300 p-1 rounded-lg text-sm font-medium  "
                     >
                       🖊 Edit
                     </li>
                   </>
                 ) : (
-                  <li className="hover:bg-slate-300 p-1 rounded-lg">
+                  <li className="hover:bg-slate-300 p-1 rounded-lg text-sm font-medium ">
                     🖊 Report
                   </li>
                 )}
