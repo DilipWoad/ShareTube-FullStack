@@ -18,9 +18,11 @@ import PostComments from "./components/PostComponents/PostComments";
 import StudioVideos from "./components/ChannelStudioComponents/StudioVideos";
 import StudioDashboard from "./components/ChannelStudioComponents/StudioDashboard";
 import UserSubscription from "./components/UserSubscription";
-import { lazy,Suspense } from "react";
+import { lazy, Suspense } from "react";
 import LoadingScreen from "./utils/LoadingScreen";
-const ChannelStudio = lazy(()=> import('./components/ChannelStudioComponents/ChannelStudio'));
+const ChannelStudio = lazy(() =>
+  import("./components/ChannelStudioComponents/ChannelStudio")
+);
 function App() {
   return (
     <>
@@ -36,21 +38,23 @@ function App() {
                 <Route path="you" element={<UserLibrary />} />
                 <Route path="playlist" element={<Playlist />} />
                 <Route path="upload/video" element={<UploadVideo />} />
-                <Route path="/subscription" element={<UserSubscription/>}/>
+                <Route path="/subscription" element={<UserSubscription />} />
                 {/*Channel Pages Routes */}
                 <Route path="channel/:id" element={<ChannelPage />}>
                   <Route path="videos" element={<ChannelVideos />} />
-                  <Route path="posts" element={<ChannelPosts/>} />
+                  <Route path="posts" element={<ChannelPosts />} />
                 </Route>
-                <Route path="/channel/:id/post" element={
-                  <Suspense fallback={<LoadingScreen/>}>
-                    <PostComments/>
-                  </Suspense>
-                  
-                  }/>
-                <Route path="/studio" element={<ChannelStudio/>}>
-                  <Route index element={<StudioVideos/>}/>
-                  <Route path="dashboard" element={<StudioDashboard/>}/>
+                <Route path="/channel/:id/post" element={<PostComments />} />
+                <Route
+                  path="/studio"
+                  element={
+                    <Suspense fallback={<LoadingScreen />}>
+                      <ChannelStudio />
+                    </Suspense>
+                  }
+                >
+                  <Route index element={<StudioVideos />} />
+                  <Route path="dashboard" element={<StudioDashboard />} />
                 </Route>
               </Route>
             </Routes>
