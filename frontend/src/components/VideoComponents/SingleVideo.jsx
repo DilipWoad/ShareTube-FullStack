@@ -123,7 +123,7 @@ const SingleVideo = () => {
       <div className="mt-5 mb-3">
         <iframe
           className="rounded-lg overflow-hidden max-w-[850px]"
-          src={videoDetail?.videoFile}
+          src={"https"+videoDetail?.videoFile.substring(4)}
           width="850"
           height="460"
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
