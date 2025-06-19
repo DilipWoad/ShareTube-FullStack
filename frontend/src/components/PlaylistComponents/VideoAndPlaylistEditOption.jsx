@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { editPlaylistInfo } from "../../slices/librarySlice";
+import { editVideoInfo } from "../../slices/studioSlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const VideoAndPlaylistEditOption = ({
   id,
@@ -16,6 +18,7 @@ const VideoAndPlaylistEditOption = ({
   const [editDescription, setEditDescriptiont] = useState(description);
   //video
   const [videoThumbnail, setVideoThumbnail] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -46,7 +49,16 @@ const VideoAndPlaylistEditOption = ({
     description: editDescription,
   };
 
+  //videoinfo sending to dispatch
+  let videoEditInfo = {
+    _id: id,
+    title: editTitle,
+    description: editDescription,
+    thumbnail: videoThumbnail && URL.createObjectURL(videoThumbnail),
+  };
+
   const editPlaylistDetails = async () => {
+    setLoading(true);
     if (!isVideoEdit) {
       try {
         const res = await axios.patch(
@@ -55,9 +67,11 @@ const VideoAndPlaylistEditOption = ({
           { withCredentials: true }
         );
         dispatch(editPlaylistInfo(editInfo));
+        setLoading(false);
         setEditOption(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     } else {
       // For Video Editing Details
@@ -70,15 +84,24 @@ const VideoAndPlaylistEditOption = ({
             withCredentials: true,
           }
         );
-        console.log(res.data.data)
-        // dispatch(editPlaylistInfo(editInfo));
+        console.log(res.data.data);
+        dispatch(editVideoInfo(videoEditInfo));
+        setLoading(false);
+
         setEditOption(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
   };
-
+  //   console.log("dihfdhii")
+  //   useEffect(() => {
+  //   return () => {
+  //     if (videoThumbnail) URL.revokeObjectURL(videoThumbnail);
+  //   };
+  // }, [videoThumbnail]);
+  if(loading) return <LoadingScreen/>
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
       <div className="bg-slate-400  w-72 flex flex-col p-3 shadow-lg rounded-lg">
@@ -138,6 +161,7 @@ const VideoAndPlaylistEditOption = ({
         </div>
       </div>
     </div>
+    
   );
 };
 

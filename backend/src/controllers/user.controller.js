@@ -152,16 +152,24 @@ const loginUser = asyncHandler(async (req, res) => {
   //add this token to the cookie
   //and it through response
 
-  const options = {
+  const AccessTokenOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV,
-    sameSite: "None",
+    sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
     // sameSite: "Strict",
+    maxAge:24*60*60*1000
+  };
+  const RefreshTokenOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV,
+    sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
+    // sameSite: "Strict",
+    maxAge:7*24*60*60*1000
   };
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, AccessTokenOptions)
+    .cookie("refreshToken", refreshToken, RefreshTokenOptions)
     .json(
       new ApiResponse(
         200,
@@ -205,82 +213,173 @@ const logoutUser = asyncHandler(async (req, res) => {
   // userRefresh.save({validateBeforeSave:false});
   //now clear the cokies
 
-  const options = {
+  const AccessTokenOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV,
-    sameSite: "None",
+    sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
     // sameSite: "Strict",
+    maxAge:24*60*60*1000
   };
-
-  res
+  const RefreshTokenOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV,
+    sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
+    // sameSite: "Strict",
+    maxAge:7*24*60*60*1000
+  };
+  return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .cookie("accessToken", accessToken, AccessTokenOptions)
+    .cookie("refreshToken", refreshToken, RefreshTokenOptions)
     .json(new ApiResponse(201, [], "User Logged Out Successfully!!"));
 });
 
-const refreshAccessTokens = asyncHandler(async (req, res) => {
-  //get the refresh token from the cookies
-  //for mobile it will come from body
-  //get user data from database
-  //compare the refreshtoken from database and from cookies
-  //now generate AccessToken and refresh token
-  //add both in cookies and also update the refreshtoken in the database
+// const refreshAccessTokens = asyncHandler(async (req, res) => {
+//   //get the refresh token from the cookies
+//   //for mobile it will come from body
+//   //get user data from database
+//   //compare the refreshtoken from database and from cookies
+//   //now generate AccessToken and refresh token
+//   //add both in cookies and also update the refreshtoken in the database
 
+//   const receivedRefreshToken =
+//     req.cookies?.refreshToken || req.body?.refreshToken;
+
+//   if (!receivedRefreshToken) {
+//     throw new ApiError("Invalid Request", 401);
+//   }
+
+//   const user = req.user;
+//   const userInDatabase = await User.findById(user._id);
+//   if (!userInDatabase) {
+//     throw new ApiError("User not found!!", 404);
+//   }
+
+//   if (receivedRefreshToken !== userInDatabase?.refreshToken) {
+//     throw new ApiError(
+//       "Users refreshToken does not matches with Database RefreshToken!!",
+//       401
+//     );
+//   }
+
+//   const { accessToken, refreshToken } = await generateAcessAndRefreshTokens(
+//     user._id
+//   );
+
+//   await User.findByIdAndUpdate(user._id, {
+//     $set: {
+//       refreshToken,
+//     },
+//   });
+
+//   const AccessTokenOptions = {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV,
+//     sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
+//     // sameSite: "Strict",
+//     maxAge:15*60*1000
+//   };
+//   const RefreshTokenOptions = {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV,
+//     sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
+//     // sameSite: "Strict",
+//     maxAge:7*24*60*60*1000
+//   };
+//   return res
+//     .status(200)
+//     .cookie("accessToken", accessToken, AccessTokenOptions)
+//     .cookie("refreshToken", refreshToken, RefreshTokenOptions)
+//     .json(
+//       new ApiResponse(
+//         201,
+//         {
+//           // user: loggedInUser,
+//           accessToken,
+//           refreshToken,
+//         },
+//         "Acess Token Refreshed Successfully!!"
+//       )
+//     );
+// });
+// import jwt from "jsonwebtoken";
+// import { User } from "../models/user.model.js";
+// import { asyncHandler } from "../utils/asyncHandler.js";
+// import { ApiError } from "../utils/ApiError.js";
+// import { ApiResponse } from "../utils/ApiResponse.js";
+// import { generateAcessAndRefreshTokens } from "../utils/jwt.utils.js"; // assuming you have this
+// import { CROSS_ORIGIN } from "../config/constants.js"; // assuming you defined this
+
+const refreshAccessTokens = asyncHandler(async (req, res) => {
   const receivedRefreshToken =
     req.cookies?.refreshToken || req.body?.refreshToken;
 
   if (!receivedRefreshToken) {
-    throw new ApiError("Invalid Request", 401);
+    throw new ApiError("Invalid Request: No refresh token found", 401);
   }
 
-  const user = req.user;
-  const userInDatabase = await User.findById(user._id);
+  // 1. Verify refresh token
+  let payload;
+  try {
+    payload = jwt.verify(receivedRefreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+  } catch (error) {
+    throw new ApiError("Refresh Token is invalid or expired", 403);
+  }
+
+  // 2. Find user by id from decoded payload
+  const userInDatabase = await User.findById(payload._id);
   if (!userInDatabase) {
-    throw new ApiError("User not found!!", 404);
+    throw new ApiError("User not found", 404);
   }
 
-  if (receivedRefreshToken !== userInDatabase?.refreshToken) {
-    throw new ApiError(
-      "Users refreshToken does not matches with Database RefreshToken!!",
-      401
-    );
+  // 3. Optional: compare refresh tokens (can skip if not storing in DB)
+  if (userInDatabase.refreshToken !== receivedRefreshToken) {
+    throw new ApiError("Refresh Token does not match DB", 403);
   }
 
-  const { accessToken, refreshToken } = await generateAcessAndRefreshTokens(
-    user._id
-  );
+  // 4. Generate new tokens
+  const { accessToken, refreshToken } = await generateAcessAndRefreshTokens(userInDatabase._id);
+console.log(accessToken,refreshToken)
+  // 5. Update refresh token in DB
+  userInDatabase.refreshToken = refreshToken;
+  await userInDatabase.save({ validateBeforeSave: false });
 
-  await User.findByIdAndUpdate(user._id, {
-    $set: {
-      refreshToken,
-    },
-  });
+  // 6. Cookie options
+  const isProduction = process.env.NODE_ENV === "production";
 
-  const options = {
+  const AccessTokenOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV,
-    sameSite: "None",
-    // sameSite: "Strict",
+    secure: isProduction,
+    sameSite: process.env.CROSS_ORIGIN === "http://localhost:5173" ? "Strict" : "None",
+    maxAge: 24*60*60*1000 // 15 min
+  };
+
+  const RefreshTokenOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: process.env.CROSS_ORIGIN === "http://localhost:5173" ? "Strict" : "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, AccessTokenOptions)
+    .cookie("refreshToken", refreshToken, RefreshTokenOptions)
     .json(
       new ApiResponse(
-        201,
+        200,
         {
-          // user: loggedInUser,
           accessToken,
           refreshToken,
         },
-        "Acess Token Refreshed Successfully!!"
+        "Access Token refreshed successfully"
       )
     );
 });
 
+
+
+//editing
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   //User Authentication and Authorization will be done by the middleware
   //You will receive password from User
@@ -415,31 +514,44 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   //get avatar from user
   const localAvatarFilePath = req.file?.path;
   if (!localAvatarFilePath) {
-    throw new ApiError("Avatr Filed is Empty!!", 401);
+    throw new ApiError("Avatar Field is Empty!!", 401);
   }
   //before changing the avatar delete the current avatar from the cloudinary
   const user = req.user;
 
-  const isDeletedFromCloudinary = await deleteFromCloudinary(user.avatar);
-  console.log(isDeletedFromCloudinary);
+  // const isDeletedFromCloudinary = await deleteFromCloudinary(user.avatar);
+  // console.log(isDeletedFromCloudinary);
 
-  if (!isDeletedFromCloudinary) {
-    //also remove the file from the server also
-    fs.unlinkSync(localAvatarFilePath);
-    throw new ApiError(
-      "Something went wrong while deleting images from the Cloudinary",
-      402
-    );
-  }
+  // if (!isDeletedFromCloudinary) {
+  //   //also remove the file from the server also
+  //   fs.unlinkSync(localAvatarFilePath);
+  //   throw new ApiError(
+  //     "Something went wrong while deleting images from the Cloudinary",
+  //     402
+  //   );
+  // }
   //now it is Deleted from Cloudinary
   //now we have image on the server
   //upload it to cloudinary
   const avatar = await uploadToCloudinary(localAvatarFilePath);
 
   if (!avatar.url) {
+    // fs.unlinkSync(localAvatarFilePath);
     throw new ApiError(
       "Something Went Wrong While Uploading the Avatar Image!!",
       401
+    );
+  }
+
+  const isDeletedFromCloudinary = await deleteFromCloudinary(user.avatar);
+  console.log(isDeletedFromCloudinary);
+
+  if (!isDeletedFromCloudinary) {
+    //also remove the file from the server also
+    // fs.unlinkSync(localAvatarFilePath);
+    throw new ApiError(
+      "Something went wrong while deleting images from the Cloudinary",
+      402
     );
   }
 
@@ -459,7 +571,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         201,
-        userAvatar,
+        userAvatar.avatar,
         "User Avatar Image Updated Successfully!!"
       )
     );
@@ -470,22 +582,12 @@ const updateUserCover = asyncHandler(async (req, res) => {
   //get avatar from user
   const localCoverFilePath = req.file?.path;
   if (!localCoverFilePath) {
-    throw new ApiError("Cover image Filed is Empty!!", 401);
+    throw new ApiError("Cover image Field is Empty!!", 401);
   }
   //before changing the avatar delete the current avatar from the cloudinary
   const user = req.user;
 
-  if (user.coverImage !== "") {
-    const isDeletedFromCloudinary = await deleteFromCloudinary(user.coverImage);
-    if (!isDeletedFromCloudinary) {
-      //also remove the file from the server also
-      fs.unlinkSync(localCoverFilePath);
-      throw new ApiError(
-        "Something went wrong while deleting images from the Cloudinary",
-        402
-      );
-    }
-  }
+  
 
   //now it is Deleted from Cloudinary
   //now we have image on the server
@@ -497,6 +599,18 @@ const updateUserCover = asyncHandler(async (req, res) => {
       "Something Went Wrong While Uploading the Cover Image!!",
       401
     );
+  }
+
+  if (user.coverImage !== "") {
+    const isDeletedFromCloudinary = await deleteFromCloudinary(user.coverImage);
+    if (!isDeletedFromCloudinary) {
+      //also remove the file from the server also
+      // fs.unlinkSync(localCoverFilePath);
+      throw new ApiError(
+        "Something went wrong while deleting images from the Cloudinary",
+        402
+      );
+    }
   }
 
   //User update
@@ -513,7 +627,7 @@ const updateUserCover = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponse(201, userCover, "User Cover Image Updated Successfully!!")
+      new ApiResponse(201, userCover.coverImage, "User Cover Image Updated Successfully!!")
     );
 });
 

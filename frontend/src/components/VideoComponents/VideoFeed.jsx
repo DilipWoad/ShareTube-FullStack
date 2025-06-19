@@ -6,12 +6,14 @@ import { removeComment } from "../../slices/commentSlice";
 import { BASE_URL } from "../../utils/constant";
 import axios from "axios";
 import { addUserPlaylist } from "../../slices/librarySlice";
+import { removePost } from "../../slices/postSlice";
 
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
   const userStore = useSelector((store) => store.user);
   const videoComment = useSelector((store) => store.comment);
   const playlistStore = useSelector((store) => store.library.playlist);
+  const postStore = useSelector((store) => store.post);
   const userId = userStore?._id;
   const videos = videoStore?.feeds;
   const dispatch = useDispatch();
@@ -33,12 +35,13 @@ const VideoFeed = () => {
   useEffect(() => {
     getPlaylist();
     videoComment && dispatch(removeComment());
+    postStore && dispatch(removePost());
   }, [playlistStore?.length, dispatch]);
 
   if (videos?.length === 0) return <div>Loading...</div>;
   return (
     <div className="flex">
-      <div className="flex flex-wrap my-10">
+      <div className="flex flex-wrap my-4 gap-4">
         {videos &&
           videos.map((video) => (
             <VideoCard

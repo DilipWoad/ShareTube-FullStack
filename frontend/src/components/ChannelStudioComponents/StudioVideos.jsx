@@ -4,13 +4,16 @@ import { BASE_URL } from "../../utils/constant";
 import StudioVideoCard from "./StudioVideoCard";
 import VideoAndPlaylistEditOption from "../PlaylistComponents/VideoAndPlaylistEditOption";
 import { useOutletContext } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { addVideoInStudio } from "../../slices/studioSlice";
 
 const StudioVideos = () => {
-  const [channelVideos, setChannelVideos] = useState(null);
   const [selectedId, setSelectedId] = useState([]);
   const [videoEditOption, setVideoEditOption] = useState(false);
   const [videoInfo, setVideoInfo] = useState(null);
 
+  const dispatch = useDispatch();
+  const studioVideos = useSelector((store)=>store.studio.videos);
   const {setCancelFalse} = useOutletContext();
 
   console.log(selectedId);
@@ -53,7 +56,7 @@ const StudioVideos = () => {
         withCredentials: true,
       });
       console.log(res.data.data);
-      setChannelVideos(res.data.data);
+      dispatch(addVideoInStudio(res.data.data))
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +65,7 @@ const StudioVideos = () => {
   useEffect(() => {
     getChannelVideo();
   }, []);
-  if (!channelVideos) return <div>Loading....</div>;
+  if (!studioVideos) return <div>Loading....</div>;
   return (
     <>
       <div className="flex justify-between m-5">
@@ -111,7 +114,7 @@ const StudioVideos = () => {
           </div>
         </div>
         <div className="h-screen mx-2 overflow-y-scroll">
-          {channelVideos.map((video) => (
+          {studioVideos.map((video) => (
             <StudioVideoCard
               channelVideos={video}
               key={video._id}

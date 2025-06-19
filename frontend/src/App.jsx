@@ -17,9 +17,10 @@ import PostComments from "./components/PostComponents/PostComments";
 // import ChannelStudio from "./components/ChannelStudioComponents/ChannelStudio";
 import StudioVideos from "./components/ChannelStudioComponents/StudioVideos";
 import StudioDashboard from "./components/ChannelStudioComponents/StudioDashboard";
-import UserSubscription from "./components/UserSubscription";
+import UserSubscription from "./components/UserSubscription/UserSubscription";
 import { lazy, Suspense } from "react";
 import LoadingScreen from "./utils/LoadingScreen";
+import EditProfile from "./components/EditProfile/EditProfile";
 const ChannelStudio = lazy(() =>
   import("./components/ChannelStudioComponents/ChannelStudio")
 );
@@ -55,6 +56,7 @@ function App() {
                 >
                   <Route index element={<StudioVideos />} />
                   <Route path="dashboard" element={<StudioDashboard />} />
+                  <Route path="edit-profile" element={<EditProfile/>}/>
                 </Route>
               </Route>
             </Routes>

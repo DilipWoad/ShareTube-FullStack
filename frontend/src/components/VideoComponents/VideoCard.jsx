@@ -20,7 +20,7 @@ const VideoCard = ({
         className={`bg-gray-600 w-96 h-fit rounded-lg overflow-hidden ml-4  ${
           menuClicked && !isChannelVideos ? "w-[350px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} ${
-          isChannelVideos && menuClicked ? "w-[225px] mr-[19px]" : ""
+          isChannelVideos && menuClicked ? "w-[225px] " : ""
         }`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}>

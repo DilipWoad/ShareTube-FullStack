@@ -51,7 +51,7 @@ const ChannelPage = () => {
       console.log(res.data);
       setChannelDetails(res.data.data);
       setIsSubscribed(res.data.data.isCurrentUserSubscribed);
-      dispatch(addChannelInfo(res.data.data))
+      dispatch(addChannelInfo(res.data.data));
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +118,7 @@ const ChannelPage = () => {
 
           <NavLink
             to={`/channel/@${username}/posts`}
-            className={ ({ isActive }) =>
+            className={({ isActive }) =>
               isActive
                 ? "border-b-2 border-white text-white "
                 : "hover:border-b-2 hover:border-gray-400"

@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 
 const Header = () => {
-  const userDetails = useSelector((store) => store.user);
+  const userDetails = useSelector((store) => store?.user);
   const [createOption, setCreateOption] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();

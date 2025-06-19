@@ -20,6 +20,7 @@ const verifyAuthentication = asyncHandler(async (req, res, next) => {
       req.header("Authorization")?.replace("Bearer ", "");
 
     //check if token present
+    console.log(token)
     if (!token) {
       throw new ApiError("Invalid Authorization !!");
     }
@@ -52,8 +53,13 @@ const verifyAuthentication = asyncHandler(async (req, res, next) => {
     //once added to the req obj now work of the middelware is over call the next function
     next();
   } catch (error) {
-    console.log("At verifying JWT");
-    next(error);
+    console.log("At verifying JWT", error.message);
+    if (error.name === "TokenExpiredError") {
+    // Custom error for interceptor to catch
+    return next(new ApiError("Access token expired", 401));
+  }
+
+  return next(new ApiError("Authentication Failed", 401));
   }
 });
 

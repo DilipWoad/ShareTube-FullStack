@@ -1,17 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { addDashboard } from "../../slices/studioSlice";
 
 const StudioDashboard = () => {
-  const [dashboard, setDashboard] = useState(null);
+  const dispatch = useDispatch();
+  const dashboard = useSelector((store)=>store.studio.dashboard)
 
   const getChannelStats = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/dashboard`, {
         withCredentials: true,
       });
-      setDashboard(res.data.data);
       console.log(res.data.data);
+      dispatch(addDashboard(res.data.data))
     } catch (error) {
       console.log(error);
     }

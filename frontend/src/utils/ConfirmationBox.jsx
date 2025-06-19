@@ -1,7 +1,10 @@
 import axios from "axios";
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { togglePublished } from "../slices/studioSlice";
 
 const ConfirmationBox = ({ toggle, setToggle, id,setShowBox }) => {
+  const dispatch = useDispatch();
   const handleYesClick = async () => {
     try {
       const res = await axios.patch(
@@ -11,6 +14,7 @@ const ConfirmationBox = ({ toggle, setToggle, id,setShowBox }) => {
       );
 
       console.log(res.data);
+      dispatch(togglePublished(id))
       setToggle(!toggle);
       setShowBox(false)
     } catch (error) {

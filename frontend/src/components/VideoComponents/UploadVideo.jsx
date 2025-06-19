@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addNewVideo } from "../../slices/studioSlice";
 
 const UploadVideo = ({setCancel,cancel}) => {
   const [title, setTitle] = useState("");
@@ -11,6 +13,7 @@ const UploadVideo = ({setCancel,cancel}) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleVideoFile = (e) => {
     if (e.target.files) {
@@ -40,11 +43,14 @@ const UploadVideo = ({setCancel,cancel}) => {
       });
       console.log(res.data);
       //once complete stop loading
+      dispatch(addNewVideo(res.data.data))
       setLoading(false);
       //show a ui res that video is uploaded
       alert("Video Uploaded Successfully!!");
       //and navigate to / home page/feed
-      navigate("/");
+      setCancel(true)
+      // navigate("/");
+      //dont go / inset updte the video list with new video
     } catch (error) {
       //stop the loading
       console.log(error);

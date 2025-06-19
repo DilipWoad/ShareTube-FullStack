@@ -9,11 +9,12 @@ import libraryReducer from "../slices/librarySlice";
 import playlistReducer from "../slices/playlistSlice";
 import channelReducer from "../slices/channelSlice";
 import postReducer from "../slices/postSlice";
+import studioReducer from "../slices/studioSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user","library"], // Only persist the required reducers
+  whitelist: ["library"], // Only persist the required reducers
 };
 
 const rootReducer = combineReducers({
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   library: libraryReducer,
   playlist: playlistReducer,
   channel: channelReducer,
-  post : postReducer
+  post : postReducer,
+  studio:studioReducer
 });
 
 const presistedReducer = persistReducer(persistConfig,rootReducer)
