@@ -35,7 +35,7 @@ const Header = () => {
         <div
           onClick={() => dispatch(toggleMenuClick())}
           className={`hover:cursor-pointer relative hover:bg-slate-300 sm:p-2 rounded-full transition 
-             ${location.pathname ===('/login' || '/signup') ? "hidden":""} sm:block`}
+             ${(location.pathname ==='/login' || location.pathname === '/signup') ? "hidden":""} block`}
         >
           <img className="w-9" src={MENU_IMG} alt="menu-icon"/>
         </div>
