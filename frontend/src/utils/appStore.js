@@ -14,7 +14,7 @@ import studioReducer from "../slices/studioSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["library"], // Only persist the required reducers
+  whitelist: ["user","library"], // Only persist the required reducers
 };
 
 const rootReducer = combineReducers({

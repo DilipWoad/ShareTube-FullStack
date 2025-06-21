@@ -4,10 +4,13 @@ import MenuOptionCard from "./HeaderComponets/MenuOptionCard";
 const SideBar = ({ menuClicked }) => {
   const location = useLocation();
   return (
-    <div className={`bg-gray-500  h-fit ${location.pathname=='/watch'?"absolute":""} ${menuClicked ? "w-64" : ""}`}>
+    <div className={`bg-gray-500 block absolute sm:relative 
+      ${location.pathname ===('/login' || '/signup') ? "hidden":""}  h-fit 
+      ${location.pathname=='/watch'?"absolute":""} 
+    ${menuClicked ? "w-64 hidden sm:block" : ""}`}>
       <ul
         className={` flex flex-col items-center ${
-          menuClicked ? "my-2 gap-y-2" : "gap-y-8 mt-5"
+          menuClicked ? "my-2 gap-y-2" : " gap-y-8 mt-5"
         }  text-[12px] font-semibold min-w-22 mx-1`}
       >
         <MenuOptionCard

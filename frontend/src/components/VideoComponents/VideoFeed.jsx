@@ -41,7 +41,7 @@ const VideoFeed = () => {
   if (videos?.length === 0) return <div>Loading...</div>;
   return (
     <div className="flex">
-      <div className="flex flex-wrap my-4 gap-4">
+      <div className="flex-col w-screen p-2 space-y-4 sm:space-y-0 flex sm:flex-row sm:flex-wrap sm:my-4 sm:gap-4  ">
         {videos &&
           videos.map((video) => (
             <VideoCard

@@ -3,6 +3,7 @@ import {BASE_URL} from "../utils/constant.js"
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
+  
   withCredentials: true, // for sending/receiving cookies
 });
 
@@ -48,8 +49,8 @@ axiosInstance.interceptors.response.use(
 
       isRefreshing = true;
       try {
-        const res = await axiosInstance.post(
-          `/user/refresh-token`,
+        const res = await axios.post(
+          `${BASE_URL}/user/refresh-token`,
           {},
           { withCredentials: true }
         );

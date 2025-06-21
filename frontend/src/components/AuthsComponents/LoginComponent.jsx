@@ -18,7 +18,7 @@ const LoginComponent = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-screen min-h-screen bg-red-400">
+    <div className="flex items-center justify-center w-screen ">
       <div className="bg-white w-full max-w-sm rounded-lg p-8 shadow-lg">
         <label className="text-2xl font-semibold ">Login</label>
         <form className="mt-6" onSubmit={handleLoginUser}>

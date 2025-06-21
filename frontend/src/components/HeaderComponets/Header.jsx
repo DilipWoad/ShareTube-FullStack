@@ -30,24 +30,25 @@ const Header = () => {
   };
 
   return (
-    <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 pr-10">
-      <div className="flex items-center gap-x-8 p-2">
+    <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 sm:pr-10 pr-2">
+      <div className="flex items-center sm:p-2">
         <div
           onClick={() => dispatch(toggleMenuClick())}
-          className="hover:cursor-pointer relative hover:bg-slate-300 p-2 rounded-full transition"
+          className={`hover:cursor-pointer relative hover:bg-slate-300 sm:p-2 rounded-full transition 
+             ${location.pathname ===('/login' || '/signup') ? "hidden":""} sm:block`}
         >
-          <img className="w-9" src={MENU_IMG} />
+          <img className="w-9" src={MENU_IMG} alt="menu-icon"/>
         </div>
         {/* TODO:This need to be protect when at login page clicked on logo it goes to /feed page */}
-        <Link to={"/"}>
+        <Link to={"/"} className="ml-2">
           <img className="w-20" src={YT_LOGO} />
         </Link>
       </div>
       {userDetails ? (
-        <div className="flex items-center gap-3 relative">
+        <div className="flex items-center sm:gap-3  gap-1 relative">
           <button
             onClick={() => setCreateOption(!createOption)}
-            className="bg-white px-2 py-1 rounded-full hover:bg-gray-300"
+            className="bg-white py-1 px-2 rounded-full hover:bg-gray-300 text-sm font-medium"
           >
             ✚ Create
           </button>
@@ -70,7 +71,7 @@ const Header = () => {
               </Link>
             </div>
           )}
-          <div>
+          <div className="hidden sm:block">
             <p>Welcome, {userDetails.fullName}</p>
           </div>
           <Link to={`/channel/@${userDetails.username}`} className="">
@@ -80,13 +81,13 @@ const Header = () => {
             />
           </Link>
           <button onClick={handleLogout} className="">
-            <img className="w-6 ml-3 " src={LOGOUT_ICON} alt="logout" />
+            <img className="w-6 ml-2" src={LOGOUT_ICON} alt="logout" />
           </button>
         </div>
       ) : (
         location.pathname !== "/login" && (
           <Link to={"/login"}>
-            <button className="bg-blue-500 px-4 rounded-md py-1 hover:bg-blue-600 text-white transition">
+            <button className="bg-blue-600 px-4 rounded-md py-2 sm:py-1 hover:bg-blue-700 text-white transition">
               Login
             </button>
           </Link>

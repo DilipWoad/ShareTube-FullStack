@@ -1,5 +1,5 @@
-export const BASE_URL = "https://sharetube-1o6p.onrender.com/api/v1";
-// export const BASE_URL = "http://localhost:8000/api/v1";
+// export const BASE_URL = "https://sharetube-1o6p.onrender.com/api/v1";
+export const BASE_URL = "http://localhost:8000/api/v1";
 export const MENU_IMG =
   "https://cdn-icons-png.flaticon.com/128/5949/5949637.png";
 export const YT_LOGO =

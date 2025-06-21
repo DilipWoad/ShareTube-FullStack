@@ -41,7 +41,7 @@ const SignupComponent = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen min-h-screen bg-red-400">
+    <div className="flex items-center justify-center w-screen px-2 ">
       <div className="bg-white w-full max-w-md rounded-lg p-8 shadow-lg">
         <label className="text-2xl font-semibold ">Sign up</label>
         <form className="mt-6" onSubmit={handleSignupUser}>
@@ -91,8 +91,8 @@ const SignupComponent = () => {
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
-          <div className="my-6 flex">
-            <div className="w-1/2">
+          <div className="my-6 sm:flex space-y-4 sm:space-y-0">
+            <div className="w-1/2 space-y-2 sm:space-y-0">
               <label className="block text-gray-600">Avatar Image</label>
               <input
                 type="file"

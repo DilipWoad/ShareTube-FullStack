@@ -18,15 +18,6 @@ const MenuOptionCard = ({ Icon, Label, menuClicked, path ,currentPath }) => {
           <p className={`${menuClicked ? "text-[16px] ml-5" : ""}`}>{Label}</p>
           
         </div>
-        {/* {menuClicked && Label === "You" && (
-        <ul className="text-lg bg-lime-300">
-          <Link to={'/history'}><li>History</li></Link>
-          <li>Playlists</li>
-          <li>My videos</li>
-          <li>Watch Later</li>
-          <li>Liked videos</li>
-        </ul>
-      )} */}
       </Link>
       
     </li>

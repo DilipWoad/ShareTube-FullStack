@@ -47,7 +47,7 @@ router
 router
   .route("/refresh-token")
   .post(
-    verifyAuthentication, 
+    // verifyAuthentication, 
     refreshAccessTokens
   );
 
