@@ -4,7 +4,7 @@ import MenuOptionCard from "./HeaderComponets/MenuOptionCard";
 const SideBar = ({ menuClicked }) => {
   const location = useLocation();
   return (
-    <div className={`bg-gray-500 block absolute sm:relative 
+    <div className={`bg-gray-500 block absolute sm:relative z-10 rounded-br-xl
       ${location.pathname ===('/login' || '/signup') ? "hidden":""}  h-fit 
       ${location.pathname=='/watch'?"absolute":""} 
     ${menuClicked ? "w-64 hidden sm:block" : ""}`}>
