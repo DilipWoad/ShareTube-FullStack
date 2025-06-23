@@ -61,7 +61,7 @@ const VideoComment = ({ videoId }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
   return (
-    <div className="bg-gray-700 rounded-xl pb-2">
+    <div className="bg-gray-700 rounded-xl pb-2 px-2">
       {/* no of comments */}
       <p className="text-xl mt-5 px-2 font-bold">
         {videoComments?.length || 0} Comments
