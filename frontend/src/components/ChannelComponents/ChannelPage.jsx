@@ -63,27 +63,27 @@ const ChannelPage = () => {
   if (!channelDetails) return <div>Loading...</div>;
   return (
     <div
-      className={`p-2 rounded-xl bg-gray-600 w-full ml-[98px] ${
-        menuClick ? "mr-8 ml-14" : "mr-[120px]"
-      } space-y-5 my-2`}
+      className={`p-2 rounded-xl bg-gray-600 w-full sm:ml-[98px] ${
+        menuClick ? "sm:mr-8 sm:ml-14" : "sm:mr-[120px]"
+      } space-y-5 m-2`}
     >
       {/* Welcome to Channel Page {na} */}
       <div className=" rounded-xl overflow-hidden">
         <img
-          className="w-full h-44 object-fill"
+          className="w-full sm:h-44 h-36 object-cover sm:object-fill"
           src={channelDetails?.coverImage}
         />
       </div>
-      <div className=" h-44">
+      <div className=" sm:h-44 ">
         <div className="flex text-black h-full">
           <img
-            className="bg-red-400 w-44 object-cover rounded-full mr-3"
+            className="bg-red-400 sm:w-44 sm:h-auto w-32 h-32 object-cover rounded-full mr-3"
             src={channelDetails?.avatar}
             alt="avatar"
           />
           <div className="">
-            <p className="text-4xl font-bold">{channelDetails?.fullName}</p>
-            <div className=" flex my-3 space-x-1 text-lg">
+            <p className="sm:text-4xl text-2xl font-bold">{channelDetails?.fullName}</p>
+            <div className=" flex my-3 space-x-1 sm:text-lg">
               <p className="font-semibold text-black">{`@${channelDetails?.username} ${middleDot}`}</p>
               <p className="text-gray-400 font-medium ">
                 {channelDetails?.subscriberCount} Subscribers
@@ -91,7 +91,7 @@ const ChannelPage = () => {
             </div>
             <button
               onClick={handleSubscription}
-              className={`px-4 py-2 rounded-3xl mt-7 ${
+              className={`px-2 py-1 sm:px-3 sm:py-2 rounded-full sm:mt-7 text-sm sm:text-[16px] ${
                 isSubscribed
                   ? "bg-gray-500 text-white hover:bg-gray-400"
                   : "hover:bg-gray-300 bg-white"
@@ -132,7 +132,7 @@ const ChannelPage = () => {
           </button>
         </div>
 
-        <div className="flex flex-wrap bg-gray-600 justify-start">
+        <div className=" bg-gray-600 ">
           <Outlet context={{ channelId, menuClick }} />
         </div>
       </div>

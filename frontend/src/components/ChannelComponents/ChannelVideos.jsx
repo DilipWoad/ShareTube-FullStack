@@ -27,14 +27,14 @@ const ChannelVideos = () => {
   }, []);
   if (!channelVideos) return <div>This Channel has No Videos!!</div>;
   return (
-    <div className=" flex flex-wrap my-4 ">
+    <div className=" flex flex-wrap sm:p-4 p-2 sm:justify-start justify-center gap-4 sm:gap-1 ">
       {channelVideos.map((video) => (
         <VideoCard
           key={video._id}
           video={video}
           menuClicked={menuClick}
-          css={"w-[235px] bg-slate-400 h-[215px] mb-4"}
-          thumbnailcss={"h-32"}
+          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 pb-2 sm:pb-0 "}
+          thumbnailcss={"sm:h-32"}
           isChannelVideos={true}
         />
       ))}
