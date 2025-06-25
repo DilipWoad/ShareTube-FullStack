@@ -112,51 +112,52 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   return (
     <div
       key={post._id}
-      className={` p-3 flex mb-7 rounded-xl border-2 ${postCss} bg-gray-400 pl-7 pr-7 `}
+      className={` sm:p-3 px-2 py-1 flex mb-7 sm:rounded-xl rounded-lg border-2 ${postCss} bg-gray-400 sm:px-7 `}
     >
-      <div className=" mr-2 h-fit ">
+      <div className="mr-2 h-fit bg-purple-500 ">
         <img
           className="w-10 h-10 rounded-full object-cover"
           src={postOwner?.avatar}
           alt="avatar"
         />
       </div>
-      <div className="w-full">
-        <div className="flex  text-sm justify-between ">
-          <div className="flex space-x-2">
+
+      <div className="flex-1">
+        <div className="flex  text-sm justify-between items-center ">
+          <div className="flex gap-2">
             <p className="font-bold ">{postOwner?.fullName}</p>
             <p>{createdAt}</p>
           </div>
 
-          <div className="" ref={menuRef}>
+          <div className="relative" ref={menuRef}>
             <p
               onClick={handleCommentOption}
-              className="text-lg font-semibold hover:cursor-pointer rounded-full hover:bg-gray-200 w-7 h-7 text-center relative "
+              className="text-lg font-semibold hover:cursor-pointer rounded-full hover:bg-gray-200 w-7 h-7 text-center "
             >
               ⫶
             </p>
             {moreOption && (
-              <div className="bg-slate-200 absolute z-50 rounded-lg hover cursor-pointer">
-                <ul className="space-y-2">
+              <div className="bg-slate-900 absolute z-50 rounded-lg hover:cursor-pointer top-5 right-5">
+                <ul className="text-nowrap sm:w-24 mx-2 sm:my-2 sm:mx-0 my-1 text-sm text-white sm:space-y-3 space-y-1">
                   {postOwner._id === userInfo?._id ? (
                     <>
                       <li
                         onClick={() =>
                           handleDeletePost(post?._id, postOwner._id)
                         }
-                        className="hover:bg-slate-400 p-2 m-1 rounded-lg"
+                        className="hover:bg-slate-400 py-1 "
                       >
                         🗑️ Delete
                       </li>
                       <li
                         onClick={() => setEditPost(true)}
-                        className="hover:bg-slate-400 p-2 m-1 rounded-lg"
+                        className="hover:bg-slate-400 py-1"
                       >
                         🖊 Edit
                       </li>
                     </>
                   ) : (
-                    <li className="hover:bg-slate-300 p-1 rounded-lg">
+                    <li className="hover:bg-slate-300 py-1">
                       🖊 Report
                     </li>
                   )}
@@ -191,10 +192,10 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           </div>
         ) : (
           // <div>{editedPost}</div>
-          <div className="mt-1 text-lg">{content}</div>
+          <div className="mt-1 sm:text-lg">{content}</div>
         )}
 
-        <div className="flex space-x-5 mt-5 text-[15px] font-semibold">
+        <div className="flex space-x-5 sm:mt-5 mt-2 text-[15px] font-semibold">
           <button
             onClick={handlePostLike}
             className={`hover:bg-gray-300 rounded-full text-3xl ${

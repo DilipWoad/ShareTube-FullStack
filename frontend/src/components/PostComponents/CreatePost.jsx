@@ -41,7 +41,9 @@ const CreatePost = () => {
     }
   };
   return (
-    <div className="w-4/5 m-10 bg-slate-300 px-10 py-2 rounded-xl">
+    <div className="sm:w-4/5 sm:m-10 bg-slate-300 sm:px-10 sm:py-2 rounded-xl flex-col w-full p-2 mb-10 mt-10 ">
+
+      {/* img+fullNme */}
       <div className="flex items-center space-x-3 my-2">
         <img
           className="w-10 h-10 rounded-full object-cover"
@@ -50,6 +52,8 @@ const CreatePost = () => {
         />
         <p className="text-[15px] font-semibold">{user?.fullName}</p>
       </div>
+       
+      {/* inputBox */}
       <div className="">
         <input
           className="w-full rounded-lg py-1 px-2 my-2 bg-gray-100"
@@ -59,6 +63,8 @@ const CreatePost = () => {
           onChange={(e) => setUserPostContent(e.target.value)}
         />
       </div>
+    
+      {/* Cancel+Post Btn */}
       <div className="flex justify-end space-x-4 my-2">
         <button
           disabled={userPostContent.trim() === ""}

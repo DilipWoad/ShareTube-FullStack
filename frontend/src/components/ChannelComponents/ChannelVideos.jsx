@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 
 const ChannelVideos = () => {
-  const { channelId, menuClick } = useOutletContext();
-  const [channelVideos, setChannelVideos] = useState(null);
+  const { channelId, menuClick,channelVideos,setChannelVideos } = useOutletContext();
 
   const handleChannelVideos = async () => {
     try {
@@ -23,17 +22,17 @@ const ChannelVideos = () => {
     }
   };
   useEffect(() => {
-    handleChannelVideos();
+    !channelVideos && handleChannelVideos();
   }, []);
   if (!channelVideos) return <div>This Channel has No Videos!!</div>;
   return (
-    <div className=" flex flex-wrap sm:p-4 p-2 sm:justify-start justify-center gap-4 sm:gap-1 ">
+    <div className=" flex flex-wrap  py-1 sm:justify-start justify-center gap-2 sm:gap-1">
       {channelVideos.map((video) => (
         <VideoCard
           key={video._id}
           video={video}
           menuClicked={menuClick}
-          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 pb-2 sm:pb-0 "}
+          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 sm:pb-2 sm:pb-0 bg-lime-300 sm:block flex truncate sm:rounded-lg rounded-sm "}
           thumbnailcss={"sm:h-32"}
           isChannelVideos={true}
         />

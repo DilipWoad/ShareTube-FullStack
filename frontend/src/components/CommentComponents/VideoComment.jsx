@@ -55,7 +55,7 @@ const VideoComment = ({ videoId }) => {
   };
 
   useEffect(() => {
-    getVideoComments();
+    !videoComments && getVideoComments();
   }, [videoId]);
 
   if (loading) return <div>Loading...</div>;

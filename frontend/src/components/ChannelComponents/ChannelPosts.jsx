@@ -45,7 +45,7 @@ const ChannelPosts = () => {
   return (
     <>
       {showCreatePostBox && <CreatePost />}
-      <div className="no-flex w-4/5 m-10">
+      <div className=" sm:w-4/5 w-full bg-lime-400 sm:m-10">
         {/* {newPostDisplay && newPostDisplay.map((post)=>(
           <PostCard post={post} userInfo={user}/>
         ))} */}

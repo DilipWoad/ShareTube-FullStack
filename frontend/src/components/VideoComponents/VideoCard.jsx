@@ -66,9 +66,9 @@ const VideoCard = ({
               ⫶
             </button>
             {options && (
-              <div className="absolute top-5 right-8 bg-gray-800 text-white rounded-lg  p-2 z-10">
+              <div className="absolute opacity-85 top-8 right-6 bg-gray-800 text-white rounded-lg px-2 py-1 z-10">
                 <button
-                  className="w-36"
+                  className="sm:w-auto text-sm font-light"
                   onClick={() => setPlaylistOption(!playlistOption)}
                 >
                   ⛉ Add to playlist

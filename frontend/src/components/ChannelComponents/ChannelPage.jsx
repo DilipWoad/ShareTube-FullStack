@@ -13,6 +13,8 @@ const ChannelPage = () => {
 
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
+  const [channelVideos, setChannelVideos] = useState(null);
+  
 
   const middleDot = "\u0387";
   const channelId = channelDetails?._id;
@@ -103,8 +105,8 @@ const ChannelPage = () => {
 
       {/* Video/post/Playlist section */}
 
-      <div className="bg-gray-800">
-        <div className=" text-white border-b-[1px] border-gray-500 space-x-6 m-4">
+      <div className="bg-gray-800 pt-2 max-h-12">
+        <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4">
           <NavLink
             to={`/channel/@${username}/videos`}
             className={({ isActive }) =>
@@ -127,13 +129,13 @@ const ChannelPage = () => {
             Posts
           </NavLink>
 
-          <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
+          {/* <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
             Playlists
-          </button>
+          </button> */}
         </div>
 
         <div className=" bg-gray-600 ">
-          <Outlet context={{ channelId, menuClick }} />
+          <Outlet context={{ channelId, menuClick ,channelVideos,setChannelVideos}} />
         </div>
       </div>
     </div>
