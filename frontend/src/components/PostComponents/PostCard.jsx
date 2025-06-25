@@ -99,6 +99,10 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
     }
     setEditPost(false);
   };
+  const handlePostEditClick = () => {
+    setEditPost(true)
+    setMoreOption(false)
+  }
   const handleEditCancel = () => {
     setEditedPost(post.content);
     setEditPost(false);
@@ -114,7 +118,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
       key={post._id}
       className={` sm:p-3 px-2 py-1 flex mb-7 sm:rounded-xl rounded-lg border-2 ${postCss} bg-gray-400 sm:px-7 `}
     >
-      <div className="mr-2 h-fit bg-purple-500 ">
+      <div className="mr-2 h-fit ">
         <img
           className="w-10 h-10 rounded-full object-cover"
           src={postOwner?.avatar}
@@ -150,7 +154,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
                         🗑️ Delete
                       </li>
                       <li
-                        onClick={() => setEditPost(true)}
+                        onClick={handlePostEditClick}
                         className="hover:bg-slate-400 py-1"
                       >
                         🖊 Edit
@@ -167,24 +171,24 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           </div>
         </div>
         {editPost ? (
-          <div className="w-full mt-1 flex">
+          <div className="flex flex-wrap sm:flex-nowrap sm:w-[400px] md:w-[600px] sm:mb-2  justify-end gap-1">
             <input
               type="text"
               value={editedPost}
               onChange={(e) => setEditedPost(e.target.value)}
-              className="flex-1 px-1 text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full sm:flex-1 py-1 px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 "
             />
-            <div className="flex flex-2 ml-2 space-x-2">
+            <div className="sm:flex  space-x-2 text-sm sm:text-[16px]">
               {/*  //TODO:Show cancel when input box is focus and Save the input focus to a state, and make a state to store comment value and when clicked on cancel it should make the state to "empty" and focus as false  */}
               <button
                 onClick={handleEditCancel}
-                className="bg-white px-2 py-1 rounded-l-full rounded-r-full"
+                className="bg-white px-2 py-1 rounded-full"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleEditPost(post._id)}
-                className="bg-blue-500 px-2 py-1 rounded-l-full rounded-r-full"
+                className={`px-2 py-1 rounded-full bg-blue-600 hover:bg-blue-700 transition-all duration-200 text-white`}
               >
                 Save
               </button>

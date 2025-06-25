@@ -105,7 +105,7 @@ const ChannelPage = () => {
 
       {/* Video/post/Playlist section */}
 
-      <div className="bg-gray-800 pt-2 max-h-12">
+      <div className="bg-gray-800 py-1 rounded-lg">
         <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4">
           <NavLink
             to={`/channel/@${username}/videos`}
@@ -134,9 +134,9 @@ const ChannelPage = () => {
           </button> */}
         </div>
 
-        <div className=" bg-gray-600 ">
+        
           <Outlet context={{ channelId, menuClick ,channelVideos,setChannelVideos}} />
-        </div>
+        
       </div>
     </div>
   );

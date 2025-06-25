@@ -41,7 +41,7 @@ const CreatePost = () => {
     }
   };
   return (
-    <div className="sm:w-4/5 sm:m-10 bg-slate-300 sm:px-10 sm:py-2 rounded-xl flex-col w-full p-2 mb-10 mt-10 ">
+    <div className="sm:w-4/5 sm:m-10 bg-gray-500 sm:px-10 sm:py-2 sm:rounded-xl rounded-lg flex-col w-full p-2 mb-10 ">
 
       {/* img+fullNme */}
       <div className="flex items-center space-x-3 my-2">

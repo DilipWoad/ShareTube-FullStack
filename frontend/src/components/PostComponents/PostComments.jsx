@@ -53,16 +53,16 @@ const PostComments = () => {
   if (!aPost) return <div>Loading Post...!!</div>;
 
   return (
-    <div className="m-2 flex items-center justify-center w-full">
-      <div className=" bg-gray-500 pl-6 py-6 my-5 rounded-2xl">
+    <div className="m-2 flex justify-center w-full">
+      <div className="p-2 bg-gray-500 md:w-[550px] lg:w-[800px] rounded-2xl">
         <PostCard
           post={aPost}
-          postCss={"w-[800px] m-2 bg-gray-600"}
+          postCss={" bg-gray-600"}
           hideComment={true}
         />
         <UserCommentBox
           postId={postId}
-          userCommentCss={"mx-2 min-w-[800px]"}
+          userCommentCss={"bg-gray-800"}
         />
         {postComment &&
           postComment.map((comment) => (
@@ -70,7 +70,7 @@ const PostComments = () => {
               comment={comment}
               key={comment._id}
               usersComment={user}
-              commentCss={"w-[800px]"}
+              commentCss={""}
             />
           ))}
       </div>

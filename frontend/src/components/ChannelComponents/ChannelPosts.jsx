@@ -43,9 +43,9 @@ const ChannelPosts = () => {
   }, []);
   if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
-    <>
+    <div className="px-1">
       {showCreatePostBox && <CreatePost />}
-      <div className=" sm:w-4/5 w-full bg-lime-400 sm:m-10">
+      <div className=" sm:w-4/5 w-full  sm:m-10">
         {/* {newPostDisplay && newPostDisplay.map((post)=>(
           <PostCard post={post} userInfo={user}/>
         ))} */}
@@ -53,7 +53,7 @@ const ChannelPosts = () => {
           <PostCard key={post._id} post={post} userInfo={user} />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
