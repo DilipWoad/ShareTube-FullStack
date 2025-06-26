@@ -32,8 +32,8 @@ const ChannelVideos = () => {
           key={video._id}
           video={video}
           menuClicked={menuClick}
-          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 sm:pb-2 sm:pb-0 bg-lime-300 sm:block flex truncate sm:rounded-lg rounded-sm "}
-          thumbnailcss={"sm:h-32"}
+          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 sm:pb-2 sm:pb-0 sm:block flex truncate sm:rounded-lg rounded-sm mx-1"}
+          thumbnailcss={"sm:h-32 h-full w-full"}
           isChannelVideos={true}
         />
       ))}

@@ -14,7 +14,6 @@ const ChannelPage = () => {
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [channelVideos, setChannelVideos] = useState(null);
-  
 
   const middleDot = "\u0387";
   const channelId = channelDetails?._id;
@@ -59,36 +58,34 @@ const ChannelPage = () => {
     }
   };
   useEffect(() => {
-    userChannelDetails();
+    !channelDetails && userChannelDetails();
   }, []);
 
   if (!channelDetails) return <div>Loading...</div>;
   return (
     <div
-      className={`p-2 rounded-xl bg-gray-600 w-full sm:ml-[98px] ${
-        menuClick ? "sm:mr-8 sm:ml-14" : "sm:mr-[120px]"
-      } space-y-5 m-2`}
+      className={`p-2 sm:rounded-xl bg-gray-600 w-full sm:ml-[98px] ${
+        menuClick ? " sm:ml-14" : "sm:mr-[120px]"
+      } space-y-5 sm:m-2 `}
     >
       {/* Welcome to Channel Page {na} */}
-      <div className=" rounded-xl overflow-hidden">
-        <img
-          className="w-full sm:h-44 h-36 object-cover sm:object-fill"
+      <img
+          className="w-full sm:h-44 h-36 object-cover sm:object-fill rounded-xl"
           src={channelDetails?.coverImage}
         />
-      </div>
       <div className=" sm:h-44 ">
         <div className="flex text-black h-full">
           <img
-            className="bg-red-400 sm:w-44 sm:h-auto w-32 h-32 object-cover rounded-full mr-3"
+            className=" sm:w-44 sm:h-auto w-28 h-28 flex-2 object-cover rounded-full mr-3"
             src={channelDetails?.avatar}
             alt="avatar"
           />
-          <div className="">
+          <div className="flex-1">
             <p className="sm:text-4xl text-2xl font-bold">{channelDetails?.fullName}</p>
-            <div className=" flex my-3 space-x-1 sm:text-lg">
+            <div className=" flex my-3 space-x-1 sm:text-lg text-sm">
               <p className="font-semibold text-black">{`@${channelDetails?.username} ${middleDot}`}</p>
               <p className="text-gray-400 font-medium ">
-                {channelDetails?.subscriberCount} Subscribers
+                {channelDetails?.subscriberCount} subscribers
               </p>
             </div>
             <button
@@ -103,42 +100,43 @@ const ChannelPage = () => {
         </div>
       </div>
 
-      {/* Video/post/Playlist section */}
+        {/* Video/post/Playlist section */}
 
-      <div className="bg-gray-800 py-1 rounded-lg">
-        <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4">
-          <NavLink
-            to={`/channel/@${username}/videos`}
-            className={({ isActive }) =>
-              isActive
-                ? "border-b-2 border-white text-white"
-                : "hover:border-b-2 hover:border-gray-400"
-            }
-          >
-            Videos
-          </NavLink>
+        <div className="bg-gray-800 py-1 rounded-lg">
+          <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4">
+            <NavLink
+              to={`/channel/@${username}/videos`}
+              className={({ isActive }) =>
+                isActive
+                  ? "border-b-2 border-white text-white"
+                  : "hover:border-b-2 hover:border-gray-400"
+              }
+            >
+              Videos
+            </NavLink>
 
-          <NavLink
-            to={`/channel/@${username}/posts`}
-            className={({ isActive }) =>
-              isActive
-                ? "border-b-2 border-white text-white "
-                : "hover:border-b-2 hover:border-gray-400"
-            }
-          >
-            Posts
-          </NavLink>
+            <NavLink
+              to={`/channel/@${username}/posts`}
+              className={({ isActive }) =>
+                isActive
+                  ? "border-b-2 border-white text-white "
+                  : "hover:border-b-2 hover:border-gray-400"
+              }
+            >
+              Posts
+            </NavLink>
 
-          {/* <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
+            {/* <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
             Playlists
           </button> */}
-        </div>
+          </div>
 
-        
-          <Outlet context={{ channelId, menuClick ,channelVideos,setChannelVideos}} />
-        
+          <Outlet
+            context={{ channelId, menuClick, channelVideos, setChannelVideos }}
+          />
+        </div>
       </div>
-    </div>
+   
   );
 };
 

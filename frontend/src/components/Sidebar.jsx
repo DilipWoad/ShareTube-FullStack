@@ -7,7 +7,7 @@ const SideBar = ({ menuClicked }) => {
     <div className={`bg-gray-500 block absolute sm:relative z-10 rounded-br-xl
       ${location.pathname ===('/login' || '/signup') ? "hidden":""}  h-fit 
       ${location.pathname=='/watch'?"absolute":""} 
-    ${menuClicked ? "w-64 hidden sm:block" : ""}`}>
+    ${menuClicked ? "w-fit hidden sm:block" : ""}`}>
       <ul
         className={` flex flex-col items-center ${
           menuClicked ? "my-2 gap-y-2" : " gap-y-8 mt-5"

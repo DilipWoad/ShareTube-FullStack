@@ -40,8 +40,7 @@ const VideoFeed = () => {
 
   if (videos?.length === 0) return <div>Loading...</div>;
   return (
-    <div className="flex">
-      <div className="flex-col w-screen p-2 space-y-4 sm:space-y-0 flex sm:flex-row sm:flex-wrap sm:my-4 sm:gap-4  ">
+    <div className=" mt-2 sm:mt-0 sm:py-2 sm:w-fit space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:flex-wrap ">
         {videos &&
           videos.map((video) => (
             <VideoCard
@@ -49,10 +48,10 @@ const VideoFeed = () => {
               video={video}
               menuClicked={videoStore?.isMenuClicked}
               isChannelVideos={false}
+              css={"mb-4"}
             />
           ))}
       </div>
-    </div>
   );
 };
 
