@@ -68,7 +68,7 @@ const VideoCard = ({
             {options && (
               <div className="absolute opacity-85 top-8 right-6 bg-gray-800 text-white rounded-lg px-2 py-1 z-10">
                 <button
-                  className="sm:w-auto text-sm font-light"
+                  className={`w-32 text-sm font-light ${isChannelVideos ? "sm:w-auto" : ""}`} 
                   onClick={() => setPlaylistOption(!playlistOption)}
                 >
                   ⛉ Add to playlist

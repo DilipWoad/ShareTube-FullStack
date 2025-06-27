@@ -5,15 +5,17 @@ const UserSubscribedChannelCard = ({ channel }) => {
   const { avatar, fullName, username } = userSubscribedChannels;
 
   return (
-    <Link to={`/channel/@${username}`} className="bg-gray-400 block w-fit h-fit m-2 p-2 rounded-xl text-center hover:cursor-pointer">
-      <img
-          className="w-32 h-32 rounded-full object-cover"
+    <Link to={`/channel/@${username}`} className="  hover:cursor-pointer">
+      <div className="bg-gray-400 rounded-lg items-center flex m-2 sm:block sm:px-4 sm:py-1">
+        <img
+          className="sm:w-32 sm:h-32  sm:mr-0 mr-4 w-20 h-20 rounded-full object-cover"
           src={avatar}
         />
-        <div className=" h-full py-2">
-          <div className="text-2xl">{fullName}</div>
-          <div className="text-lg mt-4 ">{`@${username}`}</div>
+        <div className="flex-1 flex-col sm:text-center">
+          <div className="text-xl">{fullName}</div>
+          <div className="text-[16px] mt-2 ">{`@${username}`}</div>
         </div>
+      </div>
     </Link>
   );
 };

@@ -17,11 +17,11 @@ const UserSubscription = () => {
   //by this chnnel id get chnnel video
 
   useEffect(()=>{
-    getUserSubscriptionVideos();
+    !userSubscription&&getUserSubscriptionVideos();
   },[])
   if(!userSubscription) return <div>U dont hv ny subscription</div>
   return (
-    <div className="  flex m-4 flex-wrap gap-5   w-full">
+    <div className="w-full h-auto sm:w-fit sm:flex sm:flex-wrap">
         {
         userSubscription.map((channel)=> (<UserSubscribedChannelCard key={channel._id} channel={channel}/>))
         }
