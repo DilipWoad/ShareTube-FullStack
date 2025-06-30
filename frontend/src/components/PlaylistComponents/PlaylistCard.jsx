@@ -30,7 +30,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   return (
     <>
       <div
-        className={` w-96 h-fit  rounded-lg m-4 ${
+        className={` w-96 h-fit  rounded-lg ${
           menuClicked ? "w-[330px]" : ""
         } shadow-lg hover:shadow-gray-300 ${css} `}
       >
@@ -43,12 +43,12 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         </div>
         <div className="bg-gray-700 flex justify-between rounded-b-xl">
           <Link to={{ pathname: "/playlist", search: `?list=${_id}` }}>
-            <div className="mt-1 px-2 ">
+            <div className=" ">
               <p className="text-md font-semibold text-wrap">{title}</p>
               <p className="text-[13px] font-semibold text-wrap">
                 Channel Name
               </p>
-              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer my-2">
+              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer my-2">                         
                 View full playlist
               </p>
             </div>

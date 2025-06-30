@@ -52,17 +52,23 @@ const UserLibrary = () => {
   }, [dispatch]);
   if (!history) return <div>Loading...</div>;
   return (
-    <div className=" flex w-full justify-center m-2">
-      <div className=" max-w-screen-lg bg-gray-700 rounded-xl">
-        <div className="flex  p-2 space-x-3">
-          <div className="w-28 h-28 rounded-full overflow-hidden">
-            <img className="" src={user?.avatar} alt="user-avatar" />
-          </div>
-          <div className="">
-            <p className="text-4xl font-bold">{user?.fullName}</p>
-            <p className="text-lg my-2">@{user?.username}</p>
-          </div>
+    <div className="w-full bg-gray-700 justify-center  sm:m-2">
+      <div className=" flex sm:flex-row sm:p-2 py-2 flex-col items-center gap-2 ">
+        {/* avatar */}
+        <img
+          className="w-28 h-28 rounded-full object-cover"
+          src={user?.avatar}
+          alt="user-avatar"
+        />
+        {/* fullName+username */}
+        <div className="text-center sm:text-start">
+          <p className="sm:text-4xl text-3xl font-bold">{user?.fullName}</p>
+          <p className="text-lg sm:my-2">@{user?.username}</p>
         </div>
+      </div>
+
+      {/* //videos */}
+      <div className=" h-screen ">
         <div>
           {history && (
             <LibraryCardComponent library={history} label={"History"} />
