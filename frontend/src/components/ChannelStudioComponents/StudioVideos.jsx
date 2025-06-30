@@ -103,17 +103,17 @@ const StudioVideos = () => {
         </button>
       </div>
       <div className="">
-        <div className="flex justify-between flex-1 text-white text-lg font-medium">
-          <div className="flex space-x-16 m-2">
-            <div>Edit/Delete</div>
+        <div className="flex justify-between flex-1 text-white sm:text-lg text-sm font-medium">
+          <div className="flex gap-4 sm:space-x-16 m-2">
+            <div className="">Edit/Delete</div>
             <div>Video</div>
           </div>
-          <div className="flex space-x-12 m-2">
+          <div className="flex sm:space-x-12 gap-4 m-2">
             <div>Views</div>
-            <div>Published</div>
+            <div>Status</div>
           </div>
         </div>
-        <div className="h-screen mx-2 overflow-y-scroll">
+        <div className="h-screen sm:mx-2 overflow-y-scroll">
           {studioVideos.map((video) => (
             <StudioVideoCard
               channelVideos={video}

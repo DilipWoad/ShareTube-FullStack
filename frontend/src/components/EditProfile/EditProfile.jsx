@@ -138,7 +138,7 @@ const EditProfile = () => {
     // </div>
     <div>
        {loading && <LoadingScreen/>}
-      <section className="max-w-xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <section className="max-w-xl sm:mx-auto mt-10 bg-white sm:p-6 rounded-2xl shadow-md border border-gray-200 p-4 m-2 ">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">
           Edit Profile
         </h1>

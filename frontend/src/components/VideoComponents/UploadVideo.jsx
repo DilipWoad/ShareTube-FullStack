@@ -69,7 +69,7 @@ const UploadVideo = ({setCancel,cancel}) => {
     !cancel && <div
       className={`fixed inset-0 z-50 bg-black/60 flex items-center justify-center`}
     >
-      <div className="bg-white w-full max-w-sm my-8 rounded-lg p-5 shadow-lg">
+      <div className="bg-white p-4 sm:w-full max-w-sm my-8 rounded-lg sm:p-5 shadow-lg">
         <div className="flex justify-between items-center">
           <label className="text-2xl font-semibold ">Upload Video</label>
           <div onClick={handleCancelUpload} className="hover:cursor-pointer hover:bg-gray-300 w-8 h-8 rounded-full 
