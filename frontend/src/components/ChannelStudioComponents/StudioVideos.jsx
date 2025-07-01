@@ -13,8 +13,8 @@ const StudioVideos = () => {
   const [videoInfo, setVideoInfo] = useState(null);
 
   const dispatch = useDispatch();
-  const studioVideos = useSelector((store)=>store.studio.videos);
-  const {setCancelFalse} = useOutletContext();
+  const studioVideos = useSelector((store) => store.studio.videos);
+  const { setCancelFalse } = useOutletContext();
 
   console.log(selectedId);
 
@@ -56,7 +56,7 @@ const StudioVideos = () => {
         withCredentials: true,
       });
       console.log(res.data.data);
-      dispatch(addVideoInStudio(res.data.data))
+      dispatch(addVideoInStudio(res.data.data));
     } catch (error) {
       console.log(error);
     }
@@ -68,12 +68,12 @@ const StudioVideos = () => {
   if (!studioVideos) return <div>Loading....</div>;
   return (
     <>
-      <div className="flex justify-between m-5">
-        <div className="space-x-2">
+      <div className="flex justify-between m-5 sticky top-0">
+        <div className="space-x-2 ">
           <button
             onClick={() => handleEditClick(selectedId[0])}
             disabled={selectedId.length !== 1}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+            className={`sm:px-5 sm:py-2 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 
               ${
                 selectedId.length === 1
                   ? "bg-blue-600 text-white hover:bg-blue-700"
@@ -85,7 +85,7 @@ const StudioVideos = () => {
           <button
             onClick={() => handleDelete(selectedId)}
             disabled={!selectedId.length > 0}
-            className={`ml-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+            className={`ml-2 sm:px-5 sm:py-2 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200
               ${
                 selectedId.length > 0
                   ? "bg-red-600 text-white hover:bg-red-700"
@@ -97,43 +97,45 @@ const StudioVideos = () => {
         </div>
         <button
           onClick={() => setCancelFalse()}
-          className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700"
+          className="bg-blue-600 text-white sm:px-5 sm:py-2 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-700"
         >
           Upload Video
         </button>
       </div>
-      <div className="">
-        <div className="flex justify-between flex-1 text-white sm:text-lg text-sm font-medium">
-          <div className="flex gap-4 sm:space-x-16 m-2">
-            <div className="">Edit/Delete</div>
-            <div>Video</div>
+      <div className=" px-1 sm:mx-2 overflow-y-scroll sm:h-[calc(100vh-60px)] sticky top-0">
+        <div className=" ">
+          <div className="flex justify-between flex-1 text-white sm:text-lg text-sm font-medium">
+            <div className="flex gap-4 sm:space-x-16 m-2">
+              <div className="">Edit/Delete</div>
+              <div>Video</div>
+            </div>
+            <div className="flex sm:space-x-12 gap-4 m-2">
+              <div>Views</div>
+              <div>Status</div>
+            </div>
           </div>
-          <div className="flex sm:space-x-12 gap-4 m-2">
-            <div>Views</div>
-            <div>Status</div>
+          <div className="">
+            {studioVideos.map((video) => (
+              <StudioVideoCard
+                channelVideos={video}
+                key={video._id}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
+            ))}
           </div>
         </div>
-        <div className="h-screen sm:mx-2 overflow-y-scroll">
-          {studioVideos.map((video) => (
-            <StudioVideoCard
-              channelVideos={video}
-              key={video._id}
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-            />
-          ))}
-        </div>
-        {videoEditOption && (
-          <VideoAndPlaylistEditOption
-            id={videoInfo?._id}
-            thumbnail={videoInfo?.thumbnail}
-            title={videoInfo?.title}
-            description={videoInfo?.description}
-            setEditOption={setVideoEditOption}
-            isVideoEdit={true}
-          />
-        )}
       </div>
+      {videoEditOption && (
+        <VideoAndPlaylistEditOption
+          id={videoInfo?._id}
+          thumbnail={videoInfo?.thumbnail}
+          title={videoInfo?.title}
+          description={videoInfo?.description}
+          setEditOption={setVideoEditOption}
+          isVideoEdit={true}
+        />
+      )}
     </>
   );
 };

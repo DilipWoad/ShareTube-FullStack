@@ -70,8 +70,8 @@ const ChannelStudio = () => {
       </div>
 
       {/* coverImage */}
-      <div className="flex-grow h-screen overflow-y-scroll">
-        <div className=" h-44 mb-4 sm:pr-2 px-2">
+      <div className="flex-grow overflow-y-auto max-h-screen">
+        <div className=" h-44 mb-4 sm:pr-2 px-2 ">
           <img
             className="h-44 rounded-xl w-full object-fill"
             src={user?.coverImage}
