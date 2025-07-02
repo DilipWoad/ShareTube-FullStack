@@ -9,6 +9,7 @@ import PlaylistVideoCard from "./PlaylistVideoCard";
 const Playlist = () => {
   const dispatch = useDispatch();
   const playlist = useSelector((store)=>store.playlist);
+  const user = useSelector((store)=>store.user);
   console.log(playlist)
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,30 +33,39 @@ const Playlist = () => {
 
   if (!playlist) return <div>Loading...</div>;
   return (
-    <div className=" flex p-4 w-full">
-      <div className="bg-gray-700 w-[360px] p-5 rounded-lg h-fit">
-        <div className=" rounded-lg overflow-hidden mb-6 border-1 shadow-xl">
+    <div className=" flex flex-col sm:flex-row p-2 sm:p-4 w-full h-full ">
+      {/* playlistDescription+CoverImg+Info */}
+      <div className="bg-gray-700 sm:w-[360px] p-2 sm:p-5 rounded-lg h-fit mb-4">
+        {/* coverImg */}
+        <div className=" mb-6 border-1 shadow-xl">
           <img
-            className="max-h-44 w-full object-cover"
+            className="max-h-44 w-full rounded-lg object-cover"
             src={playlist?.playlistVideos[0]?.thumbnail}
             alt="thumbnail"
           />
         </div>
+        {/* playlistInfo */}
         <div className="bg-gray-300 rounded-lg p-2 mb-2">
           <p className="text-xl font-bold">{playlist.title}</p>
-          <p className="text-sm">creator name</p>
+          <div className=" flex items-center gap-2 my-1 mx-1">
+          <img className="w-8 h-8 sm:w-6 sm:h-6 hover:cursor-pointer rounded-full object-cover" src={user.avatar} alt="avatar" />
+          <p className="text-sm font-medium">by {user.fullName}</p>
+          </div>
           <p className="text-[12px] font-semibold">
             Playlist · {playlist?.playlistVideos?.length} videos
           </p>
         </div>
+        {/* playlistDescription */}
         <div className="bg-gray-500 p-2 rounded-lg">
           <p className="text-[12px] font-semibold ">{playlist.description}</p>
         </div>
       </div>
-      <div className="bg-gray-700 flex-1 mx-2 p-2 rounded-lg">
+
+      {/* playlistVideos */}
+      <div className="bg-gray-700 h-screen overflow-y-scroll flex-1 sm:mx-2 p-2 rounded-lg">
         <div className="">
           {playlist.playlistVideos.map((video) => (
-            <div key={video._id} className="flex  justify-between items-center">
+            <div key={video._id} className="">
               <PlaylistVideoCard video={video} playlistId={playlistId}/>
             </div>
           ))}

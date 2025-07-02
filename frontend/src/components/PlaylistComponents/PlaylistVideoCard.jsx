@@ -26,42 +26,35 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
   };
   return (
     <div
-    ref={menuRef}
-      className={
-        "bg-gray-500 w-full rounded-lg overflow-hidden mb-2 border-2"
-      }
+      ref={menuRef}
+      className={"bg-gray-500 w-full rounded-lg  mb-2 border-2 sm:p-2 p-1"}
     >
       <div className={"flex justify-between"}>
         <Link
           to={{ pathname: "/watch", search: `?v=${_id}` }}
           className={"flex"}
         >
-          <img className={`w-56 h-36 object-cover`} src={thumbnail} />
-          <div className="flex">
-            <div className="m-2">
-              <img
-                className="w-10 h-10 rounded-full object-cover"
-                src={videoOwner?.avatar}
-                alt="avatar"
-              />
-            </div>
-            <div className="mt-2">
-              <p className="text-md font-semibold text-wrap">{title}</p>
-              <p className="text-sm mt-2">{videoOwner?.fullName}</p>
-              <p className="text-sm">{views} views</p>
-            </div>
+          <img
+            className={`sm:w-48 sm:h-28 w-32 object-cover rounded-lg`}
+            src={thumbnail}
+          />
+
+          <div className=" ml-2">
+            <p className="text-base sm:text-lg font-semibold truncate">{title}</p>
+            <p className="text-sm sm:mt-2 mt-1">{videoOwner?.fullName}</p>
+            <p className="text-sm">{views} views</p>
           </div>
         </Link>
 
-        <div className="bg-gray-600 flex items-center relative">
+        <div className=" rounded-r-lg sm:flex sm:items-center relative">
           <button
             onClick={() => setOptions(!options)}
-            className=" text-2xl h-9 w-9 rounded-full hover:bg-gray-800 text-white"
+            className=" sm:text-2xl text-lg w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-gray-800 text-white"
           >
             ⫶
           </button>
           {options && (
-            <div className="absolute right-6 top-20 w-44 text-center bg-gray-800 text-white p-1 rounded-lg">
+            <div className="absolute sm:right-6 right-6 top-5 sm:top-20 text-nowrap text-sm opacity-85 text-center bg-gray-800 text-white p-1 rounded-lg">
               <button onClick={removeVideo} className="p-1">
                 Remove from playlist
               </button>

@@ -355,6 +355,11 @@ const isPlaylistExists = await Playlist.aggregate([
         }
     },
     {
+  $addFields: {
+    playlistVideos: { $reverseArray: "$playlistVideos" }
+  }
+},
+    {
         $project:{
             title:1,
             description:1,
