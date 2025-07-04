@@ -15,10 +15,14 @@ const playlistSlice = createSlice({
         );
         console.log("After removing:", state.playlistVideos.length);
       }
-      
+    },
+    editPlaylist: (state, action) => {
+      state.title = action.payload.title;
+      state.description = action.payload.description;
     },
   },
 });
 
 export default playlistSlice.reducer;
-export const { addPlaylist, removeVideoFromPlaylist } = playlistSlice.actions;
+export const { addPlaylist, removeVideoFromPlaylist, editPlaylist } =
+  playlistSlice.actions;

@@ -11,7 +11,7 @@ const LibraryCardComponent = ({ library, label }) => {
     >
       <p className="text-xl font-bold">{label}</p>
       {/* //videos */}
-      <div className="  flex overflow-x-auto sm:mx-2 sm:max-w-[1100px] sm:p-2 ">
+      <div className="  flex overflow-x-auto  sm:max-w-[1100px] sm:p-2 ">
         {library.length !== 0 ? (
           <div className="flex space-x-4">
             {label !== "Playlists"
@@ -19,15 +19,17 @@ const LibraryCardComponent = ({ library, label }) => {
                   <VideoCard
                     key={video?._id}
                     video={video}
-                    css={"w-[224px] h-52 text-md"}
-                    thumbnailcss={"h-32"}
+                    // w-[224px]
+                    css={"w-auto h-52 text-md"}
+                    thumbnailcss={"max-h-32"}
+                    isChannelVideos={true}
                   />
                 ))
               : library.map((playlist) => (
                   <PlaylistCard
                     key={playlist?._id}
                     playlist={playlist}
-                    css={"w-[224px] h-52 text-md m-0"}
+                    css={"w-[224px] h-52 text-md mx-4"}
                     thumbnailcss={"h-32"}
                   />
                 ))}

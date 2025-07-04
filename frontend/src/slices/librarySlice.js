@@ -39,6 +39,7 @@ const librarySlice = createSlice({
     },
     editPlaylistInfo:(state,action)=>{
       const editingPlaylist = state.playlist.find((playlist)=>playlist._id === action.payload.id);
+      console.log("sliceEditply",editingPlaylist);
       if(editingPlaylist){
         editingPlaylist.title = action.payload.title;
         editingPlaylist.description = action.payload.description;

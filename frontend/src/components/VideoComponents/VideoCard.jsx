@@ -26,7 +26,7 @@ const VideoCard = ({
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}>
           <img className={`w-full max-h-48 ${thumbnailcss} object-cover`} src={thumbnail} loading="lazy" />
         </Link>
-        <div className="flex  justify-between w-full items-start ">
+        <div className="flex  justify-between w-full items-start px-1 ">
           {!isChannelVideos ? (
             <Link to={`/channel/@${videoOwner?.username}`} className=" mt-2 ">
               <img
@@ -44,13 +44,13 @@ const VideoCard = ({
             className={""}
           >
             <div
-              className={`mt-2  flex-1  ${
+              className={`sm:mt-1 py-1 sm:pb-1 sm:py-0 px-1  flex-1  ${
                 menuClicked && !isChannelVideos ? "sm:w-[260px]" : ""
               } ${isChannelVideos && menuClicked ? "sm:w-[200px]" : ""} ${
-                isChannelVideos ? "w-52 px-2" : "w-72"
+                isChannelVideos ? "w-52 " : "w-72"
               }`}
             >
-              <p className="text-md font-semibold text-wrap sm:w-64 ">{title}</p>
+              <p className="text-base font-semibold truncate">{title}</p>
               <p className="text-sm mt-2">{videoOwner?.fullName}</p>
               <p className="text-sm">{views} views</p>
             </div>
@@ -59,16 +59,16 @@ const VideoCard = ({
           <div ref={menuRef} className="relative  ">
             <button
               onClick={() => setOptions(!options)}
-              className={`text-xl w-7 h-7  ${
+              className={`sm:text-xl text-lg sm:w-7 sm:h-7 w-6 h-6 flex justify-center items-center   ${
                 isChannelVideos ? "ml-0" : ""
-              }   hover:bg-gray-100 font-semibold rounded-full m-1`}
+              }   hover:bg-gray-100 sm:font-semibold font-medium rounded-full  ml-1 `}
             >
               ⫶
             </button>
             {options && (
-              <div className="absolute opacity-85 top-8 right-6 bg-gray-800 text-white rounded-lg px-2 py-1 z-10">
+              <div className="absolute opacity-85 sm:top-8 sm:right-6 right-5 top-5 bg-gray-800 text-white rounded-lg px-2 py-1 z-10">
                 <button
-                  className={`w-32 text-sm font-light ${isChannelVideos ? "sm:w-auto" : ""}`} 
+                  className={`text-nowrap text-sm font-light ${isChannelVideos ? "sm:w-auto" : ""}`} 
                   onClick={() => setPlaylistOption(!playlistOption)}
                 >
                   ⛉ Add to playlist

@@ -1,34 +1,36 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useSearchParams } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPlaylist } from "../../slices/playlistSlice";
-import PlaylistVideoCard from "./PlaylistVideoCard";
+import PlaylistVideoCard from "./PlaylistVideoCard"; 
+import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 
 const Playlist = () => {
   const dispatch = useDispatch();
-  const playlist = useSelector((store)=>store.playlist);
-  const user = useSelector((store)=>store.user);
-  console.log(playlist)
+  const playlist = useSelector((store) => store.playlist);
+  const user = useSelector((store) => store.user);
+  const [editOption, setEditOption] = useState(false);
+  console.log(playlist);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const playlistId = searchParams.get("list");
-  
+
   const getPlaylist = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/playlist/${playlistId}`, {
         withCredentials: true,
       });
       console.log(res.data.data);
-      dispatch(addPlaylist(res.data.data))
+      dispatch(addPlaylist(res.data.data));
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getPlaylist();
-  }, [dispatch,playlistId]);
+  }, [dispatch, playlistId]);
   console.log("Current playlist state:", playlist);
 
   if (!playlist) return <div>Loading...</div>;
@@ -48,12 +50,17 @@ const Playlist = () => {
         <div className="bg-gray-300 rounded-lg p-2 mb-2">
           <p className="text-xl font-bold">{playlist.title}</p>
           <div className=" flex items-center gap-2 my-1 mx-1">
-          <img className="w-8 h-8 sm:w-6 sm:h-6 hover:cursor-pointer rounded-full object-cover" src={user.avatar} alt="avatar" />
-          <p className="text-sm font-medium">by {user.fullName}</p>
+            <img
+              className="w-8 h-8 sm:w-6 sm:h-6 hover:cursor-pointer rounded-full object-cover"
+              src={user.avatar}
+              alt="avatar"
+            />
+            <p className="text-sm font-medium">by {user.fullName}</p>
           </div>
           <p className="text-[12px] font-semibold">
             Playlist · {playlist?.playlistVideos?.length} videos
           </p>
+          <button onClick={() => setEditOption(!editOption)}>Edit</button>
         </div>
         {/* playlistDescription */}
         <div className="bg-gray-500 p-2 rounded-lg">
@@ -66,11 +73,21 @@ const Playlist = () => {
         <div className="">
           {playlist.playlistVideos.map((video) => (
             <div key={video._id} className="">
-              <PlaylistVideoCard video={video} playlistId={playlistId}/>
+              <PlaylistVideoCard video={video} playlistId={playlistId} />
             </div>
           ))}
         </div>
       </div>
+      {editOption && (
+        <VideoAndPlaylistEditOption
+          id={playlist._id}
+          setEditOption={setEditOption}
+          title={playlist.title}
+          description={playlist.description}
+          thumbnail={playlist.playlistVideos[0]?.thumbnail}
+          isVideoEdit={false}
+        />
+      )}
     </div>
   );
 };

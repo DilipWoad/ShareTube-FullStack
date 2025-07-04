@@ -43,7 +43,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         </div>
         <div className="bg-gray-700 flex justify-between rounded-b-xl">
           <Link to={{ pathname: "/playlist", search: `?list=${_id}` }}>
-            <div className=" ">
+            <div className="px-2">
               <p className="text-md font-semibold text-wrap">{title}</p>
               <p className="text-[13px] font-semibold text-wrap">
                 Channel Name

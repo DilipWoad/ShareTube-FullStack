@@ -2,9 +2,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
-import { editPlaylistInfo } from "../../slices/librarySlice";
+import { editPlaylist } from "../../slices/playlistSlice";
 import { editVideoInfo } from "../../slices/studioSlice";
 import LoadingScreen from "../../utils/LoadingScreen";
+import { editPlaylistInfo } from "../../slices/librarySlice";
 
 const VideoAndPlaylistEditOption = ({
   id,
@@ -38,9 +39,9 @@ const VideoAndPlaylistEditOption = ({
   ///
 
   //playlist Edited Data
-  const playlistData = new FormData();
-  playlistData.append("title", editTitle);
-  playlistData.append("description", editDescription);
+  // const playlistData = new FormData();
+  // playlistData.append("title", editTitle);
+  // playlistData.append("description", editDescription);
   //
 
   let editInfo = {
@@ -63,10 +64,17 @@ const VideoAndPlaylistEditOption = ({
       try {
         const res = await axios.patch(
           BASE_URL + `/playlist/${id}`,
-          playlistData,
+          {
+            title: editTitle,
+            description: editDescription,
+          },
           { withCredentials: true }
         );
+       
+        dispatch(editPlaylist(editInfo));
+
         dispatch(editPlaylistInfo(editInfo));
+
         setLoading(false);
         setEditOption(false);
       } catch (error) {
@@ -95,13 +103,8 @@ const VideoAndPlaylistEditOption = ({
       }
     }
   };
-  //   console.log("dihfdhii")
-  //   useEffect(() => {
-  //   return () => {
-  //     if (videoThumbnail) URL.revokeObjectURL(videoThumbnail);
-  //   };
-  // }, [videoThumbnail]);
-  if(loading) return <LoadingScreen/>
+
+  if (loading) return <LoadingScreen />;
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
       <div className="bg-slate-400  w-72 flex flex-col p-3 shadow-lg rounded-lg">
@@ -161,7 +164,6 @@ const VideoAndPlaylistEditOption = ({
         </div>
       </div>
     </div>
-    
   );
 };
 

@@ -42,6 +42,8 @@ function App() {
                 <Route path="/subscription" element={<UserSubscription />} />
                 {/*Channel Pages Routes */}
                 <Route path="channel/:id" element={<ChannelPage />}>
+                  <Route index element={<ChannelVideos />} />
+                  <Route path="profile" element={<EditProfile/>} />
                   <Route path="videos" element={<ChannelVideos />} />
                   <Route path="posts" element={<ChannelPosts />} />
                 </Route>

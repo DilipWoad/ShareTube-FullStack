@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   return (
-    <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 sm:pr-10 pr-2">
+    <div className="h-16 bg-gray-500 flex items-center justify-between pl-2 sm:pr-10 pr-2 sticky top-0 z-20">
       <div className="flex items-center sm:p-2">
         <div
           onClick={() => dispatch(toggleMenuClick())}
@@ -53,18 +53,18 @@ const Header = () => {
             ✚ Create
           </button>
           {createOption && (
-            <div className="bg-sky-400 absolute flex flex-col top-10 p-2 rounded-lg">
+            <div className="bg-gray-700 text-white opacity-95 absolute flex flex-col top-10 p-2 rounded-lg">
               <Link to={"/studio"}>
                 <div
                   onClick={() => setCreateOption(false)}
-                  className="hover:bg-yellow-300 p-1 hover:cursor-pointer"
+                  className="hover:bg-gray-900 p-1 hover:cursor-pointer"
                 >
                   upload video
                 </div>
               </Link>
               <Link
                 to={`/channel/@${userDetails?.username}/posts`}
-                className="hover:bg-yellow-300 p-1 hover:cursor-pointer"
+                className="hover:bg-gray-900 p-1 hover:cursor-pointer"
                 onClick={() => setCreateOption(false)}
               >
                 create post

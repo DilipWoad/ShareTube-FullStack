@@ -103,9 +103,10 @@ const ChannelPage = () => {
         {/* Video/post/Playlist section */}
 
         <div className="bg-gray-800 py-1 rounded-lg">
-          <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4">
+          <div className=" text-white border-b-[1px] border-gray-500 space-x-6 mb-4 mx-4 flex">
+            
             <NavLink
-              to={`/channel/@${username}/videos`}
+              to={`/channel/@${username}/videos `}
               className={({ isActive }) =>
                 isActive
                   ? "border-b-2 border-white text-white"
@@ -125,6 +126,19 @@ const ChannelPage = () => {
             >
               Posts
             </NavLink>
+
+            <div className={`${userId!==channelId ?"hidden":""}`}>
+              <NavLink
+              to={`/channel/@${username}/profile`}
+              className={({ isActive }) =>
+                isActive
+                  ? "border-b-2 border-white text-white "
+                  : "hover:border-b-2 hover:border-gray-400"
+              }
+            >
+              Profile
+            </NavLink>
+            </div>
 
             {/* <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
             Playlists
