@@ -7,6 +7,7 @@ import {
   updateUserComment,
 } from "../../slices/commentSlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
 
 const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
@@ -83,8 +84,8 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
           alt="avatar"
         />
       </div>
-      <div className="bg-slate-300 mx-2 flex items-center justify-between w-full rounded-lg sm:px-2">
-        <div className="">
+      <div className="bg-slate-300  mx-2 flex items-center justify-between w-full rounded-lg sm:px-2">
+        <div className=" w-full">
           <div className="font-semibold mb-2">
             @{commentOwner ? commentOwner?.username : username}
           </div>
@@ -119,8 +120,11 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
               </div>
             </div>
           ) : (
-            <div className="mb-2 ml-2">{editedComment}</div>
+            <div className="mb-2 ml-2 ">{editedComment}</div>
           )}
+          <div className="m-1 hover:cursor-pointer">
+           <LikeSvgIcon/>
+          </div>
         </div>
         <div className="font-bold relative" ref={menuRef}>
           <div

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPlaylist } from "../../slices/playlistSlice";
 import PlaylistVideoCard from "./PlaylistVideoCard"; 
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
+import EditSvgIcon from "../../utils/SVGIcons/EditSvgIcon";
 
 const Playlist = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,12 @@ const Playlist = () => {
           <p className="text-[12px] font-semibold">
             Playlist · {playlist?.playlistVideos?.length} videos
           </p>
-          <button onClick={() => setEditOption(!editOption)}>Edit</button>
+          <div onClick={() => setEditOption(!editOption)} className="flex items-center hover:cursor-pointe ">
+            <button className="  mt-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-500" >
+            <EditSvgIcon/>
+          </button>
+          Edit
+          </div>
         </div>
         {/* playlistDescription */}
         <div className="bg-gray-500 p-2 rounded-lg">

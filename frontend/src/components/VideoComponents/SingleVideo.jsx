@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import VideoDescription from "./VideoDescription";
 import VideoComment from "../CommentComponents/VideoComment";
 import { useSelector } from "react-redux";
+import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
@@ -176,15 +177,16 @@ const SingleVideo = () => {
             <div className="bg-slate-300 sm:mr-4  rounded-l-full rounded-r-full hover:bg-slate-200">
               <button
                 onClick={handleLikes}
-                className="flex items-center gap-x-2 px-2 py-1 min-w-16 justify-between"
+                className="flex items-center gap-x-2 px-2 py-1 min-w-16 justify-between "
               >
-                <img
+                {/* <img
                   className={`w-5 h-5 ${
                     isLiked ? "bg-white " : ""
                   } overflow-hidden`}
                   src={LIKE_ICON}
                   alt="like-icon"
-                />
+                /> */}
+                <LikeSvgIcon liked={isLiked}/>
                 {videoDetail?.likesDetails ? likeCount : likeCount}
               </button>
             </div>

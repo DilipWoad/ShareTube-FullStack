@@ -47,7 +47,7 @@ const VideoCard = ({
               className={`sm:mt-1 py-1 sm:pb-1 sm:py-0 px-1  flex-1  ${
                 menuClicked && !isChannelVideos ? "sm:w-[260px]" : ""
               } ${isChannelVideos && menuClicked ? "sm:w-[200px]" : ""} ${
-                isChannelVideos ? "w-52 " : "w-72"
+                isChannelVideos ? "max-w-[200px]" : "w-72"
               }`}
             >
               <p className="text-base font-semibold truncate">{title}</p>
