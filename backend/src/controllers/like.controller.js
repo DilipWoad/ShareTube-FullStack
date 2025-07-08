@@ -74,7 +74,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
   const isCommentLikedAlready = await Like.findOne({
     comment: isCommentExists._id,
-    //   likeBy: req.user._id,
+    likeBy: req.user._id,
   });
 
   if (isCommentLikedAlready) {
@@ -87,7 +87,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   }
   const like = await Like.create({
     comment: commentId,
-    //   likeBy: req.user._id,
+    likeBy: req.user._id,
   });
 
   if (!like) {
@@ -133,7 +133,7 @@ const togglePostLike = asyncHandler(async (req, res) => {
   }
   const like = await Like.create({
     post: postId,
-      likeBy: req.user._id,
+    likeBy: req.user._id,
   });
 
   if (!like) {
@@ -162,7 +162,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
           {
             $match: {
               $expr: {
-                $eq: ["$_id", "$$videoId" ],
+                $eq: ["$_id", "$$videoId"],
               },
             },
           },
@@ -216,14 +216,14 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     },
     {
       $project: {
-        _id:0,
-        videoDetail:1,
-        updatedAt:1
+        _id: 0,
+        videoDetail: 1,
+        updatedAt: 1,
       },
     },
     {
-      $sort:{updatedAt:-1}
-    }
+      $sort: { updatedAt: -1 },
+    },
   ]);
 
   if (!video) {
@@ -275,42 +275,80 @@ const isLikedAlready = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, true, "User has already Liked the video"));
 });
 
-const isUserAlreadyLikeThePost = asyncHandler(async(req,res)=>{
+const isUserAlreadyLikeThePost = asyncHandler(async (req, res) => {
   //1) validate the user authentication
   //2) if valid then check if it's valid objId ->postId
   //3) check in liked model and match the document that contains post field with this id and has likeBy field with the current userId
   //4) if present then it's return true
   //5) if not present then return false
-  
-  const currentUserId = req.user._id;
-  const {postId}= req.params;
 
-  if(!mongoose.isValidObjectId(postId)){
-    throw new ApiError("Invalid post Id",403)
+  const currentUserId = req.user._id;
+  const { postId } = req.params;
+
+  if (!mongoose.isValidObjectId(postId)) {
+    throw new ApiError("Invalid post Id", 403);
   }
 
   //check if post exist or not
-  const isPostExists=await Post.findById(postId);
-  if(!isPostExists){
-    throw new ApiError("Post does not Exists",404);
+  const isPostExists = await Post.findById(postId);
+  if (!isPostExists) {
+    throw new ApiError("Post does not Exists", 404);
   }
 
   //now check in like model
-  const isPostAlreadyLikeByUser=await Like.findOne({
-    post:postId,
-    likeBy:currentUserId
-  })
+  const isPostAlreadyLikeByUser = await Like.findOne({
+    post: postId,
+    likeBy: currentUserId,
+  });
 
-  if(!isPostAlreadyLikeByUser){
-    return res.status(200).json(
-      new ApiResponse(200,false,"User has not liked the post")
-    )
+  if (!isPostAlreadyLikeByUser) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, false, "User has not liked the post"));
   }
-  return res.status(200).json(
-    new ApiResponse(200,true,"User has liked this post Aleady")
-  )
-})
+  return res
+    .status(200)
+    .json(new ApiResponse(200, true, "User has liked this post Aleady"));
+});
 
+const isUserAlreadyLikeTheComment = asyncHandler(async (req, res) => {
+  //vlidte commentId
+  //isVlid check if exist (use findone) in like document
+  //if exist findone document which hs likeby : ->currentLoginUser id
+  //if found return true
+  //else flse
+  const currentUserId = req.body._id;
+  const { commentId } = req.params;
+
+  if (!mongoose.isValidObjectId(commentId)) {
+    throw new ApiError("Invalid comment Id", 403);
+  }
+
+  const isCommentExist = await Comment.findById(commentId);
+  if (!isCommentExist) {
+    throw new ApiError("Comment does not Exists", 404);
+  }
+
+  //now check in like model
+  const like = await Like.findOne({
+    comment: commentId,
+    likeBy: currentUserId,
+  });
+
+  const liked = !!like; // converts to boolean
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        liked,
+        liked
+          ? "User has liked this comment already"
+          : "User has not liked the comment"
+      )
+    );
+});
 
 export {
   toggleVideoLike,
@@ -318,5 +356,6 @@ export {
   togglePostLike,
   getLikedVideos,
   isLikedAlready,
-  isUserAlreadyLikeThePost
+  isUserAlreadyLikeThePost,
+  isUserAlreadyLikeTheComment,
 };

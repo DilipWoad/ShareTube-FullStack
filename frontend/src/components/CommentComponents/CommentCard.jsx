@@ -13,6 +13,7 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
+  const [commentLike,setCommentLike] = useState(null);
 
   const { commentOwner, content } = comment;
   const { avatar, username, _id } = usersComment;
@@ -66,10 +67,34 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
     setEditComment(false);
   };
 
+  const isCommentLiked = async ()=>{
+    try {
+      const res= await axios.get(`${BASE_URL}/like/c/${comment._id}`,{withCredentials:true});
+      console.log("likedComment",res.data.data);
+      setCommentLike(res.data.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const toggleCommentLike =async ()=>{
+    try {
+      const res= await axios.post(`${BASE_URL}/like/c/${comment._id}`,{},{withCredentials:true});
+      console.log("toggleRes",res.data);
+      setCommentLike(!commentLike);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleEditClick = () => {
     setEditComment(true);
     setMoreOption(false);
   };
+
+  useEffect(()=>{
+    isCommentLiked();
+  },[])
 
   if (!comment) return <div>Loading... wait</div>
 
@@ -122,8 +147,8 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
           ) : (
             <div className="mb-2 ml-2 ">{editedComment}</div>
           )}
-          <div className="m-1 hover:cursor-pointer">
-           <LikeSvgIcon/>
+          <div onClick={toggleCommentLike} className="m-1 hover:cursor-pointer">
+           <LikeSvgIcon liked={commentLike}/>
           </div>
         </div>
         <div className="font-bold relative" ref={menuRef}>
