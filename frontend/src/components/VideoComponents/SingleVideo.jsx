@@ -36,7 +36,8 @@ const SingleVideo = () => {
     const video = res.data.data;
     console.log(video);
     setVideoDetail(video);
-    setLikeCount(video?.likesDetails ? video?.likesDetails?.videoLikes : 0);
+    setIsLiked(video.isLikedByCurrentUser);
+    setLikeCount(video.likesDetails ? video.likesDetails.videoLikes : 0);
     setSubscriberCount(video?.channelDetails?.subscribers);
   };
 
@@ -77,19 +78,19 @@ const SingleVideo = () => {
     }
   };
 
-  const isUserLikedTheVideo = async () => {
-    try {
-      const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
-        withCredentials: true,
-      });
-      //create a function which will check is current user(current logged in user has liked the current opened video)
-      console.log(res.data.message);
-      console.log("Liked", res.data.data);
-      setIsLiked(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const isUserLikedTheVideo = async () => {
+  //   try {
+  //     const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
+  //       withCredentials: true,
+  //     });
+  //     //create a function which will check is current user(current logged in user has liked the current opened video)
+  //     console.log(res.data.message);
+  //     console.log("Liked", res.data.data);
+  //     setIsLiked(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handleLikes = async () => {
     try {
       const res = await axios.post(
@@ -111,7 +112,7 @@ const SingleVideo = () => {
 
   useEffect(() => {
     isUserSubscribed();
-    isUserLikedTheVideo();
+    // isUserLikedTheVideo();
     !videoDetail && getAVideo();
   }, [videoId]);
 

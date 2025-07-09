@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Video } from "../models/video.model.js";
 import { Comment } from "../models/comment.model.js";
 import { Post } from "../models/post.model.js";
+import { Like } from "../models/like.model.js";
 
 const addVideoComment = asyncHandler(async (req, res) => {
   //1) verify authentication
@@ -154,6 +155,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
 
   const { videoId } = req.params;
   const { page = 1, limit = 10 } = req.query;
+  const currentUserId = req.user._id;
 
   const options = {
     page: parseInt(page),
@@ -206,6 +208,19 @@ const getVideoComments = asyncHandler(async (req, res) => {
     },
     //as we have all the documents with the videoId so just group and sum to get the count of document
     {
+      $lookup:{
+        from:"likes",
+        localField:"_id",
+        foreignField:"comment",
+        as:"likes"
+      }
+    },
+    {
+      $addFields:{
+        likeCount:{ $size: "$likes"}
+      }
+    },
+    {
       $setWindowFields:{
         partitionBy:"$video",
         output:{
@@ -220,6 +235,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
         commentOwner: 1,
         createdAt: 1,
         commentCount:1,
+        likeCount:1,
         updatedAt:1
       },
     },
@@ -244,12 +260,32 @@ const getVideoComments = asyncHandler(async (req, res) => {
     throw new ApiError("Something went wrong while getting comments!!!", 501);
   }
 
+  //get ll commentIDS
+  const commentIds = allComments.docs.map((c)=>c._id);
+  console.log("commentIds :",commentIds);
+
+  //FIND IN LIKE DOCS the hs commentID ND LIKEBY:currentUser
+  const likedDocs = await Like.find({
+    comment:{$in: commentIds},
+    likeBy : currentUserId
+  }).select("comment")
+  console.log("likedDocs this re comment ids where i hve liked only :",likedDocs);
+
+  //make commentIds as string
+
+  const likeCommentIds = new Set(likedDocs.map((doc)=>doc.comment.toString()));
+  console.log("likeCommentIds :",likeCommentIds);
+
+  const commentsWithUserLikedInfo = allComments.docs.map((comment)=>({
+    ...comment,
+    isLikedByCurrentUser:likeCommentIds.has(comment._id.toString())
+  }))
   return res
     .status(200)
     .json(
       new ApiResponse(
         201,
-        allComments.docs,
+        commentsWithUserLikedInfo,
         "Video Comments Fetched Sucessfully!!"
       )
     );

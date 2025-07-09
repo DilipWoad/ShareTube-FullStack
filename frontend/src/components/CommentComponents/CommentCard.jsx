@@ -13,9 +13,11 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
-  const [commentLike,setCommentLike] = useState(null);
 
-  const { commentOwner, content } = comment;
+  const { commentOwner, content, isLikedByCurrentUser, likeCount } = comment;
+  const [commentLike, setCommentLike] = useState(isLikedByCurrentUser);
+  const [commentLikeCount, setCommentLikeCount] = useState(likeCount);
+
   const { avatar, username, _id } = usersComment;
 
   const dispatch = useDispatch();
@@ -67,36 +69,41 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
     setEditComment(false);
   };
 
-  const isCommentLiked = async ()=>{
-    try {
-      const res= await axios.get(`${BASE_URL}/like/c/${comment._id}`,{withCredentials:true});
-      console.log("likedComment",res.data.data);
-      setCommentLike(res.data.data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const isCommentLiked = async ()=>{
+  //   try {
+  //     const res= await axios.get(`${BASE_URL}/like/c/${comment._id}`,{withCredentials:true});
+  //     console.log("likedComment",res.data.data);
+  //     setCommentLike(res.data.data);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  const toggleCommentLike =async ()=>{
+  const toggleCommentLike = async () => {
     try {
-      const res= await axios.post(`${BASE_URL}/like/c/${comment._id}`,{},{withCredentials:true});
-      console.log("toggleRes",res.data);
+      const res = await axios.post(
+        `${BASE_URL}/like/c/${comment._id}`,
+        {},
+        { withCredentials: true }
+      );
+      console.log("toggleRes", res.data);
       setCommentLike(!commentLike);
+      if (commentLike) {
+        setCommentLikeCount(commentLikeCount - 1);
+      } else {
+        setCommentLikeCount(commentLikeCount + 1);
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleEditClick = () => {
     setEditComment(true);
     setMoreOption(false);
   };
 
-  useEffect(()=>{
-    isCommentLiked();
-  },[])
-
-  if (!comment) return <div>Loading... wait</div>
+  if (!comment) return <div>Loading... wait</div>;
 
   return (
     <div
@@ -147,8 +154,12 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
           ) : (
             <div className="mb-2 ml-2 ">{editedComment}</div>
           )}
-          <div onClick={toggleCommentLike} className="m-1 hover:cursor-pointer">
-           <LikeSvgIcon liked={commentLike}/>
+          <div
+            onClick={toggleCommentLike}
+            className="m-1 hover:cursor-pointer flex gap-2 items-center"
+          >
+            <LikeSvgIcon liked={commentLike} />
+            <p className="text-sm font-medium">{commentLikeCount}</p>
           </div>
         </div>
         <div className="font-bold relative" ref={menuRef}>

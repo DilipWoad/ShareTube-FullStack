@@ -10,6 +10,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import fs from "fs";
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
+import { Like } from "../models/like.model.js";
 
 
 const publishedVideo = asyncHandler(async (req, res) => {
@@ -99,6 +100,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   //1) verify the access token ->Authentication
   //2) from url->params get the video ID
   const videoId = req.params.videoId;
+  const currentUserId = req.user._id;
 
   const isValidId = mongoose.isValidObjectId(videoId);
   if (!isValidId) {
@@ -264,9 +266,32 @@ const getVideoById = asyncHandler(async (req, res) => {
   if(!addToWatchHistory){
     throw new ApiError("Something went wrong while adding video to watch history",501)
   }
+
+
+  
+    //FIND IN LIKE DOCS the hs commentID ND LIKEBY:currentUser
+    const likedDocs = await Like.find({
+      video:videoId,
+      likeBy : currentUserId
+    }).select("video")
+    console.log("likedDocs this re video ids where i hve liked only :",likedDocs);
+  
+    //make commentIds as string
+  
+    const likeVideoIds = new Set(likedDocs.map((doc)=>doc.video.toString()));
+    console.log("likeVideoIds :",likeVideoIds);
+
+
+    const videoInfo = getVideoInfo[0];
+    const videoWithUserLikedInfo = {
+      ...videoInfo,
+      isLikedByCurrentUser:likeVideoIds.has(videoId.toString())
+    }
+    console.log("commentsWithUserLikedInfo :",videoWithUserLikedInfo);
+    console.log("getVideoInfo :",getVideoInfo);
   return res
     .status(200)
-    .json(new ApiResponse(201, getVideoInfo[0]?getVideoInfo[0]:getVideoInfo, "Video Fetched Successfully!!!"));
+    .json(new ApiResponse(201,videoWithUserLikedInfo, "Video Fetched Successfully!!!"));
 });
 
 const updateVideoDetails = asyncHandler(async (req, res) => {

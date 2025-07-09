@@ -24,6 +24,9 @@ const commentSlice = createSlice({
         comment._id === action.payload._id ? action.payload : comment
       );
     },
+    addUserLikedStatus:(state, action)=>{
+      
+    }
   },
 });
 
