@@ -47,10 +47,10 @@ const PostComments = () => {
     }
   };
   useEffect(() => {
-    getAPost();
     postComments();
+    getAPost();
   }, []);
-  if (!aPost) return <div>Loading Post...!!</div>;
+  if (!postComment) return <div>Loading Post...!!</div>;
 
   return (
     <div className="m-2 flex justify-center w-full">

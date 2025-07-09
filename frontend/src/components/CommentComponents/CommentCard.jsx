@@ -17,6 +17,8 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
   const { commentOwner, content, isLikedByCurrentUser, likeCount } = comment;
   const [commentLike, setCommentLike] = useState(isLikedByCurrentUser);
   const [commentLikeCount, setCommentLikeCount] = useState(likeCount);
+  console.log("commentLike : ",commentLike);
+  console.log("commentLikeCount : ",commentLikeCount);
 
   const { avatar, username, _id } = usersComment;
 
@@ -81,20 +83,19 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
 
   const toggleCommentLike = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URL}/like/c/${comment._id}`,
-        {},
-        { withCredentials: true }
-      );
+      
+
+      const res = await axios.post(`${BASE_URL}/like/c/${comment._id}`, {}, { withCredentials: true });
       console.log("toggleRes", res.data);
-      setCommentLike(!commentLike);
-      if (commentLike) {
-        setCommentLikeCount(commentLikeCount - 1);
-      } else {
-        setCommentLikeCount(commentLikeCount + 1);
-      }
+
+       setCommentLike(!commentLike);
+          if (commentLike) {
+            setCommentLikeCount(commentLikeCount - 1);
+          } else {
+            setCommentLikeCount(commentLikeCount + 1);
+          }
     } catch (error) {
-      console.log(error);
+      console.error("Error toggling like:", error?.response?.data || error.message);
     }
   };
 

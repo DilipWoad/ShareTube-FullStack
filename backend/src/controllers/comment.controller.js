@@ -301,6 +301,7 @@ const getPostComments = asyncHandler(async (req, res) => {
 
   const { postId } = req.params;
   const { page = 1, limit = 10 } = req.query;
+  const currentUserId = req.user._id
 
   const options = {
     page: parseInt(page),
@@ -352,12 +353,26 @@ const getPostComments = asyncHandler(async (req, res) => {
       }
     },
     {
+      $lookup:{
+        from:"likes",
+        localField:"_id",
+        foreignField:"comment",
+        as:"likes"
+      }
+    },
+    {
+      $addFields:{
+        LikeCount:{$size:"$likes"}
+      }
+    },
+    {
       $project: {
         content: 1,
         post: 1,
         commentOwner: 1,
         createdAt: 1,
-        updatedAt:1
+        updatedAt:1,
+        LikeCount:1
       },
     },
     {
@@ -381,12 +396,32 @@ const getPostComments = asyncHandler(async (req, res) => {
     throw new ApiError("Something went wrong while getting comments!!!", 501);
   }
 
+  //get ll commentIds
+  const commentIds = allComments.docs.map((c)=>c._id);
+  console.log("commentIds : ",commentIds)
+
+  //find the like doc with bove commentId present nd likeBy:currentUser
+  const likedDocs = await Like.find({
+    comment:{$in : commentIds},
+    likeBy:currentUserId
+  }).select("comment")
+
+  //convert the commentId ObjectId to string in LikedDoc
+  const likeCommentIds = new Set(likedDocs.map((doc)=>doc._id.toString()));
+
+  //now dd this in the llComment obj
+
+  const commentsWithUserLikedInfo = allComments.docs.map((comment)=>({
+    ...comment,
+    isLikedByCurrentUser:likeCommentIds.has(comment._id.toString())
+  }))
+  console.log(commentsWithUserLikedInfo)
   return res
     .status(200)
     .json(
       new ApiResponse(
         201,
-        allComments.docs,
+        commentsWithUserLikedInfo,
         "Post Comments Fetched Sucessfully!!"
       )
     );
