@@ -37,27 +37,33 @@ const SingleVideo = () => {
     console.log(video);
     setVideoDetail(video);
     setIsLiked(video.isLikedByCurrentUser);
-    setLikeCount(video.likesDetails ? video.likesDetails.videoLikes : 0);
+    setLikeCount(video.likesDetails.videoLikes);
     setSubscriberCount(video?.channelDetails?.subscribers);
+    setIsSubscribed(video.isSubscribedByCurrentUser);
   };
 
-  const isUserSubscribed = async () => {
-    try {
-      const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
-        withCredentials: true,
-      });
-      console.log(res.data.message);
-      console.log("Subscription", res.data.data);
-      setIsSubscribed(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const isUserSubscribed = async () => {
+  //   try {
+  //     const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
+  //       withCredentials: true,
+  //     });
+  //     console.log(res.data.message);
+  //     console.log("Subscription", res.data.data);
+  //     setIsSubscribed(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handleSubscription = async () => {
     if (videoDetail?.channelDetails?._id === userId) {
       alert("You can't Subscribe to your channel!!");
       return;
     } else {
+      const toggleSubs = !isSubscribed;
+      setIsSubscribed(toggleSubs);
+      setSubscriberCount((prevSubCount) =>
+        toggleSubs ? prevSubCount + 1 : prevSubCount - 1
+      );
       try {
         const res = await axios.post(
           BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
@@ -66,14 +72,13 @@ const SingleVideo = () => {
         );
         console.log(res.data.message);
         //toggle the subscribed state
-        setIsSubscribed(!isSubscribed);
-        if (!isSubscribed) {
-          setSubscriberCount(subscriberCount + 1);
-        } else {
-          setSubscriberCount(subscriberCount - 1);
-        }
       } catch (error) {
         console.log(error);
+        //if error rollbck to prevs states
+        setIsSubscribed((prev) => !prev);
+        setSubscriberCount((prevSubCount) =>
+          toggleSubs ? prevSubCount - 1 : prevSubCount + 1
+        );
       }
     }
   };
@@ -92,26 +97,26 @@ const SingleVideo = () => {
   //   }
   // };
   const handleLikes = async () => {
+    const toggleLike = !isLiked;
+    setIsLiked(toggleLike);
+    setLikeCount((prevCount) => (toggleLike ? prevCount + 1 : prevCount - 1));
     try {
       const res = await axios.post(
         BASE_URL + `/like/v/${videoId}`,
         {},
         { withCredentials: true }
       );
-      setIsLiked(!isLiked);
       console.log(res.data.message);
-      if (isLiked) {
-        setLikeCount(likeCount - 1);
-      } else {
-        setLikeCount(likeCount + 1);
-      }
     } catch (error) {
       console.log(error);
+      //if error hppen rollbck to prevs stte
+      setIsLiked((prev) => !prev);
+      setLikeCount((prevCount) => (toggleLike ? prevCount - 1 : prevCount + 1));
     }
   };
 
   useEffect(() => {
-    isUserSubscribed();
+    // isUserSubscribed();
     // isUserLikedTheVideo();
     !videoDetail && getAVideo();
   }, [videoId]);
@@ -187,7 +192,7 @@ const SingleVideo = () => {
                   src={LIKE_ICON}
                   alt="like-icon"
                 /> */}
-                <LikeSvgIcon liked={isLiked}/>
+                <LikeSvgIcon liked={isLiked} />
                 {videoDetail?.likesDetails ? likeCount : likeCount}
               </button>
             </div>

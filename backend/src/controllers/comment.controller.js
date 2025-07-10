@@ -362,7 +362,7 @@ const getPostComments = asyncHandler(async (req, res) => {
     },
     {
       $addFields:{
-        LikeCount:{$size:"$likes"}
+        likeCount:{$size:"$likes"}
       }
     },
     {
@@ -372,7 +372,7 @@ const getPostComments = asyncHandler(async (req, res) => {
         commentOwner: 1,
         createdAt: 1,
         updatedAt:1,
-        LikeCount:1
+        likeCount:1
       },
     },
     {
@@ -402,12 +402,15 @@ const getPostComments = asyncHandler(async (req, res) => {
 
   //find the like doc with bove commentId present nd likeBy:currentUser
   const likedDocs = await Like.find({
-    comment:{$in : commentIds},
-    likeBy:currentUserId
+    comment:{$in: commentIds},
+    likeBy : currentUserId
   }).select("comment")
+  console.log("likedDocs this re comment ids where i hve liked only :",likedDocs);
 
   //convert the commentId ObjectId to string in LikedDoc
-  const likeCommentIds = new Set(likedDocs.map((doc)=>doc._id.toString()));
+  const likeCommentIds = new Set(likedDocs.map((doc)=>doc.comment.toString()));
+  console.log("likeCommentIds : ",likeCommentIds)
+
 
   //now dd this in the llComment obj
 
@@ -415,7 +418,7 @@ const getPostComments = asyncHandler(async (req, res) => {
     ...comment,
     isLikedByCurrentUser:likeCommentIds.has(comment._id.toString())
   }))
-  console.log(commentsWithUserLikedInfo)
+  console.log("commentsWithUserLikedInfo : ",commentsWithUserLikedInfo)
   return res
     .status(200)
     .json(

@@ -14,11 +14,15 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
 
+  console.log("postComment : ", comment);
   const { commentOwner, content, isLikedByCurrentUser, likeCount } = comment;
+  console.log("likeCount : ", likeCount);
+  console.log("isLikedByCurrentUser : ", isLikedByCurrentUser);
+
   const [commentLike, setCommentLike] = useState(isLikedByCurrentUser);
   const [commentLikeCount, setCommentLikeCount] = useState(likeCount);
-  console.log("commentLike : ",commentLike);
-  console.log("commentLikeCount : ",commentLikeCount);
+  console.log("commentLike : ", commentLike);
+  console.log("commentLikeCount : ", commentLikeCount);
 
   const { avatar, username, _id } = usersComment;
 
@@ -82,20 +86,28 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
   // }
 
   const toggleCommentLike = async () => {
+    const toggleLike = !commentLike;
+    setCommentLike(toggleLike);
+    setCommentLikeCount((prevCount) =>
+      toggleLike ? prevCount + 1 : prevCount - 1
+    );
     try {
-      
-
-      const res = await axios.post(`${BASE_URL}/like/c/${comment._id}`, {}, { withCredentials: true });
+      const res = await axios.post(
+        `${BASE_URL}/like/c/${comment._id}`,
+        {},
+        { withCredentials: true }
+      );
       console.log("toggleRes", res.data);
-
-       setCommentLike(!commentLike);
-          if (commentLike) {
-            setCommentLikeCount(commentLikeCount - 1);
-          } else {
-            setCommentLikeCount(commentLikeCount + 1);
-          }
     } catch (error) {
-      console.error("Error toggling like:", error?.response?.data || error.message);
+      console.error(
+        "Error toggling like:",
+        error?.response?.data || error.message
+      );
+      // Revert optimistic update
+      setCommentLike((prev) => !prev);
+      setCommentLikeCount((prevCount) =>
+        toggleLike ? prevCount - 1 : prevCount + 1
+      );
     }
   };
 

@@ -11,6 +11,7 @@ import fs from "fs";
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { Like } from "../models/like.model.js";
+import { Subscription } from "../models/subscription.model.js";
 
 
 const publishedVideo = asyncHandler(async (req, res) => {
@@ -177,7 +178,8 @@ const getVideoById = asyncHandler(async (req, res) => {
               avatar:1,
               username:1,
               fullName:1,
-              subscribers:1
+              subscribers:1,
+              _id:1
             }
           }
         ],
@@ -270,22 +272,28 @@ const getVideoById = asyncHandler(async (req, res) => {
 
   
     //FIND IN LIKE DOCS the hs commentID ND LIKEBY:currentUser
-    const likedDocs = await Like.find({
+    const likedDocs = await Like.findOne({
       video:videoId,
-      likeBy : currentUserId
+      likeBy :currentUserId
     }).select("video")
     console.log("likedDocs this re video ids where i hve liked only :",likedDocs);
+
+    //is current user is subscribed to chnnel
   
-    //make commentIds as string
-  
-    const likeVideoIds = new Set(likedDocs.map((doc)=>doc.video.toString()));
-    console.log("likeVideoIds :",likeVideoIds);
+    const channelIds = getVideoInfo[0].channelDetails._id
+    console.log("channelIds : ",channelIds)
+    const subDocs = await Subscription.findOne({
+      subscriber:currentUserId,
+      channel : channelIds
+    }).select("channel")
+    console.log("subDocs this re video ids where i hve subscribed only :",subDocs);
 
 
     const videoInfo = getVideoInfo[0];
     const videoWithUserLikedInfo = {
       ...videoInfo,
-      isLikedByCurrentUser:likeVideoIds.has(videoId.toString())
+      isLikedByCurrentUser:likedDocs===null ? false:true,
+      isSubscribedByCurrentUser:subDocs===null ? false :true
     }
     console.log("commentsWithUserLikedInfo :",videoWithUserLikedInfo);
     console.log("getVideoInfo :",getVideoInfo);

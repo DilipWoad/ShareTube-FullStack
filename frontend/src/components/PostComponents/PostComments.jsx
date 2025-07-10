@@ -27,6 +27,7 @@ const PostComments = () => {
         withCredentials: true,
       });
       const comment = res.data;
+      console.log("Comment API response:", res.data);
       console.log(comment.data);
       dispatch(addComments(comment.data))
       // setPostComment(comment.data);
@@ -50,7 +51,7 @@ const PostComments = () => {
     postComments();
     getAPost();
   }, []);
-  if (!postComment) return <div>Loading Post...!!</div>;
+  if (!aPost) return <div>Loading Post...!!</div>;
 
   return (
     <div className="m-2 flex justify-center w-full">

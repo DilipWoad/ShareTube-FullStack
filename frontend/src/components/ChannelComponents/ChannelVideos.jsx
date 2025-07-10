@@ -26,18 +26,18 @@ const ChannelVideos = () => {
   }, []);
   if (!channelVideos) return <div>This Channel has No Videos!!</div>;
   return (
-    <div className=" flex flex-wrap  py-1 sm:justify-start justify-center gap-2 sm:gap-1">
-      {channelVideos.map((video) => (
-        <VideoCard
-          key={video._id}
-          video={video}
-          menuClicked={menuClick}
-          css={"sm:w-[235px] bg-slate-400 sm:h-[215px] sm:mb-2 sm:pb-2 sm:pb-0 sm:block flex truncate sm:rounded-lg rounded-sm mx-1"}
-          thumbnailcss={"sm:h-32 h-full w-full"}
-          isChannelVideos={true}
-        />
-      ))}
-    </div>
+    <div className="flex flex-col sm:flex-row sm:flex-wrap py-1 sm:justify-start justify-center gap-2 sm:gap-1">
+  {channelVideos.map((video) => (
+    <VideoCard
+      key={video._id}
+      video={video}
+      menuClicked={menuClick}
+      css="w-full sm:w-[235px] bg-slate-400 mb-2 sm:pb-2 p-1 sm:p-0 sm:rounded-lg rounded-md flex sm:block"
+      thumbnailcss="w-[230px] h-24 sm:w-full sm:h-32 object-cover rounded-l-md sm:rounded-none"
+      isChannelVideos={true}
+    />
+  ))}
+</div>
   );
 };
 

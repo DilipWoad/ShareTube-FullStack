@@ -47,7 +47,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editPost, setEditPost] = useState(false);
 
-  const [editedPost, setEditedPost] = useState(post.content);
+  const [editedPost, setEditedPost] = useState(post?.content);
 
   //post
   // const {postOwner} = post;
