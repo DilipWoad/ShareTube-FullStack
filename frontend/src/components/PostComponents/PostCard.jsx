@@ -226,7 +226,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
                 ♡
               </span>
             </button>
-            <p className="text-sm">{postLikeCount}</p>
+            <p className="text-sm font-medium">{postLikeCount}</p>
           </div>
           {!hideComment && (
             <div className="">
