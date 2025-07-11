@@ -4,6 +4,7 @@ import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Like } from "../models/like.model.js";
 
 const createPost = asyncHandler(async (req, res) => {
   //1) verify authentication
@@ -76,25 +77,64 @@ const getUserPosts = asyncHandler(async (req, res) => {
     },
     { $unwind: { path: "$postOwner", preserveNullAndEmptyArrays: true } },
     {
+      $lookup: {
+        from: "likes",
+        localField: "_id",
+        foreignField: "post",
+        as: "likes",
+      },
+    },
+    {
+      $addFields: {
+        likeCount: { $size: "$likes" },
+      },
+    },
+    {
       $project: {
         content: 1,
         createdAt: 1,
         postOwner: 1,
+        likeCount: 1,
       },
     },
     {
-      $sort:{createdAt:-1}
-    }
+      $sort: { createdAt: -1 },
+    },
   ]);
 
   // console.log(posts)
+  console.log("posts -> : ", posts);
   if (posts.length === 0) {
     throw new ApiError("User has no Posts!!", 404);
   }
 
+  const postIdDoc = posts.map((p) => p._id);
+  console.log("postIdDoc : ", postIdDoc);
+
+  const likeDoc = await Like.find({
+    post: { $in: postIdDoc },
+    likeBy: userId,
+  }).select("post");
+  console.log("likeDoc : ", likeDoc);
+
+  const postLikesIds = new Set(likeDoc.map((doc) => doc.post.toString()));
+  console.log("postLikesIds : ", postLikesIds);
+
+  const userPostsLikedStatus = posts.map((post) => ({
+    ...post,
+    isLikedByCurrentUser: postLikesIds.has(post._id.toString()),
+  }));
+  console.log("userPostsLikedStatus : ", userPostsLikedStatus);
+
   return res
     .status(200)
-    .json(new ApiResponse(201, posts, "Users Post fetched Successfully"));
+    .json(
+      new ApiResponse(
+        201,
+        userPostsLikedStatus,
+        "Users Post fetched Successfully"
+      )
+    );
 });
 
 const updatePost = asyncHandler(async (req, res) => {
@@ -175,6 +215,7 @@ const getPostById = asyncHandler(async (req, res) => {
   //9) if doing aggregate do count of document,get comment owner info,post owner info
 
   const { postId } = req.params;
+  const userId = req.user._id;
 
   if (!mongoose.isValidObjectId(postId)) {
     throw new ApiError("Invalid PostId!!", 403);
@@ -217,16 +258,51 @@ const getPostById = asyncHandler(async (req, res) => {
     },
     { $unwind: { path: "$postOwner", preserveNullAndEmptyArrays: true } },
     {
+      $lookup:{
+        from:"likes",
+        localField:"_id",
+        foreignField:"post",
+        as:"likes"
+      }
+    },
+    {
+      $addFields:{
+        likeCount:{$size:"$likes"}
+      }
+    },
+    {
       $project: {
         content: 1,
         createdAt: 1,
         postOwner: 1,
+        likeCount:1
       },
     },
   ]);
 
+  console.log("post :", post);
+
+  const postIds = post.map((p) => p._id);
+  console.log("postIds :", postIds);
+
+  const likeDoc = await Like.findOne({
+    post: { $in: postIds },
+    likeBy: userId,
+  }).select("post");
+
+  console.log("likeDoc : ", likeDoc);
+  //likeDoc will be either null or an Obj{}
+
+  const aPost = post[0];
+  const postWithLikeStatus = {
+    ...aPost,
+    isLikedByCurrentUser: likeDoc !== null ? true : false,
+  };
+
+  console.log("postWithLikeStatus : ", postWithLikeStatus);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, post[0], "Post fetched successfully"));
+    .json(new ApiResponse(200, postWithLikeStatus, "Post fetched successfully"));
 });
 export { createPost, getUserPosts, updatePost, deletePost, getPostById };

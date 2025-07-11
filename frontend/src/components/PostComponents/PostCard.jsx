@@ -8,12 +8,24 @@ import { useDispatch } from "react-redux";
 import { removeUserPost, updateUserPost } from "../../slices/postSlice";
 
 const PostCard = ({ post, postCss, hideComment, userInfo }) => {
-  const [isPostLiked, setIsPostLiked] = useState(false);
-  const { content, createdAt, postOwner, _id } = post;
+  const {
+    content,
+    createdAt,
+    postOwner,
+    _id,
+    isLikedByCurrentUser,
+    likeCount,
+  } = post;
+  const [isPostLiked, setIsPostLiked] = useState(isLikedByCurrentUser);
+  const [postLikeCount, setPostLikeCount] = useState(likeCount);
   const navigate = useNavigate();
 
   const handlePostLike = async () => {
     //when clicked change the given state
+    const toggleLike = !isPostLiked;
+    setIsPostLiked(toggleLike);
+    setPostLikeCount(toggleLike ? postLikeCount + 1 : postLikeCount - 1);
+
     try {
       const res = await axios.post(
         `${BASE_URL}/like/p/${_id}`,
@@ -21,24 +33,28 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
         { withCredentials: true }
       );
       console.log(res.data);
-      setIsPostLiked(!isPostLiked);
     } catch (error) {
       console.log(error);
+      //rollbck to prevs stte
+      setIsPostLiked((prev) => !prev);
+      setPostLikeCount((prevLikeCount) =>
+        toggleLike ? prevLikeCount - 1 : prevLikeCount + 1
+      );
     }
   };
 
-  const isUserLikedThePost = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/like/p/${_id}`, {
-        withCredentials: true,
-      });
-      console.log(res.data.data);
-      const likedStatus = res.data.data;
-      setIsPostLiked(likedStatus);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const isUserLikedThePost = async () => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/like/p/${_id}`, {
+  //       withCredentials: true,
+  //     });
+  //     console.log(res.data.data);
+  //     const likedStatus = res.data.data;
+  //     setIsPostLiked(likedStatus);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handlePostCommentClick = (postId) => {
     navigate(`/channel/${postOwner._id}/post?id=${postId}`);
@@ -100,16 +116,13 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
     setEditPost(false);
   };
   const handlePostEditClick = () => {
-    setEditPost(true)
-    setMoreOption(false)
-  }
+    setEditPost(true);
+    setMoreOption(false);
+  };
   const handleEditCancel = () => {
     setEditedPost(post.content);
     setEditPost(false);
   };
-  useEffect(() => {
-    isUserLikedThePost();
-  }, []);
 
   if (!post) return <div>Loading... wait</div>;
 
@@ -161,9 +174,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
                       </li>
                     </>
                   ) : (
-                    <li className="hover:bg-slate-300 py-1">
-                      🖊 Report
-                    </li>
+                    <li className="hover:bg-slate-300 py-1">🖊 Report</li>
                   )}
                 </ul>
               </div>
@@ -199,28 +210,33 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           <div className="mt-1 sm:text-lg">{content}</div>
         )}
 
-        <div className="flex space-x-5 sm:mt-5 mt-2 text-[15px] font-semibold">
-          <button
-            onClick={handlePostLike}
-            className={`hover:bg-gray-300 rounded-full text-3xl ${
-              isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
-            } h-7 w-7 flex items-center justify-center overflow-clip`}
-          >
-            <span
-              className={`${
-                isPostLiked ? " text-white hover:text-black " : ""
-              }`}
-            >
-              ♡
-            </span>
-          </button>
-          {!hideComment && (
+        <div className="flex space-x-5 sm:mt-5 sm:mt-2 text-[15px] font-semibold w-28 justify-between mt-4">
+          <div className=" flex items-center gap-2  ">
             <button
-              className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
-              onClick={() => handlePostCommentClick(_id)}
+              onClick={handlePostLike}
+              className={`hover:bg-gray-300 rounded-full text-3xl ${
+                isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
+              } h-7 w-7 flex items-center justify-center overflow-clip`}
             >
-              💬
+              <span
+                className={`${
+                  isPostLiked ? " text-white hover:text-black " : ""
+                }`}
+              >
+                ♡
+              </span>
             </button>
+            <p className="text-sm">{postLikeCount}</p>
+          </div>
+          {!hideComment && (
+            <div className="">
+              <button
+                className="text-lg hover:bg-gray-200 rounded-full w-7 h-7"
+                onClick={() => handlePostCommentClick(_id)}
+              >
+                💬
+              </button>
+            </div>
           )}
         </div>
       </div>
