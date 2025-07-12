@@ -214,14 +214,12 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           <div className=" flex items-center gap-2  ">
             <button
               onClick={handlePostLike}
-              className={`hover:bg-gray-300 rounded-full text-3xl ${
+              className={`hover:bg-gray-300 rounded-full ${
                 isPostLiked ? "bg-red-500 hover:bg-red-300" : ""
-              } h-7 w-7 flex items-center justify-center overflow-clip`}
+              } h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center `}
             >
               <span
-                className={`${
-                  isPostLiked ? " text-white hover:text-black " : ""
-                }`}
+                className={`text-3xl ${isPostLiked ? " text-white hover:text-black  " : ""}`}
               >
                 ♡
               </span>

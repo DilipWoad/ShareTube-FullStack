@@ -17,16 +17,16 @@ const VideoCard = ({
   return (
     <>
       <div
-        className={` bg-gray-600 w-96 h-fit rounded-lg overflow-hidden sm:ml-4 ${
+        className={` bg-gray-600 max-w-96 sm:h-fit rounded-lg overflow-hidden sm:ml-4 ${
           menuClicked && !isChannelVideos ? "sm:w-[350px] " : ""
         } shadow-lg hover:shadow-gray-300 ${css} ${
           isChannelVideos && menuClicked ? "sm:w-[225px] " : ""
         }`}
       >
         <Link to={{ pathname: "/watch", search: `?v=${_id}` }}>
-          <img className={`w-full max-h-48 ${thumbnailcss} object-cover`} src={thumbnail} loading="lazy" />
+          <img className={`sm:w-full sm:max-h-48  ${thumbnailcss} object-cover`} src={thumbnail} loading="lazy" />
         </Link>
-        <div className="flex  justify-between w-full items-start px-1 ">
+        <div className="flex  justify-between w-full items-start sm:px-1 ">
           {!isChannelVideos ? (
             <Link to={`/channel/@${videoOwner?.username}`} className=" mt-2 ">
               <img
@@ -44,15 +44,17 @@ const VideoCard = ({
             className={""}
           >
             <div
-              className={`sm:mt-1 py-1 sm:pb-1 sm:py-0 px-1  flex-1  ${
+              className={`sm:mt-1 py-1 pb-1 sm:py-0 px-1  flex-1 flex justify-between flex-col  max-h-24 sm:h-full ${
                 menuClicked && !isChannelVideos ? "sm:w-[260px]" : ""
               } ${isChannelVideos && menuClicked ? "sm:w-[200px]" : ""} ${
                 isChannelVideos ? "max-w-[200px]" : "w-72"
               }`}
             >
-              <p className="text-base font-semibold truncate">{title}</p>
-              <p className="text-sm mt-2">{videoOwner?.fullName}</p>
+              <p className="text-[15px] sm:text-base font-semibold sm:truncate ">{title}</p>
+              <div>
+                <p className="text-sm mt-2">{videoOwner?.fullName}</p>
               <p className="text-sm">{views} views</p>
+              </div>
             </div>
           </Link>
 
@@ -61,7 +63,7 @@ const VideoCard = ({
               onClick={() => setOptions(!options)}
               className={`sm:text-xl text-lg sm:w-7 sm:h-7 w-6 h-6 flex justify-center items-center   ${
                 isChannelVideos ? "ml-0" : ""
-              }   hover:bg-gray-100 sm:font-semibold font-medium rounded-full  ml-1 `}
+              }   hover:bg-gray-100 sm:font-semibold font-medium rounded-full  sm:ml-1 `}
             >
               ⫶
             </button>
