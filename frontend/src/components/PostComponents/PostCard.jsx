@@ -210,7 +210,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
           <div className="mt-1 sm:text-lg">{content}</div>
         )}
 
-        <div className="flex space-x-5 sm:mt-5 sm:mt-2 text-[15px] font-semibold w-28 justify-between mt-4">
+        <div className="flex space-x-5  sm:mt-2 text-[15px] font-semibold w-28 justify-between mt-4">
           <div className=" flex items-center gap-2  ">
             <button
               onClick={handlePostLike}

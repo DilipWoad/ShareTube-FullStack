@@ -267,7 +267,7 @@ const getPostById = asyncHandler(async (req, res) => {
     },
     {
       $addFields:{
-        likeCount:{$size:"$likes"}
+        likeCount:{$size:"$like"}
       }
     },
     {
