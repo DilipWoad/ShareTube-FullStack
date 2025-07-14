@@ -20,8 +20,8 @@ const LibraryCardComponent = ({ library, label }) => {
                     key={video?._id}
                     video={video}
                     // w-[224px]
-                    css={"max-w-60 h-52 text-md"}
-                    thumbnailcss={"h-32"}
+                    css="w-[235px] h-fit bg-slate-400 rounded-lg"
+      thumbnailcss="w-full h-32 object-cover"
                     isChannelVideos={true}
                   />
                 ))
