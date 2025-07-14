@@ -9,7 +9,7 @@ export const app = express();
 
 //1)Using CORS cross-origin server it is use to configure which url are allowed to access our server
 app.use(cors({
-    origin:process.env.CROSS_ORIGIN,
+    origin:"*",
     methods: "*",
     credentials:true
 }))
