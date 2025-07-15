@@ -3,20 +3,23 @@ import { BASE_URL } from "./constant";
 import { useDispatch } from "react-redux";
 import { togglePublished } from "../slices/studioSlice";
 
-const ConfirmationBox = ({ toggle, setToggle, id,setShowBox }) => {
+const ConfirmationBox = ({ toggle, setToggle, id, setShowBox }) => {
   const dispatch = useDispatch();
   const handleYesClick = async () => {
     try {
       const res = await axios.patch(
         `${BASE_URL}/video/togglePublished/${id}`,
         {},
-        { withCredentials: true }
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
       );
 
       console.log(res.data);
-      dispatch(togglePublished(id))
+      dispatch(togglePublished(id));
       setToggle(!toggle);
-      setShowBox(false)
+      setShowBox(false);
     } catch (error) {
       console.log(error);
     }
