@@ -40,6 +40,7 @@ const getUserPosts = asyncHandler(async (req, res) => {
   //5) get the Post also get the user avatar and full Name and username
 
   const { userId } = req.params;
+  const currentUserId = req.user._id;
 
   const isValid = mongoose.isValidObjectId(userId);
   if (!isValid) {
@@ -113,7 +114,7 @@ const getUserPosts = asyncHandler(async (req, res) => {
 
   const likeDoc = await Like.find({
     post: { $in: postIdDoc },
-    likeBy: userId,
+    likeBy: currentUserId,
   }).select("post");
   console.log("likeDoc : ", likeDoc);
 
