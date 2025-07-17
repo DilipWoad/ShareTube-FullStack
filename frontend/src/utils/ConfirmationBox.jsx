@@ -2,11 +2,20 @@ import axios from "axios";
 import { BASE_URL } from "./constant";
 import { useDispatch } from "react-redux";
 import { togglePublished } from "../slices/studioSlice";
+import { useState } from "react";
+import LoadingScreen from "./LoadingScreen";
 
 const ConfirmationBox = ({ toggle, setToggle, id, setShowBox }) => {
   const dispatch = useDispatch();
+
   const handleYesClick = async () => {
+  
     try {
+      // const subscriptionUrl = `${BASE_URL}/subscription/c/${id}`;
+      dispatch(togglePublished(id));
+      setToggle(!toggle);
+      setShowBox(false);
+
       const res = await axios.patch(
         `${BASE_URL}/video/togglePublished/${id}`,
         {},
@@ -17,13 +26,15 @@ const ConfirmationBox = ({ toggle, setToggle, id, setShowBox }) => {
       );
 
       console.log(res.data);
-      dispatch(togglePublished(id));
-      setToggle(!toggle);
-      setShowBox(false);
+      
     } catch (error) {
       console.log(error);
+      dispatch(togglePublished(id));
+      setToggle(prev=>!prev);
+      setShowBox(true);
     }
   };
+ 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
       <div className="bg-slate-400  w-72 flex flex-col p-3 shadow-lg rounded-lg">

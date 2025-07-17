@@ -6,6 +6,7 @@ import VideoDescription from "./VideoDescription";
 import VideoComment from "../CommentComponents/VideoComment";
 import { useSelector } from "react-redux";
 import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
@@ -22,6 +23,10 @@ const SingleVideo = () => {
 
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
+
+  
+  const [showBox, setShowBox] = useState(false);
+
   console.log("Subscription state :", isSubscribed);
   console.log("Subscription Count state :", subscriberCount);
 
@@ -66,7 +71,7 @@ const SingleVideo = () => {
       );
       try {
         const res = await axios.post(
-          BASE_URL + `/subscription/c/${videoDetail.channelDetails._id}`,
+          `${BASE_URL}/subscription/c/${videoDetail.channelDetails._id}`,
           {},
           { withCredentials: true }
         );
@@ -201,6 +206,15 @@ const SingleVideo = () => {
       </div>
       <VideoDescription videoDetail={videoDetail} />
       <VideoComment videoId={videoId} />
+      {showBox && (
+          <ConfirmationBox
+            toggle={true}
+            setShowBox={setShowBox}
+            setToggle={setIsSubscribed}
+            id={_id}
+            subscription={true}
+          />
+        )}
     </div>
   );
 };

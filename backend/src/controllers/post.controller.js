@@ -259,24 +259,24 @@ const getPostById = asyncHandler(async (req, res) => {
     },
     { $unwind: { path: "$postOwner", preserveNullAndEmptyArrays: true } },
     {
-      $lookup:{
-        from:"likes",
-        localField:"_id",
-        foreignField:"post",
-        as:"likes"
-      }
+      $lookup: {
+        from: "likes",
+        localField: "_id",
+        foreignField: "post",
+        as: "likes",
+      },
     },
     {
-      $addFields:{
-        likeCount:{$size:"$likes"}
-      }
+      $addFields: {
+        likeCount: { $size: "$likes" },
+      },
     },
     {
       $project: {
         content: 1,
         createdAt: 1,
         postOwner: 1,
-        likeCount:1
+        likeCount: 1,
       },
     },
   ]);
@@ -304,6 +304,8 @@ const getPostById = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, postWithLikeStatus, "Post fetched successfully"));
+    .json(
+      new ApiResponse(200, postWithLikeStatus, "Post fetched successfully")
+    );
 });
 export { createPost, getUserPosts, updatePost, deletePost, getPostById };

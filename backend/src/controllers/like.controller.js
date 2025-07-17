@@ -239,123 +239,123 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   );
 });
 
-const isLikedAlready = asyncHandler(async (req, res) => {
-  //verify authentication
-  //get userId from req.user
-  // we will get videoId from the frontent params
-  // get videoId
-  // verify videoID
-  // check if video Exist
-  // just do a findOne in Like model with video->videoId and likedBy->userId
+// const isLikedAlready = asyncHandler(async (req, res) => {
+//   //verify authentication
+//   //get userId from req.user
+//   // we will get videoId from the frontent params
+//   // get videoId
+//   // verify videoID
+//   // check if video Exist
+//   // just do a findOne in Like model with video->videoId and likedBy->userId
 
-  const currentUserId = req.user._id;
+//   const currentUserId = req.user._id;
 
-  const { videoId } = req.params;
-  if (!mongoose.isValidObjectId(videoId)) {
-    throw new ApiError("Invalid Video Id", 401);
-  }
+//   const { videoId } = req.params;
+//   if (!mongoose.isValidObjectId(videoId)) {
+//     throw new ApiError("Invalid Video Id", 401);
+//   }
 
-  const isVideExists = await Video.findById(videoId);
-  if (!isVideExists) {
-    throw new ApiError("Video does not Exists", 404);
-  }
+//   const isVideExists = await Video.findById(videoId);
+//   if (!isVideExists) {
+//     throw new ApiError("Video does not Exists", 404);
+//   }
 
-  //now find in like schema
-  const isVideoLikedAlreadyByUser = await Like.findOne({
-    video: new mongoose.Types.ObjectId(videoId),
-    likeBy: new mongoose.Types.ObjectId(currentUserId),
-  });
-  if (isVideoLikedAlreadyByUser === null) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, false, "User has not liked the video"));
-  }
-  return res
-    .status(200)
-    .json(new ApiResponse(200, true, "User has already Liked the video"));
-});
+//   //now find in like schema
+//   const isVideoLikedAlreadyByUser = await Like.findOne({
+//     video: new mongoose.Types.ObjectId(videoId),
+//     likeBy: new mongoose.Types.ObjectId(currentUserId),
+//   });
+//   if (isVideoLikedAlreadyByUser === null) {
+//     return res
+//       .status(200)
+//       .json(new ApiResponse(200, false, "User has not liked the video"));
+//   }
+//   return res
+//     .status(200)
+//     .json(new ApiResponse(200, true, "User has already Liked the video"));
+// });
 
-const isUserAlreadyLikeThePost = asyncHandler(async (req, res) => {
-  //1) validate the user authentication
-  //2) if valid then check if it's valid objId ->postId
-  //3) check in liked model and match the document that contains post field with this id and has likeBy field with the current userId
-  //4) if present then it's return true
-  //5) if not present then return false
+// const isUserAlreadyLikeThePost = asyncHandler(async (req, res) => {
+//   //1) validate the user authentication
+//   //2) if valid then check if it's valid objId ->postId
+//   //3) check in liked model and match the document that contains post field with this id and has likeBy field with the current userId
+//   //4) if present then it's return true
+//   //5) if not present then return false
 
-  const currentUserId = req.user._id;
-  const { postId } = req.params;
+//   const currentUserId = req.user._id;
+//   const { postId } = req.params;
 
-  if (!mongoose.isValidObjectId(postId)) {
-    throw new ApiError("Invalid post Id", 403);
-  }
+//   if (!mongoose.isValidObjectId(postId)) {
+//     throw new ApiError("Invalid post Id", 403);
+//   }
 
-  //check if post exist or not
-  const isPostExists = await Post.findById(postId);
-  if (!isPostExists) {
-    throw new ApiError("Post does not Exists", 404);
-  }
+//   //check if post exist or not
+//   const isPostExists = await Post.findById(postId);
+//   if (!isPostExists) {
+//     throw new ApiError("Post does not Exists", 404);
+//   }
 
-  //now check in like model
-  const isPostAlreadyLikeByUser = await Like.findOne({
-    post: postId,
-    likeBy: currentUserId,
-  });
+//   //now check in like model
+//   const isPostAlreadyLikeByUser = await Like.findOne({
+//     post: postId,
+//     likeBy: currentUserId,
+//   });
 
-  if (!isPostAlreadyLikeByUser) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, false, "User has not liked the post"));
-  }
-  return res
-    .status(200)
-    .json(new ApiResponse(200, true, "User has liked this post Aleady"));
-});
+//   if (!isPostAlreadyLikeByUser) {
+//     return res
+//       .status(200)
+//       .json(new ApiResponse(200, false, "User has not liked the post"));
+//   }
+//   return res
+//     .status(200)
+//     .json(new ApiResponse(200, true, "User has liked this post Aleady"));
+// });
 
-const isUserAlreadyLikeTheComment = asyncHandler(async (req, res) => {
-  //vlidte commentId
-  //isVlid check if exist (use findone) in like document
-  //if exist findone document which hs likeby : ->currentLoginUser id
-  //if found return true
-  //else flse
-  const currentUserId = req.body._id;
-  const { commentId } = req.params;
+// const isUserAlreadyLikeTheComment = asyncHandler(async (req, res) => {
+//   //vlidte commentId
+//   //isVlid check if exist (use findone) in like document
+//   //if exist findone document which hs likeby : ->currentLoginUser id
+//   //if found return true
+//   //else flse
+//   const currentUserId = req.body._id;
+//   const { commentId } = req.params;
 
-  if (!mongoose.isValidObjectId(commentId)) {
-    throw new ApiError("Invalid comment Id", 403);
-  }
+//   if (!mongoose.isValidObjectId(commentId)) {
+//     throw new ApiError("Invalid comment Id", 403);
+//   }
 
-  const isCommentExist = await Comment.findById(commentId);
-  if (!isCommentExist) {
-    throw new ApiError("Comment does not Exists", 404);
-  }
+//   const isCommentExist = await Comment.findById(commentId);
+//   if (!isCommentExist) {
+//     throw new ApiError("Comment does not Exists", 404);
+//   }
 
-  //now check in like model
-  const like = await Like.findOne({
-    comment: commentId,
-    likeBy: currentUserId,
-  });
+//   //now check in like model
+//   const like = await Like.findOne({
+//     comment: commentId,
+//     likeBy: currentUserId,
+//   });
 
-  const liked = !!like; // converts to boolean
+//   const liked = !!like; // converts to boolean
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        liked,
-        liked
-          ? "User has liked this comment already"
-          : "User has not liked the comment"
-      )
-    );
-});
+//   return res
+//     .status(200)
+//     .json(
+//       new ApiResponse(
+//         200,
+//         liked,
+//         liked
+//           ? "User has liked this comment already"
+//           : "User has not liked the comment"
+//       )
+//     );
+// });
 
 export {
   toggleVideoLike,
   toggleCommentLike,
   togglePostLike,
   getLikedVideos,
-  isLikedAlready,
-  isUserAlreadyLikeThePost,
-  isUserAlreadyLikeTheComment,
+  // isLikedAlready,
+  // isUserAlreadyLikeThePost,
+  // isUserAlreadyLikeTheComment,
 };
