@@ -8,33 +8,38 @@ import { addUserPlaylist } from "../../slices/librarySlice";
 const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   const [playlistId, setPlaylistId] = useState(null);
   const [createPlaylistOption, setCreatePlaylistOption] = useState(false);
-  const user = useSelector((store)=>store.user)
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   const playlistMenu = useSelector((store) => store.library.playlist);
 
-  const getPlaylist=async()=>{
+  const getPlaylist = async () => {
     try {
-        const res = await axios.get(BASE_URL+`/playlist/user/${user._id}`,{withCredentials:true})
-        console.log(res.data.data);
-        dispatch(addUserPlaylist(res.data.data))
+      const res = await axios.get(`${BASE_URL}/playlist/user/${user._id}`, {
+        withCredentials: true,
+      });
+      console.log(res.data.data);
+      dispatch(addUserPlaylist(res.data.data));
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-  }
+  };
   const addVideoToPlaylist = async () => {
     try {
       const res = await axios.patch(
-        BASE_URL + `/playlist/add/${videoId}/${playlistId}`,
+        `${BASE_URL}/playlist/add/${videoId}/${playlistId}`,
         {},
         { withCredentials: true }
       );
       console.log(res.data);
+      
     } catch (error) {
       console.log(error);
+      alert("Somthing went wrong while adding Video to the playlist");
     } finally {
       setPlaylistOption(false);
       getPlaylist();
+      alert("Video added to the playlist Successfully");
     }
   };
 
@@ -52,19 +57,20 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
             ✕
           </button>
         </div>
-        {playlistMenu && playlistMenu.map((playlist) => (
-          <div key={playlist._id}>
-            <input
-              className="m-2"
-              type="checkbox"
-              defaultValue={playlistId}
-              onChange={(e) =>
-                setPlaylistId(e.target.checked ? playlist._id : null)
-              }
-            />
-            {playlist?.title}
-          </div>
-        ))}
+        {playlistMenu &&
+          playlistMenu.map((playlist) => (
+            <div key={playlist._id}>
+              <input
+                className="m-2"
+                type="checkbox"
+                defaultValue={playlistId}
+                onChange={(e) =>
+                  setPlaylistId(e.target.checked ? playlist._id : null)
+                }
+              />
+              {playlist?.title}
+            </div>
+          ))}
         <div className="mt-10 flex justify-between ">
           <button
             onClick={() => setCreatePlaylistOption(!createPlaylistOption)}

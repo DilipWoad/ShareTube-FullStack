@@ -5,6 +5,7 @@ import { BASE_URL } from "../../utils/constant";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addChannelInfo } from "../../slices/channelSlice";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 
 const ChannelPage = () => {
   const dispatch = useDispatch();
@@ -14,32 +15,15 @@ const ChannelPage = () => {
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [channelVideos, setChannelVideos] = useState(null);
+  const [subscriberCount,setSubscriberCount] =useState(null);
+
+  const [showBox, setShowBox] = useState(false);
 
   const middleDot = "\u0387";
   const channelId = channelDetails?._id;
 
   const { id } = useParams();
   const username = id.replace("@", "");
-
-  const handleSubscription = async () => {
-    if (channelDetails?._id === userId) {
-      alert("You can't Subscribe to your channel!!");
-      return;
-    } else {
-      try {
-        const res = await axios.post(
-          `${BASE_URL}/subscription/c/${channelId}`,
-          {},
-          { withCredentials: true }
-        );
-        console.log(res.data.message);
-        //toggle the subscribed state
-        setIsSubscribed(!isSubscribed);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
 
   const userChannelDetails = async () => {
     try {
@@ -52,6 +36,7 @@ const ChannelPage = () => {
       console.log(res.data);
       setChannelDetails(res.data.data);
       setIsSubscribed(res.data.data.isCurrentUserSubscribed);
+      setSubscriberCount(res.data.data.subscriberCount);
       dispatch(addChannelInfo(res.data.data));
     } catch (error) {
       console.log(error);
@@ -85,17 +70,17 @@ const ChannelPage = () => {
             <div className=" flex my-3 space-x-1 sm:text-lg text-sm">
               <p className="font-semibold text-black">{`@${channelDetails?.username} ${middleDot}`}</p>
               <p className="text-gray-400 font-medium ">
-                {channelDetails?.subscriberCount} subscribers
+                {subscriberCount} subscribers
               </p>
             </div>
             <button
-              onClick={handleSubscription}
+              onClick={()=>setShowBox(true)}
               className={`px-2 py-1 sm:px-3 sm:py-2 rounded-full sm:mt-7 text-sm sm:text-[16px] ${
                 isSubscribed
                   ? "bg-gray-500 text-white hover:bg-gray-400"
                   : "hover:bg-gray-300 bg-white"
               } `}
-            >{`${isSubscribed ? "Subscribed" : "Subscribe"}`}</button>
+            >{`${isSubscribed ? "🔔 Subscribed" : "Subscribe"}`}</button>
           </div>
         </div>
       </div>
@@ -139,16 +124,23 @@ const ChannelPage = () => {
               Profile
             </NavLink>
             </div>
-
-            {/* <button className="mx-2 mt-1 h-8 py-1 px-2 hover:border-b-2 hover:border-gray-200">
-            Playlists
-          </button> */}
           </div>
 
           <Outlet
             context={{ channelId, menuClick, channelVideos, setChannelVideos }}
           />
         </div>
+        {showBox && (
+          <ConfirmationBox
+            toggle={isSubscribed}
+            setShowBox={setShowBox}
+            setToggle={setIsSubscribed}
+            id={channelDetails._id}
+            subscriptionClick={true}
+            setSubscriberCount={setSubscriberCount}
+            userId={userId}
+          />
+        )}
       </div>
    
   );

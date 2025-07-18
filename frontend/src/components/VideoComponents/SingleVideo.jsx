@@ -46,61 +46,7 @@ const SingleVideo = () => {
     setSubscriberCount(video?.channelDetails?.subscribers);
     setIsSubscribed(video.isSubscribedByCurrentUser);
   };
-
-  // const isUserSubscribed = async () => {
-  //   try {
-  //     const res = await axios.get(BASE_URL + `/subscription/${videoId}`, {
-  //       withCredentials: true,
-  //     });
-  //     console.log(res.data.message);
-  //     console.log("Subscription", res.data.data);
-  //     setIsSubscribed(res.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  const handleSubscription = async () => {
-    if (videoDetail?.channelDetails?._id === userId) {
-      alert("You can't Subscribe to your channel!!");
-      return;
-    } else {
-      const toggleSubs = !isSubscribed;
-      setIsSubscribed(toggleSubs);
-      setSubscriberCount((prevSubCount) =>
-        toggleSubs ? prevSubCount + 1 : prevSubCount - 1
-      );
-      try {
-        const res = await axios.post(
-          `${BASE_URL}/subscription/c/${videoDetail.channelDetails._id}`,
-          {},
-          { withCredentials: true }
-        );
-        console.log(res.data.message);
-        //toggle the subscribed state
-      } catch (error) {
-        console.log(error);
-        //if error rollbck to prevs states
-        setIsSubscribed((prev) => !prev);
-        setSubscriberCount((prevSubCount) =>
-          toggleSubs ? prevSubCount - 1 : prevSubCount + 1
-        );
-      }
-    }
-  };
-
-  // const isUserLikedTheVideo = async () => {
-  //   try {
-  //     const res = await axios.get(BASE_URL + `/like/v/${videoId}`, {
-  //       withCredentials: true,
-  //     });
-  //     //create a function which will check is current user(current logged in user has liked the current opened video)
-  //     console.log(res.data.message);
-  //     console.log("Liked", res.data.data);
-  //     setIsLiked(res.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  
   const handleLikes = async () => {
     const toggleLike = !isLiked;
     setIsLiked(toggleLike);
@@ -121,14 +67,9 @@ const SingleVideo = () => {
   };
 
   useEffect(() => {
-    // isUserSubscribed();
-    // isUserLikedTheVideo();
     !videoDetail && getAVideo();
   }, [videoId]);
 
-  //And get the video
-  //first of dont think of the video place as of now
-  //ensure that video is coming and it is in the video div position
   if (!videoDetail) return <div>Loading....</div>;
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:px-6 lg:px-8">
@@ -179,7 +120,7 @@ const SingleVideo = () => {
                 isSubscribed ? "bg-gray-300" : "bg-white text-gray-600"
               }`}
             >
-              <button onClick={handleSubscription}>
+              <button onClick={()=>setShowBox(true)}>
                 {isSubscribed ? "🔔 Subscribed" : "Subscribe"}
               </button>
             </div>
@@ -190,13 +131,6 @@ const SingleVideo = () => {
                 onClick={handleLikes}
                 className="flex items-center gap-x-2 px-2 py-1 min-w-16 justify-between "
               >
-                {/* <img
-                  className={`w-5 h-5 ${
-                    isLiked ? "bg-white " : ""
-                  } overflow-hidden`}
-                  src={LIKE_ICON}
-                  alt="like-icon"
-                /> */}
                 <LikeSvgIcon liked={isLiked} />
                 {videoDetail?.likesDetails ? likeCount : likeCount}
               </button>
@@ -208,11 +142,13 @@ const SingleVideo = () => {
       <VideoComment videoId={videoId} />
       {showBox && (
           <ConfirmationBox
-            toggle={true}
+            toggle={isSubscribed}
             setShowBox={setShowBox}
             setToggle={setIsSubscribed}
-            id={_id}
-            subscription={true}
+            id={videoDetail.channelDetails._id}
+            subscriptionClick={true}
+            setSubscriberCount={setSubscriberCount}
+            userId={userId}
           />
         )}
     </div>
