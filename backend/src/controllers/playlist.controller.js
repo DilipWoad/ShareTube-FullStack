@@ -195,85 +195,90 @@ const getUserPlaylist = asyncHandler(async (req, res) => {
   if (!isUserExists) {
     throw new ApiError("User Does not Exists!", 404);
   }
-//   const userPlaylist = await Playlist.find({
-//     owner: userId,
-//   });
+  //   const userPlaylist = await Playlist.find({
+  //     owner: userId,
+  //   });
   const userPlaylist = await Playlist.aggregate([
     {
-        $match:{
-            owner:new mongoose.Types.ObjectId(userId)
-        }
+      $match: {
+        owner: new mongoose.Types.ObjectId(userId),
+      },
     },
     {
-        $lookup:{
-            from:"videos",
-            let:{videoIds:"$videos"},
-            pipeline:[
+      $lookup: {
+        from: "videos",
+        let: { videoIds: "$videos" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $in: ["$_id", "$$videoIds"],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              let: { ownerId: "$owner" },
+              pipeline: [
                 {
-                    $match:{
-                        $expr:{
-                            $in:["$_id","$$videoIds"]
-                        }
-                    }
+                  $match: {
+                    $expr: {
+                      $eq: ["$_id", "$$ownerId"],
+                    },
+                  },
                 },
                 {
-                    $lookup:{
-                        from:"users",
-                        let:{ownerId:"$owner"},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $eq:["$_id","$$ownerId"]
-                                    }
-                                }
-                            },
-                            {
-                                $project:{
-                                    _id:0,
-                                    username:1,
-                                    fullName:1,
-                                    avatar:1
-                                }
-                            }
-                        ],
-                        as:"videoOwner"
-                    }
+                  $project: {
+                    _id: 0,
+                    username: 1,
+                    fullName: 1,
+                    avatar: 1,
+                  },
                 },
-                {
-                    $addFields:{
-                        owner:{$first:"$videoOwner"}
-                    }
-                },
-                {
-                    $project:{
-                        owner:1,
-                        videoFile:1,
-                        thumbnail:1,
-                        views:1,
-                        duration:1,
-                        title:1,
-                        createdAt:1
-                    }
-                }
-            ],
-            as:"playlistVideos"
-        }
+              ],
+              as: "videoOwner",
+            },
+          },
+          {
+            $addFields: {
+              owner: { $first: "$videoOwner" },
+            },
+          },
+          {
+            $project: {
+              owner: 1,
+              videoFile: 1,
+              thumbnail: 1,
+              views: 1,
+              duration: 1,
+              title: 1,
+              createdAt: 1,
+            },
+          },
+        ],
+        as: "playlistVideos",
+      },
     },
     {
-        $project:{
-            title:1,
-            description:1,
-            owner:1,
-            playlistVideos:1,
-            updatedAt:1,
-            createdAt:1
-        }
+      $addFields: {
+        playlistVideos: { $reverseArray: "$playlistVideos" },
+      },
     },
     {
-      $sort:{updatedAt:-1}
-    }
-  ])
+      $project: {
+        title: 1,
+        description: 1,
+        owner: 1,
+        playlistVideos: 1,
+        updatedAt: 1,
+        createdAt: 1,
+      },
+    },
+    {
+      $sort: { updatedAt: -1 },
+    },
+  ]);
 
   if (userPlaylist.length === 0) {
     throw new ApiError("User has no Playlist!!", 404);
@@ -291,84 +296,84 @@ const getPlaylistById = asyncHandler(async (req, res) => {
   if (!mongoose.isValidObjectId(playlistId)) {
     throw new ApiError("Invalid Playlist Id", 401);
   }
-//   const isPlaylistExists = await Playlist.findById(playlistId);
-const isPlaylistExists = await Playlist.aggregate([
+  //   const isPlaylistExists = await Playlist.findById(playlistId);
+  const isPlaylistExists = await Playlist.aggregate([
     {
-        $match:{
-            _id:new mongoose.Types.ObjectId(playlistId)
-        }
+      $match: {
+        _id: new mongoose.Types.ObjectId(playlistId),
+      },
     },
     {
-        $lookup:{
-            from:"videos",
-            let:{videoIds:"$videos"},
-            pipeline:[
+      $lookup: {
+        from: "videos",
+        let: { videoIds: "$videos" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $in: ["$_id", "$$videoIds"],
+              },
+            },
+          },
+          {
+            //lookup for User Details
+            $lookup: {
+              from: "users",
+              let: { ownerId: "$owner" },
+              pipeline: [
                 {
-                    $match:{
-                        $expr:{
-                            $in:["$_id","$$videoIds"]
-                        }
-                    }
+                  $match: {
+                    $expr: {
+                      $eq: ["$_id", "$$ownerId"],
+                    },
+                  },
                 },
                 {
-                    //lookup for User Details
-                    $lookup:{
-                        from:"users",
-                        let:{ownerId:"$owner"},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $eq:["$_id","$$ownerId"]
-                                    }
-                                }
-                            },
-                            {
-                                $project:{
-                                    username:1,
-                                    fullName:1,
-                                    avatar:1
-                                }
-                            }
-                        ],
-                        as:"ownerDetails"
-                    }
+                  $project: {
+                    username: 1,
+                    fullName: 1,
+                    avatar: 1,
+                  },
                 },
-                {
-                    $addFields:{
-                        videoOwner:{$first : "$ownerDetails"}
-                    }
-                },
-                {
-                    $project:{
-                      videoOwner:1,
-                        videoFile:1,
-                        thumbnail:1,
-                        views:1,
-                        duration:1,
-                        title:1,
-                        createdAt:1
-                    }
-                }
-            ],
-            as:"playlistVideos"
-        }
+              ],
+              as: "ownerDetails",
+            },
+          },
+          {
+            $addFields: {
+              videoOwner: { $first: "$ownerDetails" },
+            },
+          },
+          {
+            $project: {
+              videoOwner: 1,
+              videoFile: 1,
+              thumbnail: 1,
+              views: 1,
+              duration: 1,
+              title: 1,
+              createdAt: 1,
+            },
+          },
+        ],
+        as: "playlistVideos",
+      },
     },
     {
-  $addFields: {
-    playlistVideos: { $reverseArray: "$playlistVideos" }
-  }
-},
+      $addFields: {
+        playlistVideos: { $reverseArray: "$playlistVideos" },
+      },
+    },
     {
-        $project:{
-            title:1,
-            description:1,
-            videoOwner:1,
-             //TODO:"Also get Owner Details"
-            playlistVideos:1
-        }
-    }
-])
+      $project: {
+        title: 1,
+        description: 1,
+        videoOwner: 1,
+        //TODO:"Also get Owner Details"
+        playlistVideos: 1,
+      },
+    },
+  ]);
 
   if (!isPlaylistExists) {
     throw new ApiError("Playlist Does not Exists", 404);
@@ -445,21 +450,12 @@ const deletePlaylist = asyncHandler(async (req, res) => {
   const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
 
   if (!deletedPlaylist) {
-    throw new ApiError(
-      "Something went wrong while Deleting the playlist",
-      501
-    );
+    throw new ApiError("Something went wrong while Deleting the playlist", 501);
   }
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        201,
-        {},
-        "Playlist Details Updated Successfully!!"
-      )
-    );
+    .json(new ApiResponse(201, {}, "Playlist Details Updated Successfully!!"));
 });
 
 export {

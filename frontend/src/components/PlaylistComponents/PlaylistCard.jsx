@@ -14,9 +14,10 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const dispatch = useDispatch();
   const menuRef = useOutsideClick(setOptions);
 
+  console.log(playlist,"plylist k dhekl")
   const deleteAPlaylist = async () => {
     try {
-      const res = await axios.delete(BASE_URL + `/playlist/${_id}`, {
+      const res = await axios.delete(`${BASE_URL}/playlist/${_id}`, {
         withCredentials: true,
       });
       console.log(res);
@@ -64,7 +65,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
               <div className="absolute top-5 right-8 bg-gray-900 text-white w-24 rounded-lg p-1 space-y-2 flex flex-col items-start">
                 <button
                   onClick={() => setEditOption(!editOption)}
-                  className="hover:bg-lime-300 w-full text-start relative"
+                  className="hover:bg-gray-400 w-full text-start relative"
                 >
                   Edit
                 </button>

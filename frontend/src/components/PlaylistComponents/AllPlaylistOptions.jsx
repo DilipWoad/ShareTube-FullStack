@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constant";
 import CreateNewPlaylist from "./CreateNewPlaylist";
 import { addUserPlaylist } from "../../slices/librarySlice";
+import { setToastCardHidden, toastCardDetail } from "../../slices/toastCardSlice";
 
 const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   const [playlistId, setPlaylistId] = useState(null);
@@ -32,14 +33,19 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
         { withCredentials: true }
       );
       console.log(res.data);
-      
+      // mke here the tost to work
+      dispatch(
+        toastCardDetail({
+          label: "Video added to the playlist Successfully",
+          cardColor: "bg-green-500",
+        })
+      );
     } catch (error) {
-      console.log(error);
-      alert("Somthing went wrong while adding Video to the playlist");
+      console.error(error);
+      
     } finally {
       setPlaylistOption(false);
       getPlaylist();
-      alert("Video added to the playlist Successfully");
     }
   };
 

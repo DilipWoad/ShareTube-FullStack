@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "./constant";
 import { useDispatch } from "react-redux";
 import { togglePublished } from "../slices/studioSlice";
+import { toastCardDetail } from "../slices/toastCardSlice";
 
 const ConfirmationBox = ({
   toggle,
@@ -42,6 +43,10 @@ const ConfirmationBox = ({
         );
         console.log(res.data.message);
         //toggle the subscribed state
+        dispatch(toastCardDetail({
+          label: toggleSubs ?"Subscribed to the Channel" :"Unsubscribed to the Channel",
+          cardColor: "bg-green-500",
+        }))
       } catch (error) {
         console.error(error);
         //if error rollbck to prevs states

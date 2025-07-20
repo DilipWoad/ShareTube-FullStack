@@ -10,6 +10,7 @@ import playlistReducer from "../slices/playlistSlice";
 import channelReducer from "../slices/channelSlice";
 import postReducer from "../slices/postSlice";
 import studioReducer from "../slices/studioSlice";
+import toastCardReducer from "../slices/toastCardSlice";
 
 const persistConfig = {
   key: "root",
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   playlist: playlistReducer,
   channel: channelReducer,
   post : postReducer,
-  studio:studioReducer
+  studio:studioReducer,
+  toast:toastCardReducer,
 });
 
 const presistedReducer = persistReducer(persistConfig,rootReducer)

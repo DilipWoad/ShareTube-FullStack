@@ -7,6 +7,7 @@ import { BASE_URL } from "../../utils/constant";
 import axios from "axios";
 import { addUserPlaylist } from "../../slices/librarySlice";
 import { removePost } from "../../slices/postSlice";
+import ToastCard from "../../utils/ToastCard.jsx"
 
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
@@ -25,7 +26,7 @@ const VideoFeed = () => {
       const res = await axios.get(BASE_URL + `/playlist/user/${userId}`, {
         withCredentials: true,
       });
-      console.log(res.data.data);
+      console.log("yhhh hi prblem : ->",res.data.data);
       dispatch(addUserPlaylist(res.data.data));
     } catch (error) {
       console.log(error);
@@ -40,7 +41,7 @@ const VideoFeed = () => {
 
   if (videos?.length === 0) return <div>Loading...</div>;
   return (
-    <div className=" w-full px-1 mt-2 sm:mt-2 sm:py-2 sm:w-fit space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:flex-wrap ">
+    <div className="relative w-full px-1 mt-2 sm:mt-2 sm:py-2 sm:w-fit space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:flex-wrap ">
         {videos &&
           videos.map((video) => (
             <VideoCard
@@ -52,6 +53,7 @@ const VideoFeed = () => {
               thumbnailcss={"h-44 w-full"}
             />
           ))}
+          {/* <ToastCard/> */}
       </div>
   );
 };
