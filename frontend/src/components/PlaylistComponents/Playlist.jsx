@@ -39,7 +39,7 @@ const Playlist = () => {
   }, [dispatch, playlistId]);
   console.log("Current playlist state:", playlist);
 
-  if (loading) return <LoadingScreen/>;
+  if (!playlist) return <LoadingScreen/>;
   return (
     <div className=" flex flex-col sm:flex-row p-2 sm:p-4 w-full h-full ">
       {/* playlistDescription+CoverImg+Info */}

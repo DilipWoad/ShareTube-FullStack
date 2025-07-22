@@ -36,7 +36,7 @@ const ChannelPosts = () => {
   };
 
   useEffect(() => {
-    !channelPosts && handleChannelPosts();
+    handleChannelPosts();
     if (user._id == channelId) {
       setShowCreatePostBox(true);
     }
