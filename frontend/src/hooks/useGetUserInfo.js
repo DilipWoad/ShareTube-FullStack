@@ -25,5 +25,5 @@ export const useGetUserInfo = () => {
   };
   useEffect(()=>{
     !userDetails && userInfo();
-  },[])
+  },[dispatch])
 };

@@ -70,7 +70,7 @@ const StudioVideos = () => {
   useEffect(() => {
     getChannelVideo();
   }, []);
-  if (loading) return <LoadingScreen/>;
+  if (!studioVideos) return <LoadingScreen/>;
   return (
     <>
       <div className="flex justify-between m-5 sticky top-0">

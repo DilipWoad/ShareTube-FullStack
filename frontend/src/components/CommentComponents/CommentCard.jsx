@@ -9,21 +9,22 @@ import {
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
 import LoadingScreen from "../../utils/LoadingScreen";
+import { memo } from "react";
 
-const CommentCard = ({ comment, usersComment, commentCss }) => {
+const CommentCard = memo(({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
 
-  console.log("postComment : ", comment);
+  // console.log("postComment : ", comment);
   const { commentOwner, content, isLikedByCurrentUser, likeCount } = comment;
-  console.log("likeCount : ", likeCount);
-  console.log("isLikedByCurrentUser : ", isLikedByCurrentUser);
+  // console.log("likeCount : ", likeCount);
+  // console.log("isLikedByCurrentUser : ", isLikedByCurrentUser);
 
   const [commentLike, setCommentLike] = useState(isLikedByCurrentUser);
   const [commentLikeCount, setCommentLikeCount] = useState(likeCount);
-  console.log("commentLike : ", commentLike);
-  console.log("commentLikeCount : ", commentLikeCount);
+  // console.log("commentLike : ", commentLike);
+  // console.log("commentLikeCount : ", commentLikeCount);
 
   const { avatar, username, _id } = usersComment;
 
@@ -117,7 +118,7 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
     setMoreOption(false);
   };
 
-  if (!comment) return <LoadingScreen/>
+  if (!comment) return <LoadingScreen />;
 
   return (
     <div
@@ -170,13 +171,13 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
           )}
           <div
             onClick={toggleCommentLike}
-            className="m-1 hover:cursor-pointer flex gap-2 items-center"
+            className="m-1 hover:cursor-pointer flex gap-2 items-center w-fit"
           >
             <LikeSvgIcon liked={commentLike} />
             <p className="text-sm font-medium">{commentLikeCount}</p>
           </div>
         </div>
-        <div className="font-bold relative" ref={menuRef}>
+        <div className="font-bold relative bg-lime-400" ref={menuRef}>
           <div
             onClick={handleCommentOption}
             // onBlur={handleCommentOption}
@@ -220,5 +221,5 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
       </div>
     </div>
   );
-};
-export default CommentCard;
+});
+export default memo(CommentCard);

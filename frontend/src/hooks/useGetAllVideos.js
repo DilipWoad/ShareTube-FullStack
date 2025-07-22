@@ -3,13 +3,11 @@ import { addVideo } from "../slices/videoSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
 import { useEffect } from "react";
-export const useGetAllVideos = () => {
+export const useGetAllVideos = (videos) => {
   const dispatch = useDispatch();
-  const videoStore = useSelector((store)=>store.video.feed);
-
   const getAllVideo = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/video", {
+      const res = await axios.get(`${BASE_URL}/video`, {
         withCredentials: true,
       });
       const videos = res.data; 
@@ -19,8 +17,8 @@ export const useGetAllVideos = () => {
       console.log(error);
     }
   };
-
+  
   useEffect(() => {
-    videoStore===null && getAllVideo();
+    getAllVideo();
   }, [dispatch]);
 };

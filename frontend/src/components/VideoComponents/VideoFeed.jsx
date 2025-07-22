@@ -33,14 +33,14 @@ const VideoFeed = () => {
       console.log(error);
     }
   };
-  useGetAllVideos();
+  useGetAllVideos(videos);
   useEffect(() => {
-    getPlaylist();
+    !playlistStore && getPlaylist();
     videoComment && dispatch(removeComment());
     postStore && dispatch(removePost());
-  }, [playlistStore?.length, dispatch]);
+  }, [dispatch]);
 
-  if (videos?.length === 0) return <LoadingScreen/>;
+  if (!videos) return <LoadingScreen/>;
   return (
     <div className="relative w-full px-1 mt-2 sm:mt-2 sm:py-2 sm:w-fit space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:flex-wrap ">
         {videos &&
