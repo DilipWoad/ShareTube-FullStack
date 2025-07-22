@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addChannelInfo } from "../../slices/channelSlice";
 import ConfirmationBox from "../../utils/ConfirmationBox";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const ChannelPage = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const ChannelPage = () => {
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [channelVideos, setChannelVideos] = useState(null);
   const [subscriberCount,setSubscriberCount] =useState(null);
+  const [loading,setLoading] = useState(false);
 
   const [showBox, setShowBox] = useState(false);
 
@@ -26,6 +28,7 @@ const ChannelPage = () => {
   const username = id.replace("@", "");
 
   const userChannelDetails = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(
         `${BASE_URL}/user/channel/${username.trim()}`,
@@ -40,13 +43,15 @@ const ChannelPage = () => {
       dispatch(addChannelInfo(res.data.data));
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false)
     }
   };
   useEffect(() => {
     !channelDetails && userChannelDetails();
   }, []);
 
-  if (!channelDetails) return <div>Loading...</div>;
+  if (loading) return <LoadingScreen/>;
   return (
     <div
       className={`p-2 sm:rounded-xl bg-gray-600 w-full sm:ml-[98px] ${

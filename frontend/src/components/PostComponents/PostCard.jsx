@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useDispatch } from "react-redux";
 import { removeUserPost, updateUserPost } from "../../slices/postSlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   const {
@@ -124,7 +125,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
     setEditPost(false);
   };
 
-  if (!post) return <div>Loading... wait</div>;
+  if (!post) return <LoadingScreen/>;
 
   return (
     <div

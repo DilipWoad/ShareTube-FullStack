@@ -1,10 +1,11 @@
 import { useState } from "react";
 import PlaylistCard from "../PlaylistComponents/PlaylistCard";
 import VideoCard from "../VideoComponents/VideoCard";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const LibraryCardComponent = ({ library, label }) => {
   const [hidden, setHidden] = useState(false);
-  if (!library) return <div>Loading...</div>;
+  if (!library) return <LoadingScreen/>;
   return (
     <div
       className={`bg-gray-500 rounded-xl sm:w-full my-5 p-2 ${hidden ? "hidden" : ""}`}

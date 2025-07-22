@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addDashboard } from "../../slices/studioSlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const StudioDashboard = () => {
   const dispatch = useDispatch();
   const dashboard = useSelector((store)=>store.studio.dashboard)
+   const [loading,setLoading] = useState(false);
 
   const getChannelStats = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${BASE_URL}/dashboard`, {
         withCredentials: true,
@@ -22,8 +25,8 @@ const StudioDashboard = () => {
   useEffect(() => {
     getChannelStats();
   }, []);
-
-  if (!dashboard) return <div>Loading....</div>;
+ 
+  if (loading) return <LoadingScreen/>;
 
   return (
     <div className="bg-gray-900 rounded-xl grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mx-2">

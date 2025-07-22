@@ -7,6 +7,7 @@ import VideoComment from "../CommentComponents/VideoComment";
 import { useSelector } from "react-redux";
 import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
 import ConfirmationBox from "../../utils/ConfirmationBox";
+import LoadingScreen from "../../utils/LoadingScreen";
 const SingleVideo = () => {
   //now i am this page
   //that means u have video id on the url
@@ -24,6 +25,7 @@ const SingleVideo = () => {
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
 
+const [loading,setLoading] = useState(false);
   
   const [showBox, setShowBox] = useState(false);
 
@@ -34,17 +36,24 @@ const SingleVideo = () => {
   console.log("Liked Count state :", likeCount);
 
   const getAVideo = async () => {
+    setLoading(true)
     console.log(videoId);
-    const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
-      withCredentials: true,
-    });
-    const video = res.data.data;
-    console.log(video);
-    setVideoDetail(video);
-    setIsLiked(video.isLikedByCurrentUser);
-    setLikeCount(video.likesDetails.videoLikes);
-    setSubscriberCount(video?.channelDetails?.subscribers);
-    setIsSubscribed(video.isSubscribedByCurrentUser);
+    try {
+      const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
+        withCredentials: true,
+      });
+      const video = res.data.data;
+      console.log(video);
+      setVideoDetail(video);
+      setIsLiked(video.isLikedByCurrentUser);
+      setLikeCount(video.likesDetails.videoLikes);
+      setSubscriberCount(video?.channelDetails?.subscribers);
+      setIsSubscribed(video.isSubscribedByCurrentUser);
+    } catch (error) {
+      console.error(error)
+    }finally{
+      setLoading(false)
+    }
   };
   
   const handleLikes = async () => {
@@ -70,7 +79,7 @@ const SingleVideo = () => {
     !videoDetail && getAVideo();
   }, [videoId]);
 
-  if (!videoDetail) return <div>Loading....</div>;
+  if (loading) return <LoadingScreen/>
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:px-6 lg:px-8">
       {/* video plyer */}

@@ -7,18 +7,21 @@ import { addPlaylist } from "../../slices/playlistSlice";
 import PlaylistVideoCard from "./PlaylistVideoCard"; 
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import EditSvgIcon from "../../utils/SVGIcons/EditSvgIcon";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const Playlist = () => {
   const dispatch = useDispatch();
   const playlist = useSelector((store) => store.playlist);
   const user = useSelector((store) => store.user);
   const [editOption, setEditOption] = useState(false);
+  const [loading,setLoading] = useState(false);
   console.log(playlist);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const playlistId = searchParams.get("list");
 
   const getPlaylist = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${BASE_URL}/playlist/${playlistId}`, {
         withCredentials: true,
@@ -27,6 +30,8 @@ const Playlist = () => {
       dispatch(addPlaylist(res.data.data));
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false)
     }
   };
   useEffect(() => {
@@ -34,7 +39,7 @@ const Playlist = () => {
   }, [dispatch, playlistId]);
   console.log("Current playlist state:", playlist);
 
-  if (!playlist) return <div>Loading...</div>;
+  if (loading) return <LoadingScreen/>;
   return (
     <div className=" flex flex-col sm:flex-row p-2 sm:p-4 w-full h-full ">
       {/* playlistDescription+CoverImg+Info */}

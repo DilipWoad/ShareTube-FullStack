@@ -49,7 +49,6 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
     }
   };
 
-  // if (!playlistMenu) return <div>Loading...</div>;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">

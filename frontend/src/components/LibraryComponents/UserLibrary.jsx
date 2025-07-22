@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useEffect } from "react";
 import { addUserHistory, addUserLikedVideos } from "../../slices/librarySlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const UserLibrary = () => {
   const user = useSelector((store) => store.user);
@@ -51,7 +52,7 @@ const UserLibrary = () => {
     getHistory();
     likeVideos();
   }, [dispatch]);
-  if (!history) return <div>Loading...</div>;
+  if (!history) return <LoadingScreen/>;
   return (
     <div className="w-full bg-gray-700 justify-center  sm:m-2">
       <div className=" flex sm:flex-row sm:p-2 py-2 flex-col items-center gap-2 ">

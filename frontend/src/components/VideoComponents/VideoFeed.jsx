@@ -8,6 +8,7 @@ import axios from "axios";
 import { addUserPlaylist } from "../../slices/librarySlice";
 import { removePost } from "../../slices/postSlice";
 import ToastCard from "../../utils/ToastCard.jsx"
+import LoadingScreen from "../../utils/LoadingScreen.jsx";
 
 const VideoFeed = () => {
   const videoStore = useSelector((store) => store.video);
@@ -39,7 +40,7 @@ const VideoFeed = () => {
     postStore && dispatch(removePost());
   }, [playlistStore?.length, dispatch]);
 
-  if (videos?.length === 0) return <div>Loading...</div>;
+  if (videos?.length === 0) return <LoadingScreen/>;
   return (
     <div className="relative w-full px-1 mt-2 sm:mt-2 sm:py-2 sm:w-fit space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:flex-wrap ">
         {videos &&

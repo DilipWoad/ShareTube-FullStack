@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { deletePlaylist } from "../../slices/librarySlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const [options, setOptions] = useState(false);
@@ -27,7 +28,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
     }
   };
 
-  if (!playlist) return <div>Loading...</div>;
+  if (!playlist) return <LoadingScreen/>;
   return (
     <>
       <div

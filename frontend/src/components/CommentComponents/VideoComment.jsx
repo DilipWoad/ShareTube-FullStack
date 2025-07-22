@@ -4,6 +4,7 @@ import { BASE_URL } from "../../utils/constant";
 import CommentCard from "./CommentCard";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewComment, addComments } from "../../slices/commentSlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const VideoComment = ({ videoId }) => {
   // const [videoComments, setVideoComments] = useState(null);
@@ -58,7 +59,7 @@ const VideoComment = ({ videoId }) => {
     !videoComments && getVideoComments();
   }, [videoId]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingScreen/>
   if (error) return <div className="text-red-500">{error}</div>;
   return (
     <div className="bg-gray-700 rounded-xl pb-2 px-2">

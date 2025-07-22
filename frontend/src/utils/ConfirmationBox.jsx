@@ -45,7 +45,7 @@ const ConfirmationBox = ({
         //toggle the subscribed state
         dispatch(toastCardDetail({
           label: toggleSubs ?"Subscribed to the Channel" :"Unsubscribed to the Channel",
-          cardColor: "bg-green-500",
+          cardColor: toggleSubs? "bg-green-500" : "bg-red-500",
         }))
       } catch (error) {
         console.error(error);

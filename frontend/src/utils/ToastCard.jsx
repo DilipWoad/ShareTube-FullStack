@@ -28,8 +28,8 @@ const ToastCard = () => {
   return (
     (
       <div
-        className={`absolute top-2/4 sm:bottom-0 sm:left-0 p-2 min-w-48 transition-all duration-1000 ${
-          animation ? "-translate-x-20 opacity-0  " : ""
+        className={`fixed sm:bottom-4 sm:left-4 top-20 right-0 p-2 sm:min-w-48 transition-all duration-1000 ${
+          animation ? "sm:-translate-x-20 translate-x-20 opacity-0  " : ""
         }`}
       >
         <p
@@ -37,7 +37,7 @@ const ToastCard = () => {
             toastCardDetail.cardColor ? toastCardDetail.cardColor : "bg-white"
           } ${
             toastCardDetail.textColor
-          } px-2 py-3 rounded-md opacity-70 truncate`}
+          } px-2 py-3 rounded-md opacity-85 truncate`}
         >
           {toastCardDetail.label
             ? toastCardDetail.label

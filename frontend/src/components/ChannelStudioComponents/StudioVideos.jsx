@@ -6,11 +6,13 @@ import VideoAndPlaylistEditOption from "../PlaylistComponents/VideoAndPlaylistEd
 import { useOutletContext } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addVideoInStudio } from "../../slices/studioSlice";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const StudioVideos = () => {
   const [selectedId, setSelectedId] = useState([]);
   const [videoEditOption, setVideoEditOption] = useState(false);
   const [videoInfo, setVideoInfo] = useState(null);
+  const [loading,setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const studioVideos = useSelector((store) => store.studio.videos);
@@ -51,6 +53,7 @@ const StudioVideos = () => {
   };
 
   const getChannelVideo = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${BASE_URL}/dashboard/videos`, {
         withCredentials: true,
@@ -59,13 +62,15 @@ const StudioVideos = () => {
       dispatch(addVideoInStudio(res.data.data));
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false)
     }
   };
 
   useEffect(() => {
     getChannelVideo();
   }, []);
-  if (!studioVideos) return <div>Loading....</div>;
+  if (loading) return <LoadingScreen/>;
   return (
     <>
       <div className="flex justify-between m-5 sticky top-0">

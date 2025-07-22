@@ -8,6 +8,7 @@ import {
 } from "../../slices/commentSlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import LikeSvgIcon from "../../utils/SVGIcons/LikeSvgIcon";
+import LoadingScreen from "../../utils/LoadingScreen";
 
 const CommentCard = ({ comment, usersComment, commentCss }) => {
   const [moreOption, setMoreOption] = useState(false);
@@ -116,7 +117,7 @@ const CommentCard = ({ comment, usersComment, commentCss }) => {
     setMoreOption(false);
   };
 
-  if (!comment) return <div>Loading... wait</div>;
+  if (!comment) return <LoadingScreen/>
 
   return (
     <div

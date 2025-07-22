@@ -125,7 +125,7 @@ const UploadVideo = ({setCancel,cancel}) => {
           {loading && (
             <div className="absolute inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-              <p className="mt-2 text-gray-600 font-semibold">Uploading...</p>
+              <p className="mt-2 text-gray-600 font-semibold animate-spin ">Uploading...</p>
             </div>
           )}
         </form>
