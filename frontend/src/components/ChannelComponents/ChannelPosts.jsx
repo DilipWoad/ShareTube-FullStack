@@ -36,11 +36,11 @@ const ChannelPosts = () => {
   };
 
   useEffect(() => {
-    handleChannelPosts();
+    !channelPosts && handleChannelPosts();
     if (user._id == channelId) {
       setShowCreatePostBox(true);
     }
-  }, []);
+  }, [dispatch,channelId]);
   if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
     <div className="px-1">

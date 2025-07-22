@@ -79,7 +79,7 @@ const [loading,setLoading] = useState(false);
     !videoDetail && getAVideo();
   }, [videoId]);
 
-  if (loading) return <LoadingScreen/>
+  if (!videoDetail) return <LoadingScreen/>
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:px-6 lg:px-8">
       {/* video plyer */}

@@ -5,7 +5,7 @@ import { BASE_URL } from "../utils/constant";
 import { useEffect } from "react";
 export const useGetAllVideos = () => {
   const dispatch = useDispatch();
-  const videoStore = useSelector((store)=>store.video);
+  const videoStore = useSelector((store)=>store.video.feed);
 
   const getAllVideo = async () => {
     try {
@@ -21,6 +21,6 @@ export const useGetAllVideos = () => {
   };
 
   useEffect(() => {
-    getAllVideo();
+    videoStore===null && getAllVideo();
   }, [dispatch]);
 };
