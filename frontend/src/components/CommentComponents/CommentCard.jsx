@@ -177,7 +177,7 @@ const CommentCard = memo(({ comment, usersComment, commentCss }) => {
             <p className="text-sm font-medium">{commentLikeCount}</p>
           </div>
         </div>
-        <div className="font-bold relative bg-lime-400" ref={menuRef}>
+        <div className="font-bold relative " ref={menuRef}>
           <div
             onClick={handleCommentOption}
             // onBlur={handleCommentOption}

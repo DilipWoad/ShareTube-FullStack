@@ -28,7 +28,7 @@ const ToastCard = () => {
   return (
     (
       <div
-        className={`fixed sm:bottom-4 sm:left-4 top-20 right-0 p-2 sm:min-w-48 transition-all duration-1000 ${
+        className={`fixed bottom-4 left-4 p-2 w-fit transition-all duration-1000 ${
           animation ? "sm:-translate-x-20 translate-x-20 opacity-0  " : ""
         }`}
       >
