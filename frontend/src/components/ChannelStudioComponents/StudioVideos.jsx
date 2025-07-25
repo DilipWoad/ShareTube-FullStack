@@ -1,6 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../../utils/constant";
 import StudioVideoCard from "./StudioVideoCard";
 import VideoAndPlaylistEditOption from "../PlaylistComponents/VideoAndPlaylistEditOption";
 import { useOutletContext } from "react-router";
@@ -12,7 +11,7 @@ const StudioVideos = () => {
   const [selectedId, setSelectedId] = useState([]);
   const [videoEditOption, setVideoEditOption] = useState(false);
   const [videoInfo, setVideoInfo] = useState(null);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const studioVideos = useSelector((store) => store.studio.videos);
@@ -22,10 +21,10 @@ const StudioVideos = () => {
 
   const handleDelete = async (arr) => {
     try {
-      // await axios.delete()
+      // await axiosInstance.delete()
       const deleteArrayOfPromises = arr.map(
         async (videoId) =>
-          await axios.delete(`${BASE_URL}/video/delete/${videoId}`, {
+          await axiosInstance.delete(`/video/delete/${videoId}`, {
             withCredentials: true,
           })
       );
@@ -42,7 +41,7 @@ const StudioVideos = () => {
 
   const handleEditClick = async (id) => {
     try {
-      const res = await axios.get(`${BASE_URL}/video/v/${id}`, {
+      const res = await axiosInstance.get(`/video/v/${id}`, {
         withCredentials: true,
       });
       setVideoInfo(res.data.data);
@@ -53,24 +52,24 @@ const StudioVideos = () => {
   };
 
   const getChannelVideo = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}/dashboard/videos`, {
+      const res = await axiosInstance.get(`/dashboard/videos`, {
         withCredentials: true,
       });
       console.log(res.data.data);
       dispatch(addVideoInStudio(res.data.data));
     } catch (error) {
       console.log(error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getChannelVideo();
   }, []);
-  if (!studioVideos) return <LoadingScreen/>;
+  if (!studioVideos) return <LoadingScreen />;
   return (
     <>
       <div className="flex justify-between m-5 sticky top-0">

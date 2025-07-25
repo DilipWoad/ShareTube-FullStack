@@ -1,12 +1,11 @@
-import axios from "axios";
-import { BASE_URL } from "../constant";
+import axiosInstance from "../../api/axiosInstance.js";
 
 const updateProfileCover = async (coverImage) => {
   const coverEdit = new FormData();
   coverEdit.append("coverImage", coverImage);
   try {
-    const res = await axios.patch(
-      `${BASE_URL}/user/update-coverimage`,
+    const res = await axiosInstance.patch(
+      `/user/update-coverimage`,
       coverEdit,
       {
         headers: { "Content-Type": "multipart/form-data" },

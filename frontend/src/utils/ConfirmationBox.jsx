@@ -1,5 +1,4 @@
-import axios from "axios";
-import { BASE_URL } from "./constant";
+import axiosInstance from "../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { togglePublished } from "../slices/studioSlice";
 import { toastCardDetail } from "../slices/toastCardSlice";
@@ -36,17 +35,21 @@ const ConfirmationBox = ({
       updateSubscriptionToggle(toggleSubs);
       setShowBox(false);
       try {
-        const res = await axios.post(
-          `${BASE_URL}/subscription/c/${id}`,
+        const res = await axiosInstance.post(
+          `/subscription/c/${id}`,
           {},
           { withCredentials: true }
         );
         console.log(res.data.message);
         //toggle the subscribed state
-        dispatch(toastCardDetail({
-          label: toggleSubs ?"Subscribed to the Channel" :"Unsubscribed to the Channel",
-          cardColor: toggleSubs? "bg-green-500" : "bg-red-500",
-        }))
+        dispatch(
+          toastCardDetail({
+            label: toggleSubs
+              ? "Subscribed to the Channel"
+              : "Unsubscribed to the Channel",
+            cardColor: toggleSubs ? "bg-green-500" : "bg-red-500",
+          })
+        );
       } catch (error) {
         console.error(error);
         //if error rollbck to prevs states
@@ -58,8 +61,8 @@ const ConfirmationBox = ({
       dispatch(togglePublished(id));
       setToggle(!toggle);
       try {
-        const res = await axios.patch(
-          `${BASE_URL}/video/togglePublished/${id}`,
+        const res = await axiosInstance.patch(
+          `/video/togglePublished/${id}`,
           {},
           {
             headers: { "Content-Type": "application/json" },

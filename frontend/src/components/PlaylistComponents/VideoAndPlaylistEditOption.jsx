@@ -1,6 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useState, useEffect } from "react";
-import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { editPlaylist } from "../../slices/playlistSlice";
 import { editVideoInfo } from "../../slices/studioSlice";
@@ -62,15 +61,15 @@ const VideoAndPlaylistEditOption = ({
     setLoading(true);
     if (!isVideoEdit) {
       try {
-        const res = await axios.patch(
-          BASE_URL + `/playlist/${id}`,
+        const res = await axiosInstance.patch(
+          `/playlist/${id}`,
           {
             title: editTitle,
             description: editDescription,
           },
           { withCredentials: true }
         );
-       
+
         dispatch(editPlaylist(editInfo));
 
         dispatch(editPlaylistInfo(editInfo));
@@ -84,8 +83,8 @@ const VideoAndPlaylistEditOption = ({
     } else {
       // For Video Editing Details
       try {
-        const res = await axios.patch(
-          `${BASE_URL}/video/update/${id}`,
+        const res = await axiosInstance.patch(
+          `/video/update/${id}`,
           videoData,
           {
             headers: { "Content-Type": "multipart/form-data" },

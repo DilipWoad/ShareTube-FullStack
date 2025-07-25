@@ -1,7 +1,6 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { deletePlaylist } from "../../slices/librarySlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
@@ -15,10 +14,10 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const dispatch = useDispatch();
   const menuRef = useOutsideClick(setOptions);
 
-  console.log(playlist,"plylist k dhekl")
+  console.log(playlist, "plylist k dhekl");
   const deleteAPlaylist = async () => {
     try {
-      const res = await axios.delete(`${BASE_URL}/playlist/${_id}`, {
+      const res = await axiosInstance.delete(`/playlist/${_id}`, {
         withCredentials: true,
       });
       console.log(res);
@@ -28,7 +27,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
     }
   };
 
-  if (!playlist) return <LoadingScreen/>;
+  if (!playlist) return <LoadingScreen />;
   return (
     <>
       <div
@@ -50,7 +49,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
               <p className="text-[13px] font-semibold text-wrap">
                 Channel Name
               </p>
-              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer my-2">                         
+              <p className="text-[12px] text-wrap hover:text-gray-300 hover:cursor-pointer my-2">
                 View full playlist
               </p>
             </div>

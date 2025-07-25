@@ -1,7 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../../utils/constant";
-
 import { Link, useNavigate } from "react-router";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useDispatch } from "react-redux";
@@ -28,8 +26,8 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
     setPostLikeCount(toggleLike ? postLikeCount + 1 : postLikeCount - 1);
 
     try {
-      const res = await axios.post(
-        `${BASE_URL}/like/p/${_id}`,
+      const res = await axiosInstance.post(
+        `/like/p/${_id}`,
         {},
         { withCredentials: true }
       );
@@ -46,7 +44,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
 
   // const isUserLikedThePost = async () => {
   //   try {
-  //     const res = await axios.get(`${BASE_URL}/like/p/${_id}`, {
+  //     const res = await axiosInstance.get(`/like/p/${_id}`, {
   //       withCredentials: true,
   //     });
   //     console.log(res.data.data);
@@ -82,7 +80,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   const handleDeletePost = async (postId, postOwnerId) => {
     try {
       if (postOwnerId === userInfo._id) {
-        await axios.delete(BASE_URL + `/post/${postId}`, {
+        await axiosInstance.delete(`/post/${postId}`, {
           withCredentials: true,
         });
         // dispatch(removeUserComment(commentId));
@@ -99,8 +97,8 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
   const handleEditPost = async (postId) => {
     try {
       if (postOwner._id === userInfo._id) {
-        const res = await axios.patch(
-          BASE_URL + `/post/${postId}`,
+        const res = await axiosInstance.patch(
+          `/post/${postId}`,
           {
             content: editedPost,
           },
@@ -125,7 +123,7 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
     setEditPost(false);
   };
 
-  if (!post) return <LoadingScreen/>;
+  if (!post) return <LoadingScreen />;
 
   return (
     <div
@@ -220,7 +218,9 @@ const PostCard = ({ post, postCss, hideComment, userInfo }) => {
               } h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center `}
             >
               <span
-                className={`text-3xl ${isPostLiked ? " text-white hover:text-black  " : ""}`}
+                className={`text-3xl ${
+                  isPostLiked ? " text-white hover:text-black  " : ""
+                }`}
               >
                 ♡
               </span>

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useDispatch } from "react-redux";
 import {
   removeUserComment,
@@ -39,7 +38,7 @@ const CommentCard = memo(({ comment, usersComment, commentCss }) => {
   const handleDeleteComment = async (commentId, commentOwnerId) => {
     try {
       if (commentOwnerId === usersComment._id) {
-        await axios.delete(BASE_URL + `/comment/c/${commentId}`, {
+        await axiosInstance.delete(`/comment/c/${commentId}`, {
           withCredentials: true,
         });
         dispatch(removeUserComment(commentId));
@@ -57,8 +56,8 @@ const CommentCard = memo(({ comment, usersComment, commentCss }) => {
       if (
         (commentOwner ? commentOwner._id : comment.owner) === usersComment._id
       ) {
-        const res = await axios.patch(
-          BASE_URL + `/comment/c/${commentId}`,
+        const res = await axiosInstance.patch(
+          `/comment/c/${commentId}`,
           {
             content: editedComment,
           },
@@ -79,7 +78,7 @@ const CommentCard = memo(({ comment, usersComment, commentCss }) => {
 
   // const isCommentLiked = async ()=>{
   //   try {
-  //     const res= await axios.get(`${BASE_URL}/like/c/${comment._id}`,{withCredentials:true});
+  //     const res= await axiosInstance.get(`/like/c/${comment._id}`,{withCredentials:true});
   //     console.log("likedComment",res.data.data);
   //     setCommentLike(res.data.data);
   //   } catch (error) {
@@ -94,8 +93,8 @@ const CommentCard = memo(({ comment, usersComment, commentCss }) => {
       toggleLike ? prevCount + 1 : prevCount - 1
     );
     try {
-      const res = await axios.post(
-        `${BASE_URL}/like/c/${comment._id}`,
+      const res = await axiosInstance.post(
+        `/like/c/${comment._id}`,
         {},
         { withCredentials: true }
       );

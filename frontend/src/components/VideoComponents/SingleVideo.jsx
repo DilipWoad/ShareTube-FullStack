@@ -1,6 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useSearchParams } from "react-router";
-import { BASE_URL, LIKE_ICON } from "../../utils/constant";
 import { useEffect, useState } from "react";
 import VideoDescription from "./VideoDescription";
 import VideoComment from "../CommentComponents/VideoComment";
@@ -25,8 +24,8 @@ const SingleVideo = () => {
   const [isLiked, setIsLiked] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
 
-const [loading,setLoading] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
   const [showBox, setShowBox] = useState(false);
 
   console.log("Subscription state :", isSubscribed);
@@ -36,10 +35,10 @@ const [loading,setLoading] = useState(false);
   console.log("Liked Count state :", likeCount);
 
   const getAVideo = async () => {
-    setLoading(true)
+    setLoading(true);
     console.log(videoId);
     try {
-      const res = await axios.get(BASE_URL + `/video/v/${videoId}`, {
+      const res = await axiosInstance.get(`/video/v/${videoId}`, {
         withCredentials: true,
       });
       const video = res.data.data;
@@ -50,19 +49,19 @@ const [loading,setLoading] = useState(false);
       setSubscriberCount(video?.channelDetails?.subscribers);
       setIsSubscribed(video.isSubscribedByCurrentUser);
     } catch (error) {
-      console.error(error)
-    }finally{
-      setLoading(false)
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
-  
+
   const handleLikes = async () => {
     const toggleLike = !isLiked;
     setIsLiked(toggleLike);
     setLikeCount((prevCount) => (toggleLike ? prevCount + 1 : prevCount - 1));
     try {
-      const res = await axios.post(
-        BASE_URL + `/like/v/${videoId}`,
+      const res = await axiosInstance.post(
+        `/like/v/${videoId}`,
         {},
         { withCredentials: true }
       );
@@ -79,7 +78,7 @@ const [loading,setLoading] = useState(false);
     !videoDetail && getAVideo();
   }, [videoId]);
 
-  if (!videoDetail) return <LoadingScreen/>
+  if (!videoDetail) return <LoadingScreen />;
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:px-6 lg:px-8">
       {/* video plyer */}
@@ -129,7 +128,7 @@ const [loading,setLoading] = useState(false);
                 isSubscribed ? "bg-gray-300" : "bg-white text-gray-600"
               }`}
             >
-              <button onClick={()=>setShowBox(true)}>
+              <button onClick={() => setShowBox(true)}>
                 {isSubscribed ? "🔔 Subscribed" : "Subscribe"}
               </button>
             </div>
@@ -150,16 +149,16 @@ const [loading,setLoading] = useState(false);
       <VideoDescription videoDetail={videoDetail} />
       <VideoComment videoId={videoId} />
       {showBox && (
-          <ConfirmationBox
-            toggle={isSubscribed}
-            setShowBox={setShowBox}
-            setToggle={setIsSubscribed}
-            id={videoDetail.channelDetails._id}
-            subscriptionClick={true}
-            setSubscriberCount={setSubscriberCount}
-            userId={userId}
-          />
-        )}
+        <ConfirmationBox
+          toggle={isSubscribed}
+          setShowBox={setShowBox}
+          setToggle={setIsSubscribed}
+          id={videoDetail.channelDetails._id}
+          subscriptionClick={true}
+          setSubscriberCount={setSubscriberCount}
+          userId={userId}
+        />
+      )}
     </div>
   );
 };

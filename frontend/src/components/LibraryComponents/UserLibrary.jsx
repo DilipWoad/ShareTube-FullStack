@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import LibraryCardComponent from "./LibraryCardComponent";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect } from "react";
 import { addUserHistory, addUserLikedVideos } from "../../slices/librarySlice";
 import LoadingScreen from "../../utils/LoadingScreen";
@@ -15,11 +14,11 @@ const UserLibrary = () => {
   const history = library.history;
   const like = library.likeVideos;
   const playlist = library.playlist;
-  console.log("plffvbgvbmb",playlist);
+  console.log("plffvbgvbmb", playlist);
 
   const getHistory = async () => {
     try {
-      const res = await axios.get(BASE_URL + `/user/history`, {
+      const res = await axiosInstance.get(`/user/history`, {
         withCredentials: true,
       });
       console.log(res.data.data.watchHistory);
@@ -33,7 +32,7 @@ const UserLibrary = () => {
   const likeVideos = async () => {
     try {
       let likeArray = [];
-      const res = await axios.get(BASE_URL + `/like/videos`, {
+      const res = await axiosInstance.get(`/like/videos`, {
         withCredentials: true,
       });
       console.log(res.data.data);
@@ -52,7 +51,7 @@ const UserLibrary = () => {
     getHistory();
     likeVideos();
   }, [dispatch]);
-  if (!history) return <LoadingScreen/>;
+  if (!history) return <LoadingScreen />;
   return (
     <div className="w-full bg-gray-700 justify-center  sm:m-2">
       <div className=" flex sm:flex-row sm:p-2 py-2 flex-col items-center gap-2 ">

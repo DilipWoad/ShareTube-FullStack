@@ -1,6 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../../utils/constant";
 import CommentCard from "./CommentCard";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewComment, addComments } from "../../slices/commentSlice";
@@ -21,8 +20,8 @@ const VideoComment = ({ videoId }) => {
     if (!userComment.trim()) return;
     try {
       setLoading(true);
-      const res = await axios.post(
-        BASE_URL + `/comment/${videoId}`,
+      const res = await axiosInstance.post(
+        `/comment/${videoId}`,
         {
           content: userComment,
         },
@@ -42,7 +41,7 @@ const VideoComment = ({ videoId }) => {
   const getVideoComments = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(BASE_URL + `/comment/${videoId}`, {
+      const res = await axiosInstance.get(`/comment/${videoId}`, {
         withCredentials: true,
       });
       const array = res.data.data;
@@ -59,7 +58,7 @@ const VideoComment = ({ videoId }) => {
     !videoComments && getVideoComments();
   }, [videoId]);
 
-  if (loading) return <LoadingScreen/>
+  if (loading) return <LoadingScreen />;
   if (error) return <div className="text-red-500">{error}</div>;
   return (
     <div className="bg-gray-700 rounded-xl pb-2 px-2">

@@ -1,12 +1,11 @@
-import axios from "axios"
-import { BASE_URL } from "./constant"
+import axiosInstance from "../api/axiosInstance.js";
 
-const userAuthStatus=async()=>{
-    try {
-        const res = await axios.get(BASE_URL+'/status');
-        return res.data.isAuthenticated;
-    } catch (error) {
-        return false
-    }
-}
-export {userAuthStatus};
+const userAuthStatus = async () => {
+  try {
+    const res = await axiosInstance.get("/status");
+    return res.data.isAuthenticated;
+  } catch (error) {
+    return false;
+  }
+};
+export { userAuthStatus };

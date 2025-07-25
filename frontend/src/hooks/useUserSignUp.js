@@ -1,5 +1,4 @@
-import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import axiosInstance from "../api/axiosInstance.js";
 
 export const useUserSignUp = async (avatar, coverImage, formData) => {
   const data = new FormData();
@@ -11,7 +10,7 @@ export const useUserSignUp = async (avatar, coverImage, formData) => {
   data.append("username", formData.username);
 
   try {
-    const res = await axios.post(BASE_URL + "/user/register", data, {
+    const res = await axiosInstance.post("/user/register", data, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
     });

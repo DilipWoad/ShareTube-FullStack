@@ -1,10 +1,12 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../../utils/constant";
 import CreateNewPlaylist from "./CreateNewPlaylist";
 import { addUserPlaylist } from "../../slices/librarySlice";
-import { setToastCardHidden, toastCardDetail } from "../../slices/toastCardSlice";
+import {
+  setToastCardHidden,
+  toastCardDetail,
+} from "../../slices/toastCardSlice";
 
 const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   const [playlistId, setPlaylistId] = useState(null);
@@ -16,7 +18,7 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
 
   const getPlaylist = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/playlist/user/${user._id}`, {
+      const res = await axiosInstance.get(`/playlist/user/${user._id}`, {
         withCredentials: true,
       });
       console.log(res.data.data);
@@ -27,8 +29,8 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
   };
   const addVideoToPlaylist = async () => {
     try {
-      const res = await axios.patch(
-        `${BASE_URL}/playlist/add/${videoId}/${playlistId}`,
+      const res = await axiosInstance.patch(
+        `/playlist/add/${videoId}/${playlistId}`,
         {},
         { withCredentials: true }
       );
@@ -42,13 +44,11 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
       );
     } catch (error) {
       console.error(error);
-      
     } finally {
       setPlaylistOption(false);
       getPlaylist();
     }
   };
-
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">

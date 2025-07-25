@@ -1,10 +1,9 @@
-import axios from "axios";
-import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPlaylist } from "../../slices/playlistSlice";
-import PlaylistVideoCard from "./PlaylistVideoCard"; 
+import PlaylistVideoCard from "./PlaylistVideoCard";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import EditSvgIcon from "../../utils/SVGIcons/EditSvgIcon";
 import LoadingScreen from "../../utils/LoadingScreen";
@@ -14,24 +13,24 @@ const Playlist = () => {
   const playlist = useSelector((store) => store.playlist);
   const user = useSelector((store) => store.user);
   const [editOption, setEditOption] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   console.log(playlist);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const playlistId = searchParams.get("list");
 
   const getPlaylist = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}/playlist/${playlistId}`, {
+      const res = await axiosInstance.get(`/playlist/${playlistId}`, {
         withCredentials: true,
       });
       console.log(res.data.data);
       dispatch(addPlaylist(res.data.data));
     } catch (error) {
       console.log(error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -39,7 +38,7 @@ const Playlist = () => {
   }, [dispatch, playlistId]);
   console.log("Current playlist state:", playlist);
 
-  if (!playlist) return <LoadingScreen/>;
+  if (!playlist) return <LoadingScreen />;
   return (
     <div className=" flex flex-col sm:flex-row p-2 sm:p-4 w-full h-full ">
       {/* playlistDescription+CoverImg+Info */}
@@ -66,11 +65,14 @@ const Playlist = () => {
           <p className="text-[12px] font-semibold">
             Playlist · {playlist?.playlistVideos?.length} videos
           </p>
-          <div onClick={() => setEditOption(!editOption)} className="flex items-center hover:cursor-pointe ">
-            <button className="  mt-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-500" >
-            <EditSvgIcon/>
-          </button>
-          Edit
+          <div
+            onClick={() => setEditOption(!editOption)}
+            className="flex items-center hover:cursor-pointe "
+          >
+            <button className="  mt-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-500">
+              <EditSvgIcon />
+            </button>
+            Edit
           </div>
         </div>
         {/* playlistDescription */}

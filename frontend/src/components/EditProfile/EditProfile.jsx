@@ -36,8 +36,8 @@ const EditProfile = () => {
   };
   const handleSave = async () => {
     // try {
-    //   const res = await axios.patch(
-    //     `${BASE_URL}/user/update-details`,
+    //   const res = await axiosInstance.patch(
+    //     `/user/update-details`,
     //     {
     //       fullName: user.fullName,
     //       email: user.email,
@@ -137,7 +137,7 @@ const EditProfile = () => {
     //   </div>
     // </div>
     <div>
-       {loading && <LoadingScreen/>}
+      {loading && <LoadingScreen />}
       <section className="max-w-xl sm:mx-auto mt-10 bg-white sm:p-6 rounded-2xl shadow-md border border-gray-200 p-4 m-2 ">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">
           Edit Profile

@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router";
 import PostCard from "./PostCard";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../../api/axiosInstance.js";
 import { use, useEffect, useState } from "react";
 import CommentCard from "../CommentComponents/CommentCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +12,7 @@ const PostComments = () => {
   // const [postComment, setPostComment] = useState(null);
   const [aPost, setAPost] = useState(null);
   const dispatch = useDispatch();
-  const postComment = useSelector((store)=>store.comment);
+  const postComment = useSelector((store) => store.comment);
 
   // const [currentComment, setCurrentComment] = useState([]);
 
@@ -23,13 +22,13 @@ const PostComments = () => {
 
   const postComments = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/comment/post/${postId}`, {
+      const res = await axiosInstance.get(`/comment/post/${postId}`, {
         withCredentials: true,
       });
       const comment = res.data;
       console.log("Comment API response:", res.data);
       console.log(comment.data);
-      dispatch(addComments(comment.data))
+      dispatch(addComments(comment.data));
       // setPostComment(comment.data);
     } catch (error) {
       console.log(error);
@@ -38,7 +37,7 @@ const PostComments = () => {
 
   const getAPost = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/post/${postId}`, {
+      const res = await axiosInstance.get(`/post/${postId}`, {
         withCredentials: true,
       });
       console.log(res.data.data);
@@ -56,15 +55,8 @@ const PostComments = () => {
   return (
     <div className="m-2 flex justify-center w-full">
       <div className="p-2 bg-gray-500 md:w-[550px] lg:w-[800px] rounded-2xl">
-        <PostCard
-          post={aPost}
-          postCss={" bg-gray-600"}
-          hideComment={true}
-        />
-        <UserCommentBox
-          postId={postId}
-          userCommentCss={"bg-gray-800"}
-        />
+        <PostCard post={aPost} postCss={" bg-gray-600"} hideComment={true} />
+        <UserCommentBox postId={postId} userCommentCss={"bg-gray-800"} />
         {postComment &&
           postComment.map((comment) => (
             <CommentCard

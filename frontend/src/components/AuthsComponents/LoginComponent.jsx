@@ -13,7 +13,7 @@ const LoginComponent = () => {
   const handleLoginUser=async(e)=>{
     e.preventDefault()
     const userInfo = await useUserLogin(email,password);
-    dispatch(addUser(userInfo.data.user))
+    dispatch(addUser(userInfo?.data?.user))
     navigate('/')
   }
 

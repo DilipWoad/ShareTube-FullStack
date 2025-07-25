@@ -1,10 +1,9 @@
-import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import axiosInstance from "../api/axiosInstance.js";
 
 export const useHandleLogout = async () => {
   try {
-    await axios.post(
-      BASE_URL + "/user/logout",
+    await axiosInstance.post(
+      "/user/logout",
       {},
       {
         withCredentials: true,

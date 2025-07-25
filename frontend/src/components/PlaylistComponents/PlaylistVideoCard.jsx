@@ -1,8 +1,7 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useState } from "react";
 import { Link } from "react-router";
 import { removeVideoFromPlaylist } from "../../slices/playlistSlice";
-import { BASE_URL } from "../../utils/constant";
 import { useDispatch } from "react-redux";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
@@ -14,8 +13,8 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
 
   const removeVideo = async () => {
     try {
-      const res = await axios.patch(
-        BASE_URL + `/playlist/remove/${_id}/${playlistId}`,
+      const res = await axiosInstance.patch(
+        `/playlist/remove/${_id}/${playlistId}`,
         {},
         { withCredentials: true }
       );
@@ -40,7 +39,9 @@ const PlaylistVideoCard = ({ video, playlistId }) => {
           />
 
           <div className=" ml-2">
-            <p className="text-base sm:text-lg font-semibold truncate">{title}</p>
+            <p className="text-base sm:text-lg font-semibold truncate">
+              {title}
+            </p>
             <p className="text-sm sm:mt-2 mt-1">{videoOwner?.fullName}</p>
             <p className="text-sm">{views} views</p>
           </div>

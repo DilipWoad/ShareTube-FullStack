@@ -7,6 +7,7 @@ import {
   uploadToCloudinary,
 } from "../utils/cloudinary.js";
 import fs from "fs";
+import jwt from 'jsonwebtoken';
 import mongoose from "mongoose";
 
 //all the user related fuction will be written here
@@ -317,11 +318,12 @@ const refreshAccessTokens = asyncHandler(async (req, res) => {
   if (!receivedRefreshToken) {
     throw new ApiError("Invalid Request: No refresh token found", 401);
   }
-
+  console.log("receivedRefreshToken",receivedRefreshToken);
   // 1. Verify refresh token
   let payload;
   try {
     payload = jwt.verify(receivedRefreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+    console.log("payload",payload)
   } catch (error) {
     throw new ApiError("Refresh Token is invalid or expired", 403);
   }

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../slices/userSlice";
-import { BASE_URL } from "../utils/constant";
+
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-import axios from "axios";
-import axiosInstance from "../utils/axiosInstance";
+
+import axiosInstance from "../api/axiosInstance";
 
 export const useGetUserInfo = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export const useGetUserInfo = () => {
       console.log(error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     !userDetails && userInfo();
-  },[dispatch])
+  }, [dispatch]);
 };

@@ -585,7 +585,7 @@ const getChannelVideos =asyncHandler(async(req,res)=>{
   const channelId = req.params.channelId;
   //check valid id
   if(!mongoose.isValidObjectId(channelId)){
-    return ApiError("Invalid channel Id",401)
+    throw new ApiError("Invalid channel Id",401)
   }
 
   const channelVideos = await Video.aggregate([

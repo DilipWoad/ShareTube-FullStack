@@ -1,6 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import PostCard from "../PostComponents/PostCard";
-import { BASE_URL } from "../../utils/constant";
 import { useOutletContext } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,22 +11,21 @@ const ChannelPosts = () => {
   // const [channelPosts, setChannelPosts] = useState(null);
   const [showCreatePostBox, setShowCreatePostBox] = useState(false);
 
-  const channelPosts = useSelector((store)=>store.post);
+  const channelPosts = useSelector((store) => store.post);
   const dispatch = useDispatch();
 
   // const [newPostDisplay ,setNewPostDisplay] = useState([]);
-  
 
   const user = useSelector((store) => store.user);
 
   const handleChannelPosts = async () => {
     try {
       //data fetch
-      const res = await axios.get(`${BASE_URL}/post/user/${channelId}`, {
+      const res = await axiosInstance.get(`/post/user/${channelId}`, {
         withCredentials: true,
       });
       const channelPost = res.data.data;
-      console.log(channelPost)
+      console.log(channelPost);
       dispatch(addPost(channelPost));
       // setChannelPosts(channelPost);
     } catch (error) {
@@ -40,7 +38,7 @@ const ChannelPosts = () => {
     if (user._id == channelId) {
       setShowCreatePostBox(true);
     }
-  }, [dispatch,channelId]);
+  }, [dispatch, channelId]);
   if (!channelPosts) return <div>This Channel has No Posts!!</div>;
   return (
     <div className="px-1">

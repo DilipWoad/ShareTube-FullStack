@@ -1,7 +1,6 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../../utils/constant";
 import { addNewPost } from "../../slices/postSlice";
 
 const CreatePost = () => {
@@ -17,8 +16,8 @@ const CreatePost = () => {
 
   const handleCreatePost = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URL}/post`,
+      const res = await axiosInstance.post(
+        `/post`,
         {
           content: userPostContent,
         },
@@ -42,7 +41,6 @@ const CreatePost = () => {
   };
   return (
     <div className="sm:w-4/5 sm:m-10 bg-gray-500 sm:px-10 sm:py-2 sm:rounded-xl rounded-lg flex-col w-full p-2 mb-10 ">
-
       {/* img+fullNme */}
       <div className="flex items-center space-x-3 my-2">
         <img
@@ -52,7 +50,7 @@ const CreatePost = () => {
         />
         <p className="text-[15px] font-semibold">{user?.fullName}</p>
       </div>
-       
+
       {/* inputBox */}
       <div className="">
         <input
@@ -63,18 +61,18 @@ const CreatePost = () => {
           onChange={(e) => setUserPostContent(e.target.value)}
         />
       </div>
-    
+
       {/* Cancel+Post Btn */}
       <div className="flex justify-end space-x-4 my-2">
         <button
           disabled={userPostContent.trim() === ""}
-          onClick={()=>setUserPostContent("")}
+          onClick={() => setUserPostContent("")}
           className={`bg-white rounded-full text-sm font-medium py-2 px-5
              ${
-              userPostContent.trim() === ""
-                ? "hover:cursor-not-allowed bg-gray-300 text-gray-400"
-                : "bg-white hover:bg-gray-100 transition-all duration-200"
-            }`}
+               userPostContent.trim() === ""
+                 ? "hover:cursor-not-allowed bg-gray-300 text-gray-400"
+                 : "bg-white hover:bg-gray-100 transition-all duration-200"
+             }`}
         >
           Cancel
         </button>
