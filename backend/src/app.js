@@ -23,7 +23,7 @@ app.use(express.json({ limit: "20kb" }));
 
 //3) What if the data comes from the url(?=fnv+kenlkrnv+flkn)
 //use the urlencoder to easily read the info from a url
-app.use(express.urlencoded({ limit: "20kb", extendedd: true }));
+app.use(express.urlencoded({ limit: "20kb", extended: true }));
 
 //4) What if a file are send from user (pdf,img,video etc)
 //we can use multer to do so
