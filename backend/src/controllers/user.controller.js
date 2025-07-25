@@ -6,7 +6,6 @@ import {
   deleteFromCloudinary,
   uploadToCloudinary,
 } from "../utils/cloudinary.js";
-import fs from "fs";
 import jwt from 'jsonwebtoken';
 import mongoose from "mongoose";
 
@@ -214,24 +213,16 @@ const logoutUser = asyncHandler(async (req, res) => {
   // userRefresh.save({validateBeforeSave:false});
   //now clear the cokies
 
-  const AccessTokenOptions = {
+  const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV,
     sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
     // sameSite: "Strict",
-    maxAge:24*60*60*1000
-  };
-  const RefreshTokenOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV,
-    sameSite: process.env.CROSS_ORIGIN==='http://localhost:5173' ? "Strict" : "None",
-    // sameSite: "Strict",
-    maxAge:7*24*60*60*1000
   };
   return res
     .status(200)
-    .cookie("accessToken", accessToken, AccessTokenOptions)
-    .cookie("refreshToken", refreshToken, RefreshTokenOptions)
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
     .json(new ApiResponse(201, [], "User Logged Out Successfully!!"));
 });
 

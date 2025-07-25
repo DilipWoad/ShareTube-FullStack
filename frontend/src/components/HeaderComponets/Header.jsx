@@ -16,16 +16,13 @@ const Header = () => {
   const [createOption, setCreateOption] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const logout = useHandleLogout();
 
   const location = useLocation();
 
   const handleLogout = async () => {
-    await useHandleLogout();
-    dispatch(removeUser());
-    dispatch(removeVideoFeed());
-    dispatch(removeUserHistory());
-    dispatch(removeUserLikeVideos());
-    dispatch(removeUserPlaylist());
+    await logout();
+    // dispatch(removeUser());
     navigate("/login");
   };
 
