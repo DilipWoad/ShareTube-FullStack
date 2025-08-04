@@ -32,6 +32,8 @@ const UserCommentBox = ({ postId, userCommentCss }) => {
       const postCommentWithAllFields = {
         ...postComment,
         commentOwner: owner,
+        isLikedByCurrentUser: false,
+        likeCount:0
       };
       console.log(postCommentWithAllFields);
       // setNewPostComment([postCommentWithAllFields,...newPostComment]);

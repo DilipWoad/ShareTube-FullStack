@@ -30,6 +30,8 @@ const CreatePost = () => {
       const postWithPostOwnerields = {
         ...currentPost,
         postOwner: owner,
+        isLikedByCurrentUser: false,
+        likeCount: 0
       };
       dispatch(addNewPost(postWithPostOwnerields));
       // setNewPost([postWithPostOwnerields,...newPost]);
