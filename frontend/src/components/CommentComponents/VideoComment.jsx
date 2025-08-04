@@ -28,7 +28,12 @@ const VideoComment = ({ videoId }) => {
         { withCredentials: true }
       );
       const newComment = res.data.data;
-      dispatch(addNewComment(newComment));
+      const videoCommentWithAllFields = {
+        ...newComment,
+        isLikedByCurrentUser: false,
+        likeCount:0
+      };
+      dispatch(addNewComment(videoCommentWithAllFields));
       setUserComment("");
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -44,8 +49,9 @@ const VideoComment = ({ videoId }) => {
       const res = await axiosInstance.get(`/comment/${videoId}`, {
         withCredentials: true,
       });
-      const array = res.data.data;
-      dispatch(addComments(array));
+      const comment = res.data.data;
+      console.log(comment)
+      dispatch(addComments(comment));
     } catch (error) {
       console.error("Error fetching comments:", error);
       setError("Failed to load comments.");
