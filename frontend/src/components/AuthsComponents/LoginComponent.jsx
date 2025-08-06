@@ -84,10 +84,11 @@ const LoginComponent = () => {
                 alt="see-password-icon"
               />
             </button>
-            <p className="text-red-500 sm:text-nowrap text-wrap">
+            
+          </div>
+          <p className="text-red-500 sm:text-nowrap text-wrap">
               {loginError.passwordError}
             </p>
-          </div>
           <button
             type="submit"
             className="py-2 bg-blue-500 mt-10 w-full rounded-lg text-lg text-white hover:bg-blue-600 transition"

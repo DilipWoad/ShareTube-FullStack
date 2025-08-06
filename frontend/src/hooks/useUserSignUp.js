@@ -8,6 +8,7 @@ export const useUserSignUp = async (avatar, coverImage, formData) => {
   data.append("email", formData.email);
   data.append("password", formData.password);
   data.append("username", formData.username);
+  const err = { emailError: "", usernameError: "" };
 
   try {
     const res = await axiosInstance.post("/user/register", data, {
@@ -15,7 +16,11 @@ export const useUserSignUp = async (avatar, coverImage, formData) => {
       withCredentials: true,
     });
     console.log(res.data);
+    return res.data;
   } catch (error) {
-    console.log(error);
+    const msg = error.response?.data?.message || "SignUp failed";
+    msg.includes("email") ? (err.emailError = msg) : (err.usernameError = msg);
+
+    return err;
   }
 };

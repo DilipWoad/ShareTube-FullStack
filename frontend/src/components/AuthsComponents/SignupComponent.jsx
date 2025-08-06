@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useUserSignUp } from "../../hooks/useUserSignUp";
+import { validateSignupForm } from "../../utils/FormValidation/validateSignupForm";
+import { CLOSE_EYE, OPEN_EYE } from "../../utils/constant";
 
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
+  const [signupError, setSignupError] = useState({});
+  const [eyeOpen, setEyeOpen] = useState(false);
+
+  const errorFormat = { emailFormat: "", passwordFormat: "" };
+  const [validFormatError, setValidFormatError] = useState(errorFormat);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -28,16 +35,50 @@ const SignupComponent = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleSignupUser = async (e) => {
+    setValidFormatError(errorFormat);
     e.preventDefault();
-    await useUserSignUp(avatar,coverImage,formData);
-    navigate("/login");
+    const { isValidEmail, isValidPassword } = validateSignupForm(formData);
+
+    if (isValidEmail && isValidPassword) {
+      const signupInfo = await useUserSignUp(avatar, coverImage, formData);
+      if (signupInfo.data) {
+        setSignupError({});
+        navigate("/login");
+      } else {
+        setSignupError(signupInfo);
+      }
+    } else {
+      if (!isValidEmail) {
+        setValidFormatError({
+          ...validFormatError,
+          emailFormat: "Invalid Email Formate!!",
+        });
+      }
+      if (!isValidPassword) {
+        if (formData.password.length < 8) {
+          setValidFormatError({
+            ...validFormatError,
+            passwordFormat: "Password length should be atleast 8.",
+          });
+        }
+        setValidFormatError({
+          ...validFormatError,
+          passwordFormat:
+            "Password should contain 1 Special,1 Uppercase and 1 Lowercase.",
+        });
+      }
+      // console.log(
+      //   "Make sure enter email is correct or Password Must contain 8 letter,special char and upper-lower case"
+      // );
+    }
   };
 
   return (
@@ -67,6 +108,9 @@ const SignupComponent = () => {
                 onChange={handleChange}
                 className=" bg-slate-100 w-full  px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
+              <p className="text-red-500 text-sm text-wrap">
+                {signupError.usernameError}
+              </p>
             </div>
           </div>
           <div className="mt-3">
@@ -79,18 +123,34 @@ const SignupComponent = () => {
               onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <p className="text-red-500 text-sm text-wrap">
+              {signupError.emailError}
+            </p>
           </div>
-          <div className="mt-3">
+          <div className="mt-3 relative">
             <label className="block text-gray-600">Password</label>
             <input
-              type="password"
+              type={eyeOpen ? "text" : "password"}
               placeholder="Enter Password"
               required
               name="password"
               onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <button
+              onClick={() => setEyeOpen(!eyeOpen)}
+              className="absolute bottom-2 right-2 "
+            >
+              <img
+                className="w-5 "
+                src={eyeOpen ? OPEN_EYE : CLOSE_EYE}
+                alt="see-password-icon"
+              />
+            </button>
           </div>
+          <p className="text-red-500 text-sm text-wrap">
+            {validFormatError.passwordFormat}
+          </p>
           <div className="my-6 sm:flex space-y-4 sm:space-y-0">
             <div className="w-1/2 space-y-2 sm:space-y-0">
               <label className="block text-gray-600">Avatar Image</label>
