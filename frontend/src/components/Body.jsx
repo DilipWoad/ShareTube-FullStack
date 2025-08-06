@@ -10,7 +10,7 @@ const Body = () => {
   const videoStore = useSelector((store) => store.video);
   const showToastCard = useSelector((store)=>store.toast.showCard)
   
-  useGetUserInfo();
+  // useGetUserInfo();
 
   return (
     <div className="min-h-screen bg-gray-800 text-black flex flex-col relative ">

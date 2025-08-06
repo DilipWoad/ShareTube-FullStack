@@ -1,21 +1,47 @@
 import { useState } from "react";
-import { useNavigate,Link } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../slices/userSlice";
-import { useUserLogin } from "../../hooks/useUserLogin";
+import { loginUser } from "../../hooks/loginUser";
+import { validateLoginForm } from "../../utils/FormValidation/validateLoginForm";
 
 const LoginComponent = () => {
-  const [email, setEmail] = useState("dilip@g.com");
-  const [password, setPassword] = useState("12345678");
+  // const [email, setEmail] = useState("dilip@g.com");
+  // const [password, setPassword] = useState("12345678");
+  const [loginError,setLoginError]= useState({});
+  const loginFormStructure = {
+    email: "",
+    password: "",
+  };
+  const [formLogin, setFormLogin] = useState(loginFormStructure);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLoginUser=async(e)=>{
-    e.preventDefault()
-    const userInfo = await useUserLogin(email,password);
-    dispatch(addUser(userInfo?.data?.user))
-    navigate('/')
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormLogin((prev)=>({
+      ...prev,
+      [name]:value
+    }));
+  };
+
+  const handleLoginUser = async (e) => {
+    e.preventDefault();
+    const isValid = validateLoginForm(formLogin);
+
+    if (isValid) {
+      const loginInfo = await loginUser(formLogin);
+      if(loginInfo.data){
+        dispatch(addUser(loginInfo?.data?.user));
+        setLoginError({});
+        navigate("/");
+      }else{
+        setLoginError(loginInfo)
+      }
+    }else{
+      console.log("Invalid email format");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center w-screen ">
@@ -26,23 +52,27 @@ const LoginComponent = () => {
             <label className="block text-gray-600">Email</label>
             <input
               type="email"
+              name="email"
               placeholder="Enter Email"
-              value={email}
+              value={formLogin.email}
               required
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <p className="text-red-500">{loginError.emailError}</p>
           </div>
           <div className="mt-5">
             <label className="block text-gray-600">Password</label>
             <input
               type="password"
+              name="password"
               placeholder="Enter Password"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formLogin.password}
+              onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <p className="text-red-500">{loginError.passwordError}</p>
           </div>
           <button
             type="submit"

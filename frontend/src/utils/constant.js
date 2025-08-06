@@ -7,3 +7,6 @@ export const YT_LOGO =
 
 export const LIKE_ICON = 'https://cdn-icons-png.flaticon.com/128/126/126473.png';
 export const LOGOUT_ICON = "https://cdn-icons-png.flaticon.com/128/1286/1286853.png";
+
+export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
