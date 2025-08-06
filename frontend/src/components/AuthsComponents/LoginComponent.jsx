@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../../slices/userSlice";
 import { loginUser } from "../../hooks/loginUser";
 import { validateLoginForm } from "../../utils/FormValidation/validateLoginForm";
+import { CLOSE_EYE, OPEN_EYE } from "../../utils/constant";
 
 const LoginComponent = () => {
   // const [email, setEmail] = useState("dilip@g.com");
   // const [password, setPassword] = useState("12345678");
-  const [loginError,setLoginError]= useState({});
+  const [loginError, setLoginError] = useState({});
+  const [eyeOpen, setEyeOpen] = useState(false);
   const loginFormStructure = {
     email: "",
     password: "",
@@ -19,9 +21,9 @@ const LoginComponent = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormLogin((prev)=>({
+    setFormLogin((prev) => ({
       ...prev,
-      [name]:value
+      [name]: value,
     }));
   };
 
@@ -31,14 +33,14 @@ const LoginComponent = () => {
 
     if (isValid) {
       const loginInfo = await loginUser(formLogin);
-      if(loginInfo.data){
+      if (loginInfo.data) {
         dispatch(addUser(loginInfo?.data?.user));
         setLoginError({});
         navigate("/");
-      }else{
-        setLoginError(loginInfo)
+      } else {
+        setLoginError(loginInfo);
       }
-    }else{
+    } else {
       console.log("Invalid email format");
     }
   };
@@ -61,10 +63,10 @@ const LoginComponent = () => {
             />
             <p className="text-red-500">{loginError.emailError}</p>
           </div>
-          <div className="mt-5">
+          <div className="mt-5 relative">
             <label className="block text-gray-600">Password</label>
             <input
-              type="password"
+              type={eyeOpen ? "text":"password"}
               name="password"
               placeholder="Enter Password"
               required
@@ -72,7 +74,19 @@ const LoginComponent = () => {
               onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <p className="text-red-500">{loginError.passwordError}</p>
+            <button
+              onClick={() => setEyeOpen(!eyeOpen)}
+              className="absolute bottom-2 right-2 "
+            >
+              <img
+                className="w-5 "
+                src={eyeOpen ? OPEN_EYE : CLOSE_EYE}
+                alt="see-password-icon"
+              />
+            </button>
+            <p className="text-red-500 sm:text-nowrap text-wrap">
+              {loginError.passwordError}
+            </p>
           </div>
           <button
             type="submit"
