@@ -20,6 +20,7 @@ const StudioVideos = () => {
   console.log(selectedId);
 
   const handleDelete = async (arr) => {
+    setLoading(true);
     try {
       // await axiosInstance.delete()
       const deleteArrayOfPromises = arr.map(
@@ -38,10 +39,14 @@ const StudioVideos = () => {
 
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false);
+      setSelectedId([]);
     }
   };
 
   const handleEditClick = async (id) => {
+    setLoading(true);
     try {
       const res = await axiosInstance.get(`/video/v/${id}`, {
         withCredentials: true,
@@ -49,6 +54,7 @@ const StudioVideos = () => {
       setVideoInfo(res.data.data);
     } catch (error) {
     } finally {
+      setLoading(false);
       setVideoEditOption(true);
     }
   };
@@ -73,7 +79,8 @@ const StudioVideos = () => {
   }, []);
   if (!studioVideos) return <LoadingScreen />;
   return (
-    <>
+    <> 
+     {loading && <LoadingScreen/>}
       <div className="flex justify-between m-5 sticky top-0">
         <div className="space-x-2 ">
           <button

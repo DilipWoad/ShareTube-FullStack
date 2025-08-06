@@ -7,6 +7,7 @@ import PlaylistVideoCard from "./PlaylistVideoCard";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import EditSvgIcon from "../../utils/SVGIcons/EditSvgIcon";
 import LoadingScreen from "../../utils/LoadingScreen";
+import emptyThumbnail from "../../../public/assets/no_video_in_playlist-thumbnail.png"
 
 const Playlist = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const Playlist = () => {
         <div className=" mb-6 border-1 shadow-xl">
           <img
             className="max-h-44 w-full rounded-lg object-cover"
-            src={playlist?.playlistVideos[0]?.thumbnail}
+            src={playlist?.playlistVideos[0]?.thumbnail || emptyThumbnail}
             alt="thumbnail"
           />
         </div>

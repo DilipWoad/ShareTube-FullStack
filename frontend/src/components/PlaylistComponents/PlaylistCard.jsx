@@ -6,6 +6,7 @@ import { deletePlaylist } from "../../slices/librarySlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import LoadingScreen from "../../utils/LoadingScreen";
+import emptyThumbnail from "../../../public/assets/no_video_in_playlist-thumbnail.png"
 
 const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const [options, setOptions] = useState(false);
@@ -38,7 +39,7 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         <div className="">
           <img
             className={`w-full max-h-48 rounded-t-lg ${thumbnailcss} object-cover`}
-            src={playlistVideos[0]?.thumbnail}
+            src={playlistVideos[0]?.thumbnail || emptyThumbnail}
           />{" "}
           {/*get the first video thumbnail*/}
         </div>

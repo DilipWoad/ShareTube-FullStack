@@ -50,6 +50,7 @@ const UserLibrary = () => {
   useEffect(() => {
     getHistory();
     likeVideos();
+    
   }, [dispatch]);
   if (!history) return <LoadingScreen />;
   return (

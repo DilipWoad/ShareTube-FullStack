@@ -8,18 +8,23 @@ const librarySlice = createSlice({
     playlist: [],
   },
   reducers: {
+    //watch history
     addUserHistory: (state, action) => {
       state.history = action.payload.reverse();
     },
     removeUserHistory:(state,action)=>{
       state.history = null
     },
+    //liked videos
+
     addUserLikedVideos: (state, action) => {
       state.likeVideos = action.payload;
     },
     removeUserLikeVideos:(state,action)=>{
       state.likeVideos = null
     },
+
+    //playlist
     addUserPlaylist: (state, action) => {
       state.playlist = action.payload;
     },
