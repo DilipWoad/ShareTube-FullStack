@@ -6,7 +6,8 @@ import { deletePlaylist } from "../../slices/librarySlice";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import LoadingScreen from "../../utils/LoadingScreen";
-import emptyThumbnail from "../../../public/assets/no_video_in_playlist-thumbnail.png"
+// import { NO_VIDEO_IMG } from "../../utils/constant.js";
+import emptyThumbnail from "../../assets/no_video_in_playlist-thumbnail.png"
 
 const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
   const [options, setOptions] = useState(false);

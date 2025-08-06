@@ -7,7 +7,8 @@ import PlaylistVideoCard from "./PlaylistVideoCard";
 import VideoAndPlaylistEditOption from "./VideoAndPlaylistEditOption";
 import EditSvgIcon from "../../utils/SVGIcons/EditSvgIcon";
 import LoadingScreen from "../../utils/LoadingScreen";
-import emptyThumbnail from "../../../public/assets/no_video_in_playlist-thumbnail.png"
+import emptyThumbnail from "../../assets/no_video_in_playlist-thumbnail.png"
+
 
 const Playlist = () => {
   const dispatch = useDispatch();
