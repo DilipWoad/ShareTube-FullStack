@@ -4,7 +4,7 @@ import StudioVideoCard from "./StudioVideoCard";
 import VideoAndPlaylistEditOption from "../PlaylistComponents/VideoAndPlaylistEditOption";
 import { useOutletContext } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { addVideoInStudio } from "../../slices/studioSlice";
+import { addVideoInStudio, removeVideoFromStudio } from "../../slices/studioSlice";
 import LoadingScreen from "../../utils/LoadingScreen";
 
 const StudioVideos = () => {
@@ -34,6 +34,8 @@ const StudioVideos = () => {
       //so we should do is promis.All to resolve all the pending promise in parallel
       const res = await Promise.all(deleteArrayOfPromises);
       console.log(res);
+      dispatch(removeVideoFromStudio(arr))
+
     } catch (error) {
       console.log(error);
     }

@@ -35,6 +35,11 @@ const studioSlice = createSlice({
     addNewVideo: (state, action) => {
       state.videos.unshift(action.payload);
     },
+    removeVideoFromStudio: (state, action) => {
+      state.videos = state.videos.filter(
+        (video) => !action.payload.includes(video._id)
+      );
+    },
   },
 });
 
@@ -45,4 +50,5 @@ export const {
   editVideoInfo,
   togglePublished,
   addNewVideo,
+  removeVideoFromStudio,
 } = studioSlice.actions;
