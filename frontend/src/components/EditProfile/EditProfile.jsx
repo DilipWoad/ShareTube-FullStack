@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateAvatarImg,
   updateCoverImg,
+  updateEmailFullname,
   updateUser,
 } from "../../slices/userSlice";
 import updateNameEmail from "../../utils/EditProfile/updateNameEmail";
@@ -53,7 +54,8 @@ const EditProfile = () => {
     // }
     setLoading(true);
     try {
-      const userRes = await updateNameEmail(user);
+      const {email,fullName} = await updateNameEmail(user);
+      dispatch(updateEmailFullname({email,fullName}))
       if (profilePic) {
         const profileRes = await updateProfileAvatar(profilePic);
         dispatch(updateAvatarImg(profileRes.data));

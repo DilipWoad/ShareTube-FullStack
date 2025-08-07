@@ -25,7 +25,10 @@ const userSlice = createSlice({
     updateCoverImg: (state, action) => {
       state.coverImage = action.payload;
     },
-    
+    updateEmailFullname:(state,action)=>{
+      state.email = action.payload.email
+      state.fullName = action.payload.fullName
+    }
   },
 });
 
@@ -36,4 +39,5 @@ export const {
   updateUser,
   updateAvatarImg,
   updateCoverImg,
+  updateEmailFullname
 } = userSlice.actions;
