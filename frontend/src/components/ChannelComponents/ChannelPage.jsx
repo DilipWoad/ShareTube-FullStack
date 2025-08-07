@@ -10,7 +10,7 @@ import LoadingScreen from "../../utils/LoadingScreen";
 const ChannelPage = () => {
   const dispatch = useDispatch();
   const menuClick = useSelector((store) => store.video.isMenuClicked);
-  const userId = useSelector((store) => store.user._id);
+  const userId = useSelector((store) => store?.user?._id);
 
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
