@@ -25,6 +25,7 @@ const userSlice = createSlice({
     updateCoverImg: (state, action) => {
       state.coverImage = action.payload;
     },
+    
   },
 });
 

@@ -10,7 +10,7 @@ import LoadingScreen from "../../utils/LoadingScreen";
 const ChannelPage = () => {
   const dispatch = useDispatch();
   const menuClick = useSelector((store) => store.video.isMenuClicked);
-  const userId = useSelector((store) => store?.user?._id);
+  const user = useSelector((store) => store?.user);
 
   const [channelDetails, setChannelDetails] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(null);
@@ -45,7 +45,7 @@ const ChannelPage = () => {
   };
   useEffect(() => {
     !channelDetails && userChannelDetails();
-  }, []);
+  }, [username,dispatch]);
 
   if (!channelDetails) return <LoadingScreen />;
   return (
@@ -57,21 +57,21 @@ const ChannelPage = () => {
       {/* Welcome to Channel Page {na} */}
       <img
         className="w-full sm:h-44 h-36 object-cover sm:object-fill rounded-xl"
-        src={channelDetails?.coverImage}
+        src={(channelDetails._id === user?._id) ? user.coverImage : channelDetails.coverImage}
       />
       <div className=" sm:h-44 ">
         <div className="flex text-black h-full">
           <img
             className=" sm:w-44 sm:h-auto w-28 h-28 flex-2 object-cover rounded-full mr-3"
-            src={channelDetails?.avatar}
+            src={(channelDetails._id === user?._id) ? user.avatar : channelDetails.avatar}
             alt="avatar"
           />
           <div className="flex-1">
             <p className="sm:text-4xl text-2xl font-bold">
-              {channelDetails?.fullName}
+              {(channelDetails._id === user?._id) ? user.fullName : channelDetails.fullName}
             </p>
             <div className=" flex my-3 space-x-1 sm:text-lg text-sm">
-              <p className="font-semibold text-black">{`@${channelDetails?.username} ${middleDot}`}</p>
+              <p className="font-semibold text-black">{`@${(channelDetails._id === user?._id) ? user.username : channelDetails.username} ${middleDot}`}</p>
               <p className="text-gray-400 font-medium ">
                 {subscriberCount} subscribers
               </p>
@@ -114,7 +114,7 @@ const ChannelPage = () => {
             Posts
           </NavLink>
 
-          <div className={`${userId !== channelId ? "hidden" : ""}`}>
+          <div className={`${user?._id !== channelId ? "hidden" : ""}`}>
             <NavLink
               to={`/channel/@${username}/profile`}
               className={({ isActive }) =>
@@ -140,7 +140,7 @@ const ChannelPage = () => {
           id={channelDetails._id}
           subscriptionClick={true}
           setSubscriberCount={setSubscriberCount}
-          userId={userId}
+          userId={user?._id}
         />
       )}
     </div>

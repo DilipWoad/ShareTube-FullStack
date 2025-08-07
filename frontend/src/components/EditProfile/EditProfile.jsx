@@ -65,7 +65,7 @@ const EditProfile = () => {
 
       // setUser((prev) => ({ ...prev, avatar: profileRes.data,coverImage: coverRes.data }));
       setIsEditing(false);
-      dispatch(updateUser(user));
+      // dispatch(updateUser(user));
     } catch (error) {
       console.log(error);
       handleCancel();
