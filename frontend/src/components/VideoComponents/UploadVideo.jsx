@@ -86,11 +86,13 @@ const UploadVideo = ({ setCancel, cancel }) => {
               <input
                 onChange={handleVideoFile}
                 type="file"
+                required
                 className="w-full p-2 border rounded-md"
               />
 
               <label className="block text-gray-600">Thumbnail</label>
               <input
+                required
                 onChange={handleThumbnailFile}
                 type="file"
                 className="w-full p-2 border rounded-md"

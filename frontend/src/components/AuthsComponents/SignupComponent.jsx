@@ -3,12 +3,14 @@ import { useNavigate, Link } from "react-router";
 import { useUserSignUp } from "../../hooks/useUserSignUp";
 import { validateSignupForm } from "../../utils/FormValidation/validateSignupForm";
 import { CLOSE_EYE, OPEN_EYE } from "../../utils/constant";
-
+import LoadingScreen from "../../utils/LoadingScreen"
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [signupError, setSignupError] = useState({});
   const [eyeOpen, setEyeOpen] = useState(false);
+
+  const [loading,setLoading] = useState(false)
 
   const errorFormat = { emailFormat: "", passwordFormat: "" };
   const [validFormatError, setValidFormatError] = useState(errorFormat);
@@ -43,7 +45,8 @@ const SignupComponent = () => {
   };
 
   const handleSignupUser = async (e) => {
-    setValidFormatError(errorFormat);
+    // setValidFormatError(errorFormat);
+    setLoading(true);
     e.preventDefault();
     const { isValidEmail, isValidPassword } = validateSignupForm(formData);
 
@@ -78,11 +81,13 @@ const SignupComponent = () => {
       // console.log(
       //   "Make sure enter email is correct or Password Must contain 8 letter,special char and upper-lower case"
       // );
+      setLoading(false)
     }
   };
 
   return (
     <div className="flex items-center justify-center w-screen px-2 ">
+      {loading && <LoadingScreen/>}
       <div className="bg-white w-full max-w-md rounded-lg p-8 shadow-lg">
         <label className="text-2xl font-semibold ">Sign up</label>
         <form className="mt-6" onSubmit={handleSignupUser}>
@@ -137,16 +142,16 @@ const SignupComponent = () => {
               onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <button
+            <div
               onClick={() => setEyeOpen(!eyeOpen)}
-              className="absolute bottom-2 right-2 "
+              className="absolute bottom-2 right-2 hover:cursor-pointer "
             >
               <img
                 className="w-5 "
                 src={eyeOpen ? OPEN_EYE : CLOSE_EYE}
                 alt="see-password-icon"
               />
-            </button>
+            </div>
           </div>
           <p className="text-red-500 text-sm text-wrap">
             {validFormatError.passwordFormat}

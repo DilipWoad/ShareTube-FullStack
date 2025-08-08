@@ -340,7 +340,8 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
     fs.unlinkSync(thumbnailLocalPath);
     throw new ApiError("Video does not Exist!!", 404);
   }
-
+  //old-video-thumbnail
+  const oldThumbnailUrl = video.thumbnail;
   //upload to cloudinary
   const newThumbnail = await uploadToCloudinary(thumbnailLocalPath);
   if (!newThumbnail) {
@@ -367,7 +368,7 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
     );
   }
 
-  const oldThumbnail = await deleteFromCloudinary(video?.thumbnail);
+  const oldThumbnail = await deleteFromCloudinary(oldThumbnailUrl,"image");
   if (!oldThumbnail) {
     throw new ApiError(
       "Something went wrong while deleting the old thumbnail!!",
@@ -411,8 +412,10 @@ const deleteVideo = asyncHandler(async (req, res) => {
     throw new ApiError("Something went wrong while deleting the video!!", 501);
   }
 
-  const delThumb = await deleteFromCloudinary(thumbnail);
+  console.log("Video Delete before",thumbnail,videoFile)
+  const delThumb = await deleteFromCloudinary(thumbnail,"image");
   const delVideo = await deleteFromCloudinary(videoFile, "video");
+  console.log("Video Delete After",delThumb,delVideo)
 
   if (!(delThumb || delVideo)) {
     throw new ApiError(

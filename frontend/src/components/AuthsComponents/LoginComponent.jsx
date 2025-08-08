@@ -5,12 +5,16 @@ import { addUser } from "../../slices/userSlice";
 import { loginUser } from "../../hooks/loginUser";
 import { validateLoginForm } from "../../utils/FormValidation/validateLoginForm";
 import { CLOSE_EYE, OPEN_EYE } from "../../utils/constant";
+import LoadingScreen from "../../utils/LoadingScreen"
+
 
 const LoginComponent = () => {
   // const [email, setEmail] = useState("dilip@g.com");
   // const [password, setPassword] = useState("12345678");
   const [loginError, setLoginError] = useState({});
   const [eyeOpen, setEyeOpen] = useState(false);
+  const [loading,setLoading] = useState(false)
+
   const loginFormStructure = {
     email: "",
     password: "",
@@ -28,6 +32,7 @@ const LoginComponent = () => {
   };
 
   const handleLoginUser = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const isValid = validateLoginForm(formLogin);
 
@@ -43,10 +48,12 @@ const LoginComponent = () => {
     } else {
       console.log("Invalid email format");
     }
+    setLoading(false);
   };
 
   return (
     <div className="flex items-center justify-center w-screen ">
+      {loading && <LoadingScreen/>}
       <div className="bg-white w-full max-w-sm rounded-lg p-8 shadow-lg">
         <label className="text-2xl font-semibold ">Login</label>
         <form className="mt-6" onSubmit={handleLoginUser}>
@@ -74,16 +81,16 @@ const LoginComponent = () => {
               onChange={handleChange}
               className=" bg-slate-100 w-full px-4 py-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <button
+            <div
               onClick={() => setEyeOpen(!eyeOpen)}
-              className="absolute bottom-2 right-2 "
+              className="absolute bottom-2 right-2 hover:cursor-pointer"
             >
               <img
                 className="w-5 "
                 src={eyeOpen ? OPEN_EYE : CLOSE_EYE}
                 alt="see-password-icon"
               />
-            </button>
+            </div>
             
           </div>
           <p className="text-red-500 sm:text-nowrap text-wrap">

@@ -56,6 +56,7 @@ const StudioVideos = () => {
     } finally {
       setLoading(false);
       setVideoEditOption(true);
+      setSelectedId([]);
     }
   };
 

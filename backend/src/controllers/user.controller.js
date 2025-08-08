@@ -536,7 +536,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     );
   }
 
-  const isDeletedFromCloudinary = await deleteFromCloudinary(user.avatar);
+  const isDeletedFromCloudinary = await deleteFromCloudinary(user.avatar,"image");
   console.log(isDeletedFromCloudinary);
 
   if (!isDeletedFromCloudinary) {
@@ -595,7 +595,7 @@ const updateUserCover = asyncHandler(async (req, res) => {
   }
 
   if (user.coverImage !== "") {
-    const isDeletedFromCloudinary = await deleteFromCloudinary(user.coverImage);
+    const isDeletedFromCloudinary = await deleteFromCloudinary(user.coverImage,"image");
     if (!isDeletedFromCloudinary) {
       //also remove the file from the server also
       // fs.unlinkSync(localCoverFilePath);
