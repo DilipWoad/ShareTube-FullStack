@@ -2,7 +2,7 @@ import axiosInstance from "../../api/axiosInstance.js";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateNewPlaylist from "./CreateNewPlaylist";
-import { addUserPlaylist } from "../../slices/librarySlice";
+import { addUserPlaylist,addVideoToAPlaylist } from "../../slices/librarySlice";
 import {
   setToastCardHidden,
   toastCardDetail,
@@ -21,8 +21,9 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
       const res = await axiosInstance.get(`/playlist/user/${user._id}`, {
         withCredentials: true,
       });
-      console.log(res.data.data);
-      dispatch(addUserPlaylist(res.data.data));
+      console.log("playlist",res.data.data);
+      const play = res.data.data;
+      dispatch(addUserPlaylist(play));
     } catch (error) {
       console.log(error);
     }
@@ -34,8 +35,9 @@ const AllPlaylistOptions = ({ setPlaylistOption, videoId }) => {
         {},
         { withCredentials: true }
       );
-      console.log(res.data);
+      console.log("guccghkkxghxfhxfxfxfxfxfxfxfhxfhkxfhkxf->",res.data);
       // mke here the tost to work
+      dispatch(addVideoToAPlaylist(res.data.data))
       dispatch(
         toastCardDetail({
           label: "Video added to the playlist Successfully",

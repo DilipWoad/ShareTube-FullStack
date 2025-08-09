@@ -38,10 +38,11 @@ const PlaylistCard = ({ playlist, menuClicked, css, thumbnailcss }) => {
         } shadow-lg hover:shadow-gray-300 ${css} `}
       >
         <div className="">
+        {/* {console.log("playlistVideos[0]?.thumbnail",playlistVideos[0].thumbnail)} */}
           <img
             className={`w-full max-h-48 rounded-t-lg ${thumbnailcss} object-cover`}
-            src={playlistVideos[0]?.thumbnail || emptyThumbnail}
-          />{" "}
+            src={!playlistVideos || playlistVideos.length==0 ? emptyThumbnail:playlistVideos[0]?.thumbnail}
+          />
           {/*get the first video thumbnail*/}
         </div>
         <div className="bg-gray-700 flex justify-between rounded-b-xl">

@@ -3,14 +3,14 @@ import { useNavigate, Link } from "react-router";
 import { useUserSignUp } from "../../hooks/useUserSignUp";
 import { validateSignupForm } from "../../utils/FormValidation/validateSignupForm";
 import { CLOSE_EYE, OPEN_EYE } from "../../utils/constant";
-import LoadingScreen from "../../utils/LoadingScreen"
+import LoadingScreen from "../../utils/LoadingScreen";
 const SignupComponent = () => {
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [signupError, setSignupError] = useState({});
   const [eyeOpen, setEyeOpen] = useState(false);
 
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const errorFormat = { emailFormat: "", passwordFormat: "" };
   const [validFormatError, setValidFormatError] = useState(errorFormat);
@@ -71,23 +71,24 @@ const SignupComponent = () => {
             ...validFormatError,
             passwordFormat: "Password length should be atleast 8.",
           });
+        } else {
+          setValidFormatError({
+            ...validFormatError,
+            passwordFormat:
+              "Password should contain 1 Special,1 Uppercase and 1 Lowercase.",
+          });
         }
-        setValidFormatError({
-          ...validFormatError,
-          passwordFormat:
-            "Password should contain 1 Special,1 Uppercase and 1 Lowercase.",
-        });
       }
       // console.log(
       //   "Make sure enter email is correct or Password Must contain 8 letter,special char and upper-lower case"
       // );
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex items-center justify-center w-screen px-2 ">
-      {loading && <LoadingScreen/>}
+      {loading && <LoadingScreen />}
       <div className="bg-white w-full max-w-md rounded-lg p-8 shadow-lg">
         <label className="text-2xl font-semibold ">Sign up</label>
         <form className="mt-6" onSubmit={handleSignupUser}>

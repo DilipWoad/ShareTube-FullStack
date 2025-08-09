@@ -49,7 +49,7 @@ const Playlist = () => {
         <div className=" mb-6 border-1 shadow-xl">
           <img
             className="max-h-44 w-full rounded-lg object-cover"
-            src={playlist?.playlistVideos[0]?.thumbnail || emptyThumbnail}
+            src={playlist.playlistVideos.length === 0 ? emptyThumbnail :playlist.playlistVideos[0].thumbnail}
             alt="thumbnail"
           />
         </div>

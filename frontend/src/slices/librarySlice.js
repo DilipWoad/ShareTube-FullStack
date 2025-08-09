@@ -28,14 +28,18 @@ const librarySlice = createSlice({
     addUserPlaylist: (state, action) => {
       state.playlist = action.payload;
     },
-    addVideoToPlaylist :(state,action)=>{
-      state.playlist.push(action.payload)
+    addVideoToAPlaylist :(state,action)=>{
+      state.playlist.unshift(action.payload)
     },
     removeUserPlaylist:(state,action)=>{
       state.playlist = null
     },
     addCreatedPlaylist:(state,action)=>{
-      state.playlist.push(action.payload);
+      if(!state.playlist){
+        state.playlist = action.payload;
+      }else{
+        state.playlist.unshift(action.payload);
+      }
     },
     deletePlaylist: (state, action) => {
       state.playlist = state.playlist.filter(
@@ -64,6 +68,6 @@ export const {
   removeUserHistory,
   removeUserPlaylist,
   removeUserLikeVideos,
-  addVideoToPlaylist
+  addVideoToAPlaylist
 
 } = librarySlice.actions;
